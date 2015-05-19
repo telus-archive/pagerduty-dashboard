@@ -1,0 +1,6 @@
+{
+  "apiSubdomain": "",
+  "apiKey":  "",
+  "updateInterval": 10,
+  "serverPort": 3000
+}
