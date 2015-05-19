@@ -1,0 +1,60 @@
+{
+  "services": [
+    {
+    "name": "App 1: Site",
+    "status": "active"
+    },
+    {
+    "name": "App 1: Server",
+    "status": "active"
+    },
+    {
+    "name": "App 1: Feature A",
+    "status": "active"
+    },
+    {
+    "name": "App 1: Feature B",
+    "status": "active"
+    },
+    {
+    "name": "App 2: Site",
+    "status": "disabled"
+    },
+    {
+    "name": "App 2: Server",
+    "status": "active"
+    },
+    {
+    "name": "App 2: Feature A",
+    "status": "warning"
+    },
+    {
+    "name": "App 2: Feature B",
+    "status": "active"
+    },
+    {
+    "name": "App 3: Site",
+    "status": "critical"
+    },
+    {
+    "name": "App 3: Server",
+    "status": "critical"
+    },
+    {
+    "name": "App 3: Feature A",
+    "status": "warning"
+    },
+    {
+    "name": "App 3: Feature B",
+    "status": "maintenance"
+    },
+    {
+    "name": "App 4",
+    "status": "maintenance"
+    },
+    {
+    "name": "App 5",
+    "status": "disabled"
+    }
+  ]
+}
