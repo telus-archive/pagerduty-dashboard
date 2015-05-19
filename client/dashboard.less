@@ -1,0 +1,196 @@
+/*
+==================================
+Colors
+==================================
+*/
+
+@critical: #e74c3c;
+@warning: #e67e22;
+@active: #2ecc71;
+@maintenance: #95a5a6;
+@disabled: #95a5a6;
+
+.set-colors(@status) {
+  .@{status} .group {
+    border-color: @@status;
+  }
+  .services li.@{status} {
+    border-color: @@status;
+  }
+}
+.set-colors(critical);
+.set-colors(warning);
+.set-colors(active);
+.set-colors(maintenance);
+.set-colors(disabled);
+
+/*
+==================================
+General
+==================================
+*/
+
+body {
+  background: url('bg.png');
+  padding: 20px 0 50px 0;
+}
+
+/*
+==================================
+Active/Default Group Styles
+==================================
+*/
+
+.group-container {
+  width: 33.333%;
+  float:left;
+}
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+  -moz-box-shadow:    @shadow;
+  box-shadow:         @shadow;
+}
+
+.group {
+  background: #fff;
+  margin: 15px;
+  padding: 5px;
+  border-left-style: solid;
+  border-left-width: 5px;
+  .box-shadow(2px 2px 5px 0px rgba(50, 50, 50, 0.7));
+}
+
+.group h2 {
+  font-size: 15px;
+  margin: 5px 0;
+  font-weight: 700;
+}
+
+.details {
+  margin-left: 5px;
+}
+
+.services {
+  display: none;
+}
+
+/*
+==================================
+Critical/Warning Group Styles
+==================================
+*/
+
+.group-container.critical,
+.group-container.warning {
+  width: 100%;
+
+  h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+
+  .group {
+    border-left-width: 15px;
+  }
+
+  .details {
+    margin: 15px 0 15px 15px;
+  }
+
+  .services {
+    display: block;
+    padding: 0;
+    list-style: none;
+  }
+
+  li.service {
+    border-left-style: solid;
+    border-left-width: 5px;
+    padding: 7px 0 7px 10px;
+  }
+
+  .service h3 {
+    font-size:16px;
+    margin: 0;
+  }
+
+  .incidents {
+    padding: 5px 0 3px 20px;
+  }
+
+  .service.critical,
+  .service.warning {
+    padding: 10px 0 10px 15px;
+
+    h3 {
+      font-size: 20px;
+    }
+  }
+}
+
+/*
+==================================
+CSS Spinner
+==================================
+Credit to http://projects.lukehaas.me/css-loaders/
+*/
+
+.loader,
+.loader:before,
+.loader:after {
+  background: #FFF;
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+  width: 1em;
+  height: 4em;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: '';
+}
+.loader:before {
+  left: -1.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader {
+  text-indent: -9999em;
+  margin: 8em auto;
+  position: relative;
+  font-size: 11px;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:after {
+  left: 1.5em;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 #FFF;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em #ffffff;
+    height: 5em;
+  }
+}
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 #FFF;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em #ffffff;
+    height: 5em;
+  }
+}

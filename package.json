@@ -1,0 +1,29 @@
+{
+  "name": "pagerduty-dashboard",
+  "version": "1.0.0",
+  "description": "Pagerduty Incident Management Dashboard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gondek/pagerduty-dashboard.git"
+  },
+  "dependencies": {
+    "angular": "^1.4.0-rc.2",
+    "bootstrap": "^3.3.4",
+    "express": "^3.20.2",
+    "jquery": "^2.1.4",
+    "noty": "^2.3.5",
+    "request": "^2.55.0",
+    "socket.io": "^1.3.5"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.5.1",
+    "grunt-ng-annotate": "^0.10.0"
+  }
+}

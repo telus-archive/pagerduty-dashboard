@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" ng-app="pagerdutyDashboard">
+<head>
+  <meta charset="utf-8">
+  <title>PagerDuty Incident Management Dashboard</title>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="assets/dashboard.js"></script>
+  <link rel="stylesheet" href="assets/dashboard.css">
+</head>
+<body ng-controller="dashboardController">
+  <div class="container">
+    <div ng-hide="loaded" class="loader"></div>
+    <div class="groups">
+      <div
+      class="group-container"
+      ng-repeat="group in groups | descendingPriority"
+      ng-class="group.status">
+      <div class="group">
+        <div class="details">
+          <h2>{{group.name}}</h2>
+          <ul class="services">
+            <li
+            class="service"
+            ng-repeat="service in group.services | descendingPriority"
+            ng-class="service.status">
+            <h3>{{service.name}}
+              <span ng-show="service.incidents.length > 0">
+                ({{service.incidents.length}} Incident<span ng-hide="service.incidents.length==1">s</span>):
+              </span>
+            </h3>
+            <ul class="incidents" ng-show="service.incidents.length > 0">
+              <li ng-repeat="incident in service.incidents">
+                {{incident.trigger_summary_data.subject}} -
+                Assigned to: <span ng-repeat="assignee in incident.assigned_to">{{assignee.object.name}}, </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+</div>
+</body>
+</html>
