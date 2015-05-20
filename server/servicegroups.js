@@ -1,15 +1,14 @@
-// ==================================
-// Group services by Brand/Product
-// ==================================
-
-// rename the service based on a group and inject the group name
+/*
+Rename a service (remove the group from the title)
+Inject the group name as a property
+*/
 function groupService(service) {
   var names;
 
   // Currently we assume a colon separates the group and service
   names = /(.*):(.*)/.exec(service.name);
   if(null === names) {
-    // Otherwise, the service has its own group
+    // Otherwise, the service has/is its own group
     service.group = service.name;
   } else {
     service.name = names[2].trim();
@@ -17,9 +16,13 @@ function groupService(service) {
   }
 }
 
-// processes an array of pagerduty services into groups
-// groups is a mapping of group names to groups
-// each group contains a mapping of service names to services
+/*
+Process an array of PagerDuty services into groups
+
+Returns:
+A mapping (object) of group names to groups
+Each group contains a mapping (object) of service names to services
+*/
 function groupServices(services) {
   var groups = {};
 
@@ -32,16 +35,16 @@ function groupServices(services) {
         services: {}
       };
     }
+    // add the service to its group
     groups[service.group].services[service.name] = service;
   });
 
   return groups;
 }
 
-// ==================================
-// Status Injection
-// ==================================
-
+/*
+Status to number conversion - makes it easier to sort
+*/
 function statusToPriority(status) {
   switch(status) {
     case 'critical':
@@ -57,12 +60,18 @@ function statusToPriority(status) {
   }
 }
 
-// determine a group's overall status and collect statistics while doing so
+/*
+Determine a group's overall status and collect statistics while doing so
+
+The numeric priority is used for sorting/comparison
+The string status is used client-side for styling
+*/
 function setStatus(group, stats) {
+  // start out assuming the lowest possible group status
   var groupStatus = 'disabled', groupPriority = 0, service, servicePriority;
 
   Object.keys(group.services).forEach(function(name) {
-    // current service in iteration
+    // current service and status number
     service = group.services[name];
     servicePriority = statusToPriority(service.status);
 
@@ -87,7 +96,9 @@ function setStatus(group, stats) {
   stats.groups[groupStatus] += 1;
 }
 
-// determine group statuses and gather stats
+/*
+Determine group statuses and gather stats
+*/
 function packageStats(groups) {
   var stats = {
     problems: 0,
@@ -111,32 +122,41 @@ function packageStats(groups) {
     setStatus(groups[name], stats);
   });
 
+  // provide a quick way to check if there are issues
   stats.problems = stats.groups.critical + stats.groups.warning;
 
   return {stats: stats, groups: groups};
 }
 
-// ==================================
-// Incident Injection
-// ==================================
+/*
+Adds incidents to services
 
+groups: groupServices object format
+incidents: array from PagerDuty
+*/
 function injectIncidents(groups, incidents) {
   var service;
 
   incidents.forEach(function(incident) {
     service = incident.service;
     groupService(service);
-    service = groups[service.group].services[service.name];
-    if(service.incidents === undefined) {
-      service.incidents = [];
+    try {
+      // the first line here can cause an issue
+      service = groups[service.group].services[service.name];
+      if(service.incidents === undefined) {
+        service.incidents = [];
+      }
+      service.incidents.push(incident);
+    } catch(error) {
+      // there is a small chance a service was added in between the time
+      // the services were fetched and the incidents were fetched
     }
-    service.incidents.push(incident);
   });
 }
 
-// ==================================
-// Exports
-// ==================================
+/*
+Exports
+*/
 module.exports = {
   group: groupServices,
   packageStats: packageStats,

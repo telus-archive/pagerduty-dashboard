@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>PagerDuty Incident Management Dashboard</title>
   <script src="socket.io/socket.io.js"></script>
+
+  <!-- Assets are built by Grunt -->
   <script src="assets/dashboard.js"></script>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
@@ -31,7 +33,7 @@
             <ul class="incidents" ng-show="service.incidents.length > 0">
               <li ng-repeat="incident in service.incidents">
                 {{incident.trigger_summary_data.subject}} -
-                Assigned to: <span ng-repeat="assignee in incident.assigned_to">{{assignee.object.name}}, </span>
+                Assigned to: <span ng-repeat="assignee in incident.assigned_to">{{assignee.object.name}} </span>
               </li>
             </ul>
           </li>

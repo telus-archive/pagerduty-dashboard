@@ -1,7 +1,7 @@
 {
   "name": "pagerduty-dashboard",
-  "version": "1.0.0",
-  "description": "Pagerduty Incident Management Dashboard",
+  "version": "1.0.1",
+  "description": "PagerDuty Incident Management Dashboard",
   "repository": {
     "type": "git",
     "url": "https://github.com/gondek/pagerduty-dashboard.git"

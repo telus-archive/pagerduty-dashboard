@@ -5,7 +5,7 @@
     $scope.loaded = false;
 
     // Helper to wait for the server to keep sending information
-    // Takes care of two things in one:
+    // Takes care of two things:
     // 1) Client disconnected from the server
     // 2) Server stalled on network call or did not handle an error properly
     var serverTimeout;
@@ -42,6 +42,7 @@
         noty.update('success', 'All services are running normally.');
       }
 
+      // reset the server connection check countdown
       serverCheck();
     });
 
@@ -74,7 +75,7 @@
 
   // Simple factory wrapper around Noty
   // - limits notifications to one at a time
-  // - will not update if the message is the same
+  // - will not update if the message and type are the same
   app.factory('noty', function () {
     var currentNoty;
     return {
@@ -94,11 +95,14 @@
     };
   });
 
+  // Filter for objects with a statusPriority property (ie. services and groups)
+  // Needed because Angular does not support sorting object-maps by keys
   app.filter('descendingPriority', function(){
     return function(input) {
       if (!angular.isObject(input)) return input;
 
       var array = [];
+      // convert an object of objects into an array of objects
       for(var objectKey in input) {
         array.push(input[objectKey]);
       }
@@ -108,6 +112,5 @@
       return array;
     };
   });
-
 
 }());

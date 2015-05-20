@@ -3,9 +3,9 @@ var request = require('request');
 var subdomain;
 var apiKey;
 
-// ==================================
-// Send and JSON-parse an API call
-// ==================================
+/*
+Send and JSON-parse an API call
+*/
 function apiRequest(resource, callback, params) {
   request({
     uri: 'https://' + subdomain + '.pagerduty.com/api/v1/' + resource,
@@ -25,11 +25,12 @@ function apiRequest(resource, callback, params) {
   });
 }
 
-// ==================================
-// Get All Resources
-// ==================================
-// The API limits the returned resources to 100, so multiple requests may be needed
-// The inner functions are mutually recursive
+/*
+Get all of a certain resource
+
+The API limits the returned resources to 100, so multiple requests may be needed
+getAllResources's inner functions are mutually recursive
+*/
 function getAllResources(resource, callback, params) {
   var resources = [];
   params = params || {};
@@ -40,9 +41,9 @@ function getAllResources(resource, callback, params) {
     apiRequest(resource, processResources, params);
   }
 
-  function processResources(error, response, body) {
+  function processResources(error, response, data) {
     if(null === error && response.statusCode >= 200 && response.statusCode < 400) {
-      accumulateResources(body);
+      accumulateResources(data);
     } else {
       response = response || {statusCode: "???"};
       var errorMessage = 'HTTP ' + response.statusCode + ': ' + error;
@@ -50,23 +51,24 @@ function getAllResources(resource, callback, params) {
     }
   }
 
-  function accumulateResources(body) {
-    resources = resources.concat(body[resource]);
-    if(body.total > resources.length) {
+  function accumulateResources(data) {
+    resources = resources.concat(data[resource]);
+    if(data.total > resources.length) {
       // got to keep going and get the remaining resources
-      getResources(body.offset + body.limit, body.limit);
+      getResources(body.offset + data.limit, data.limit);
     } else {
       // we have retrieved all the resources
       callback(null, resources);
     }
   }
 
+  // start off the resource gathering process
   getResources(0, 100);
 }
 
-// ==================================
-// Exports
-// ==================================
+/*
+Require a domain and key to give access to the API
+*/
 module.exports = function(domain, key) {
   subdomain = domain;
   apiKey = key;

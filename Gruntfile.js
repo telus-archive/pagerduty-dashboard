@@ -38,7 +38,7 @@ module.exports = function (grunt) {
         tasks: ['copy', 'watch']
       },
       server: {
-        files: 'server/*',
+        files: ['server/*', 'config.json', 'app.js'],
         tasks: ['express:main', 'watch'],
         options: {
           spawn: false
