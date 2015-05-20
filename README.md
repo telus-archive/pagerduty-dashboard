@@ -6,6 +6,6 @@ Grabs services from PagerDuty, groups them (currently a colon acts as a separato
 1. Enter configuration (API) information in `config.json`
 2. Install dependencies: `npm install`
 3. Build the front-end/client: `grunt`
-4. Start the back-end/server: `node index.js`
+4. Start the back-end/server: `node app.js`
 
 During development, running `grunt dev` will restart the server and run builds when files change.
