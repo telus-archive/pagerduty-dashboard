@@ -1,6 +1,8 @@
 PagerDuty Dashboard
 =============================
 
+![Dependency Status](https://david-dm.org/gondek/pagerduty-dashboard.svg)
+
 Grabs services from PagerDuty, groups them (currently a colon acts as a separator between the group name and individual service), and then highlights groups that are experiencing issues.
 
 1. Enter configuration (API) information in `config.json`
