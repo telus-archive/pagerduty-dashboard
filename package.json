@@ -9,7 +9,7 @@
   "dependencies": {
     "angular": "^1.4.0-rc.2",
     "bootstrap": "^3.3.4",
-    "express": "^3.20.2",
+    "express": "^4.12.4",
     "jquery": "^2.1.4",
     "noty": "^2.3.5",
     "request": "^2.55.0",

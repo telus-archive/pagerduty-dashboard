@@ -2,6 +2,7 @@ PagerDuty Dashboard
 =============================
 
 [![Dependency Status](https://david-dm.org/gondek/pagerduty-dashboard.svg)](https://david-dm.org/gondek/pagerduty-dashboard)
+[![devDependency Status](https://david-dm.org/gondek/pagerduty-dashboard/dev-status.svg)](https://david-dm.org/gondek/pagerduty-dashboard#info=devDependencies)
 
 Grabs services from PagerDuty, groups them (currently a colon acts as a separator between the group name and individual service), and then highlights groups that are experiencing issues.
 
