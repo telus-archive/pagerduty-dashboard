@@ -13,8 +13,7 @@ function apiRequest(resource, callback, params) {
     headers: {
       'Authorization': 'Token token=' + apiKey
     }
-  },
-  function(error, response, body){
+  }, function (error, response, body) {
     var jsonBody;
     try {
       jsonBody = JSON.parse(body);
@@ -42,12 +41,16 @@ function getAllResources(resource, callback, params) {
   }
 
   function processResources(error, response, data) {
-    if(null === error && response.statusCode >= 200 && response.statusCode < 400) {
-      accumulateResources(data);
-    } else {
-      response = response || {statusCode: "???"};
-      var errorMessage = 'HTTP ' + response.statusCode + ': ' + error;
+    if(error || !response) {
+      callback(error, {});
+    } else if (response.statusCode < 200 || response.statusCode >= 400) {
+      var errorMessage = 'HTTP ' + response.statusCode;
+      if(data.error && data.error.message) {
+        errorMessage += ': ' + data.error.message;
+      }
       callback(new Error(errorMessage), {});
+    } else {
+      accumulateResources(data);
     }
   }
 

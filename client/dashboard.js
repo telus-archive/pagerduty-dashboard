@@ -22,6 +22,8 @@
 
     // When the server properly handles an API/connection error
     socket.on('error', function(data) {
+      // reset the server connection check countdown
+      serverCheck();
       noty.update('warning', 'Error communicating with PagerDuty: ' + data);
     });
 

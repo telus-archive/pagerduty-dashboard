@@ -25,7 +25,7 @@ function get(resource, callback, params) {
       callback(data);
     } else {
       sockets.emit('error', error.message);
-      console.log(new Date() + ': Error:' + error.message);
+      console.log(new Date() + ': ' + error.message);
     }
   }, params);
 }
