@@ -12,37 +12,35 @@
 <body ng-controller="dashboardController">
   <div class="container">
     <div ng-hide="loaded" class="loader"></div>
-    <div class="groups">
-      <div
-      class="group-container"
-      ng-repeat="group in groups | descendingPriority"
-      ng-class="group.status">
-      <div class="group">
-        <div class="details">
-          <h2>{{group.name}}</h2>
-          <ul class="services">
-            <li
-            class="service"
-            ng-repeat="service in group.services | descendingPriority"
-            ng-class="service.status">
-            <h3>{{service.name}}
-              <span ng-show="service.incidents.length > 0">
-                ({{service.incidents.length}} Incident<span ng-hide="service.incidents.length==1">s</span>):
-              </span>
-            </h3>
-            <ul class="incidents" ng-show="service.incidents.length > 0">
-              <li ng-repeat="incident in service.incidents">
-                {{incident.trigger_summary_data.subject}} -
-                Assigned to: <span ng-repeat="assignee in incident.assigned_to">{{assignee.object.name}} </span>
-              </li>
-            </ul>
-          </li>
+
+    <!-- "Bad" core groups -->
+    <core-group ng-repeat="group in data.coreGroups.bad"></core-group>
+
+    <!-- "Bad" other services -->
+    <div class="otherGroup group" ng-show="data.otherGroup.badCount > 0">
+      <h2><span>Other</span></h2>
+      <div class="details">
+        <ul>
+          <feature ng-repeat="feature in data.otherGroup.bad"></feature>
         </ul>
+        <div class="clearfix"></div>
       </div>
     </div>
+
+    <!-- "Good" core groups -->
+    <core-group ng-repeat="group in data.coreGroups.good"></core-group>
+
+    <!-- "Good" other services -->
+    <div class="otherGroup group" ng-show="data.otherGroup.goodCount > 0">
+      <h2><span>Other</span></h2>
+      <div class="details">
+        <ul>
+          <feature ng-repeat="feature in data.otherGroup.good"></feature>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
   </div>
-  <div class="clearfix"></div>
-</div>
-</div>
 </body>
 </html>

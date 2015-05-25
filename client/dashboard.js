@@ -22,28 +22,15 @@
 
     // When the server properly handles an API/connection error
     socket.on('error', function(data) {
+      noty.update('warning', 'Error communicating with PagerDuty: ' + data);
       // reset the server connection check countdown
       serverCheck();
-      noty.update('warning', 'Error communicating with PagerDuty: ' + data);
     });
 
     // When the server sends a data update
     socket.on('update', function(data) {
-      var stats = data.stats;
-      $scope.groups = data.groups;
+      $scope.data = data;
       $scope.loaded = true;
-
-      if(stats.problems > 0) {
-        var errorMessage;
-        errorMessage = stats.problems + ' service groups have issues. ';
-        if(stats.problems == 1) {
-          errorMessage = '1 service group has issues. ';
-        }
-        noty.update('error', errorMessage);
-      } else {
-        noty.update('success', 'All services are running normally.');
-      }
-
       // reset the server connection check countdown
       serverCheck();
     });
@@ -97,21 +84,17 @@
     };
   });
 
-  // Filter for objects with a statusPriority property (ie. services and groups)
-  // Needed because Angular does not support sorting object-maps by keys
-  app.filter('descendingPriority', function(){
-    return function(input) {
-      if (!angular.isObject(input)) return input;
+  app.directive('coreGroup', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'assets/core-group.html'
+    };
+  });
 
-      var array = [];
-      // convert an object of objects into an array of objects
-      for(var objectKey in input) {
-        array.push(input[objectKey]);
-      }
-      array.sort(function(a, b){
-        return b.statusPriority - a.statusPriority;
-      });
-      return array;
+  app.directive('feature', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'assets/feature.html'
     };
   });
 

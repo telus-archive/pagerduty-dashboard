@@ -1,0 +1,22 @@
+<div class="coreGroup group">
+  <h2><span>{{group.name}}</span></h2>
+  <div class="details">
+    <div class="server">
+      <h3>Server</h3>
+      <div class="status" ng-class="group.services.Server.status"></div>
+    </div>
+    <div class="site">
+      <h3>Site</h3>
+      <div class="status" ng-class="group.services.Site.status"></div>
+    </div>
+    <div class="features" ng-hide="group.featureCount < 3">
+      <h3>Features</h3>
+      <ul>
+        <feature
+        ng-repeat="feature in group.services"
+        ng-hide="feature.name === 'Site' || feature.name === 'Server'"></feature>
+      </ul>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

@@ -17,7 +17,7 @@ module.exports = function (grunt) {
     'uglify',
     'less',
     'cssmin'
-  ]);
+    ]);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         tasks: ['less', 'cssmin', 'watch']
       },
       clientHtml: {
-        files: 'client/*.html',
+        files: ['client/*.html', 'client/assets/*.html'],
         tasks: ['copy', 'watch']
       },
       server: {
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
             expand: true,
             src: [
               'index.html',
-              'assets/bg.png'
+              'assets/**.html'
             ]
           }
         ]
@@ -82,9 +82,9 @@ module.exports = function (grunt) {
       client: {
         files: {
           'public_html/assets/dashboard.css': [
-            'public_html/assets/dashboard.css',
             'node_modules/bootstrap/dist/css/bootstrap.css',
-            'node_modules/bootstrap/dist/css/bootstrap-theme.css'
+            'node_modules/bootstrap/dist/css/bootstrap-theme.css',
+            'public_html/assets/dashboard.css'
           ]
         }
       }
@@ -112,21 +112,21 @@ module.exports = function (grunt) {
             'node_modules/angular/angular.js',
             'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
             //'node_modules/bootstrap/dist/js/bootstrap.js',
-          ]
-        }
-      },
-      core: {
-        options: {
-          mangle: false
+            ]
+          }
         },
-        files: {
-          'public_html/assets/dashboard.js': [
+        core: {
+          options: {
+            mangle: false
+          },
+          files: {
+            'public_html/assets/dashboard.js': [
             'public_html/assets/deps.js',
             'public_html/assets/ng-dashboard.js'
-          ]
+            ]
+          }
         }
       }
-    }
 
-  });
+    });
 };

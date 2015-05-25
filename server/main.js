@@ -3,7 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 var sockets = require('socket.io')(server);
 
-var serviceGroups = require('./servicegroups');
+var resources = require('./resources');
 var dataProvider;
 
 app.use(express.static(__dirname + '/../public_html'));
@@ -30,28 +30,16 @@ function get(resource, callback, params) {
   }, params);
 }
 
-/*
-Collect incidents and add them to the data package
-*/
-function addAndSendIncidents(statusPackage) {
-  get('incidents', function(incidents) {
-    // merge the incidents into the services in our groups
-    serviceGroups.injectIncidents(statusPackage.groups, incidents);
-    sendUpdate(statusPackage);
-  }, {status: 'triggered,acknowledged'}); //only get these types of incidents
-}
-
-/*
-Collect the services, group them, and gather stats
-*/
-function sendServiceGroups() {
+function updateStatus() {
   get('services', function(services) {
-    var statusPackage = serviceGroups.packageStats(serviceGroups.group(services));
-    if(statusPackage.stats.problems > 0) {
-      // need to get the details about the failing services
-      addAndSendIncidents(statusPackage);
+    var data = resources.packageServices(services);
+    if(data.stats.problems > 0) {
+      get('incidents', function(incidents) {
+        resources.injectIncidentsIntoPackage(incidents, data);
+        sendUpdate(data);
+      }, {status: 'triggered,acknowledged'}); //only get these types of incidents
     } else {
-      sendUpdate(statusPackage);
+      sendUpdate(data);
     }
   });
 }
@@ -65,6 +53,6 @@ module.exports = function(provider, port) {
     console.log('Server listening at port %d', port);
   });
   return {
-    sendServiceGroups: sendServiceGroups
+    updateStatus: updateStatus
   };
 };
