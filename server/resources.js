@@ -74,8 +74,8 @@ function sortServicesIntoGroups(services) {
   return groups;
 }
 
-function injectIncidentsIntoGroups(incidents, groups) {
-  var service, serviceGroup, badGroups = groups.core.bad, otherGroup = groups.other;
+function injectIncidentsIntoPackage(incidents, package) {
+  var service, serviceGroup, badGroups = package.coreGroups.bad, otherGroup = package.otherGroup.bad;
 
   _.each(incidents, function(incident) {
     service = incident.service;
@@ -146,6 +146,8 @@ function packageGroups(groups) {
     }
   });
 
+  stats.problems = coreGroups.badCount + otherGroup.badCount;
+
   return {
     coreGroups: coreGroups,
     otherGroup: otherGroup,
@@ -159,9 +161,7 @@ function packageGroups(groups) {
 Exports
 */
 module.exports = {
-  injectIncidentsIntoPackage: function(package) {
-    injectIncidentsIntoGroups(package.groups);
-  },
+  injectIncidentsIntoPackage: injectIncidentsIntoPackage,
   packageServices: function(services) {
     return packageGroups(sortServicesIntoGroups(services));
   }

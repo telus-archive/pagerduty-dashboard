@@ -140,6 +140,27 @@ Statuses
 
 /*
 ==================================
+Pulsing Background
+==================================
+*/
+
+.pulse-rede {
+  .animation(pulse-red-frames 2s 4 alternate);
+}
+
+.pulse-red.infinite {
+  .animation(pulse-red-frames 2s infinite alternate);
+}
+
+.keyframes (pulse-red-frames;
+{
+  0% {background-color: @background;}
+  100% {background-color: #A10007;}
+}
+);
+
+/*
+==================================
 CSS Spinner
 ==================================
 Credit to http://projects.lukehaas.me/css-loaders/
@@ -181,7 +202,9 @@ MIT License
 .loader:after {
   left: 1.5em;
 }
-@-webkit-keyframes load1 {
+
+.keyframes(load1;
+{
   0%,
   80%,
   100% {
@@ -193,15 +216,22 @@ MIT License
     height: 5em;
   }
 }
-@keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0 #FFF;
-    height: 4em;
-  }
-  40% {
-    box-shadow: 0 -2em #ffffff;
-    height: 5em;
-  }
+);
+
+/*
+==================================
+Animation Mixin
+==================================
+*/
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name { @arguments(); }
+  @-webkit-keyframes @name { @arguments(); }
+  @keyframes @name { @arguments(); }
+}
+
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
 }

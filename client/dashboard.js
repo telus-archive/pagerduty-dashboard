@@ -3,6 +3,7 @@
 
   app.controller('dashboardController', function(socket, $scope, noty) {
     $scope.loaded = false;
+    $scope.statusAnimation = '';
 
     // Helper to wait for the server to keep sending information
     // Takes care of two things:
@@ -29,6 +30,11 @@
 
     // When the server sends a data update
     socket.on('update', function(data) {
+      if(data.stats.problems > 0) {
+        $scope.statusAnimation = 'pulse-red';
+      } else {
+        $scope.statusAnimation = '';
+      }
       $scope.data = data;
       $scope.loaded = true;
       // reset the server connection check countdown
