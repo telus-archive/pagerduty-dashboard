@@ -6,5 +6,4 @@ var dataProvider = (config.mock)
 
 var dashboard = require('./server/main')(dataProvider, config.serverPort);
 
-dashboard.updateStatus();
 setInterval(dashboard.updateStatus, 1000 * config.updateInterval);

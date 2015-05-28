@@ -1,34 +1,51 @@
 <a class="customize-link" href="#/customize"><span class="glyphicon glyphicon-cog"></span></a>
 
-<div class="group" ng-controller="groupController" ng-repeat="group in data.groups | filterGroups">
+<div class="group" ng-controller="groupController" ng-repeat="group in data.groups | filterGroups" ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
   <h2><span>{{group.name}}</span></h2>
   <div class="details">
+
     <div class="serversite" ng-show="group.site || group.server">
       <div class="server" ng-show="group.server">
         <h3>Server</h3>
         <div class="status" ng-class="group.server.status"></div>
+        <div class="clearfix"></div>
       </div>
       <div class="site" ng-show="group.site">
         <h3>Site</h3>
         <div class="status" ng-class="group.site.status"></div>
+        <div class="clearfix"></div>
       </div>
+      <div class="clearfix"></div>
     </div>
-    <div class="features" ng-class="featuresSize">
-      <div ng-hide="group.nonSiteServerFeatures === 0">
-        <h3 ng-hide="group.isOtherGroup">Features</h3>
-        <ul>
-          <service
-          ng-repeat="service in group.features"
-          ng-hide="feature.properName === 'Site' || feature.properName === 'Server'"></service>
-        </ul>
-      </div>
+
+    <div class="dependencies header" ng-hide="group.dependencies.length === 0">
+      <h3>Services</h3>
+      <ul>
+        <service ng-repeat="service in group.dependencies | orderBy:'-statusNumber'"></service>
+      </ul>
+       <div class="clearfix"></div>
     </div>
+
+    <div class="clearfix"></div>
+
+    <div class="features" ng-hide="group.nonSiteServerFeatures === 0">
+      <h3 ng-hide="group.isOtherGroup">Features</h3>
+      <ul>
+        <service
+        ng-repeat="service in group.features | orderBy:'-statusNumber'"
+        ng-hide="feature.properName === 'Site' || feature.properName === 'Server'"></service>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
     <div class="dependencies" ng-hide="group.dependencies.length === 0">
       <h3>Services</h3>
       <ul>
-        <service ng-repeat="service in group.dependencies"></service>
+        <service ng-repeat="service in group.dependencies | orderBy:'-statusNumber'"></service>
       </ul>
+       <div class="clearfix"></div>
     </div>
+
     <div class="clearfix"></div>
   </div>
 </div>

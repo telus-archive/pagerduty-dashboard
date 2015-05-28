@@ -4,14 +4,16 @@ Colors / Variables
 ==================================
 */
 
+@import (reference) "variables.less"; /* From Bootstrap */
+
 @background: #505050;
 @text-color: #f4f4f4;
 
-@critical: #e74c3c;
-@warning: #e67e22;
-@active: #97e827;
-@maintenance: #7f8c8d;
-@disabled: @maintenance;
+@critical: #FF0000;
+@warning: #E89B0C;
+@active: #97E827;
+@maintenance: #2C878E;
+@disabled: #7f8c8d;
 
 @orb-border: #343434;
 
@@ -28,7 +30,7 @@ body {
 
 /*
 ==================================
-Group Styles
+Groups
 ==================================
 */
 
@@ -40,15 +42,181 @@ Group Styles
     font-size: 20px;
     margin: -10px 0px 0 30px;
     font-weight: 700;
+
+    span {
+      padding: 5px 10px;
+      background: @background;
+    }
   }
 
-  span {
-    padding: 5px 7px;
-    background: @background;
+  h3 {
+    text-transform: uppercase;
+    font-size: 17px;
+    margin: 5px 0 5px 0;
   }
 
   .details {
-    padding: 0 10px 20px 10px;
+    margin: 15px 20px;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+}
+
+/*
+==================================
+Features / Services - Small & Up
+==================================
+*/
+
+.features, .dependencies {
+  margin-top: 14px;
+}
+
+.dependencies.header {
+  display: none;
+}
+
+.serversite {
+  padding-bottom: 5px;
+}
+
+.site, .server {
+  position: relative;
+  float: left;
+  width: 50%;
+
+  h3 {
+    margin: 3px 0 0 0;
+    line-height: 26px;
+  }
+
+  .status {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    margin-left: -5px;
+  }
+}
+
+.service {
+  float: left;
+  width: 50%;
+  margin-bottom: 7px;
+
+  h4 {
+    font-size: 12px;
+    margin: 0;
+    line-height: 24px;
+  }
+
+  .status {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+  }
+}
+
+.dependencies .service {
+  margin-bottom: 3px;
+}
+
+/*
+==================================
+Features / Services - Medium & Up
+==================================
+Small devices (tablets, 768px and up)
+*/
+
+@media (min-width: @screen-sm-min) {
+  .serversite {
+    width: 66.666%;
+  }
+  .service {
+    width: 33.333%;
+  }
+  .core-group, .group.warning, .group.critical {
+    .features {
+      .status {
+        width: 32px;
+        height: 32px;
+      }
+
+      h4 {
+        font-size: 14px;
+        line-height: 32px;
+      }
+    }
+  }
+}
+
+/*
+==================================
+Features / Services - Large & Up
+==================================
+Medium devices (desktops, 992px and up)
+*/
+
+@media (min-width: @screen-md-min) {
+  .serversite {
+    width: 33.333%;
+    float: left;
+  }
+  .dependencies {
+    display: none;
+    margin: 0;
+    .service {
+      width: 50%;
+    }
+  }
+  .dependencies.header {
+    display: block;
+    width: 66.666%;
+    float: left;
+  }
+  .features {
+    clear: both;
+  }
+  .site, .server {
+    width: 65px;
+    margin-right: 50px;
+    text-align: center;
+    .status {
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
+      margin: 0 auto;
+      float: none;
+    }
+  }
+}
+
+/*
+==================================
+Features / Services - Max Width
+==================================
+Large devices (large desktops, 1200px and up)
+*/
+
+@media (min-width: @screen-lg-min) {
+  .service {
+    width: 25%;
+  }
+  .serversite {
+    width: 25%;
+    float: left;
+  }
+  .dependencies.header {
+    display: block;
+    width: 75%;
+    float: left;
+  }
+  .dependencies {
+    .service {
+      width: 33.333%;
+    }
   }
 }
 
@@ -59,11 +227,11 @@ Status Orbs
 */
 
 .status {
-  width: 30px;
-  height: 30px;
   border-radius: 100%;
   border: 3px solid @orb-border;
   margin: 0 auto;
+  float: left;
+  background: #343434; /* No data / unknown state */
 }
 
 .set-colors(@status) {
@@ -79,93 +247,30 @@ Status Orbs
 
 /*
 ==================================
-Statuses
-==================================
-*/
-
-.site, .server {
-  float: left;
-  width: 100px;
-  text-align: center;
-
-  .status {
-    height: 70px;
-    width: 70px;
-  }
-}
-
-.site, .server, .features {
-  padding-top: 20px;
-  h3 {
-    margin: 0;
-    padding: 0 0 15px 0;
-    text-transform: uppercase;
-    font-size: 17px;
-  }
-}
-
-.features {
-  float: left;
-  width: 80%;
-
-  h3 {
-    padding-left: 30px;
-  }
-
-  ul {
-    padding-left: 30px;
-  }
-}
-
-.feature {
-  list-style: none;
-  float: left;
-  width: 33.3%;
-  margin-bottom: 10px;
-
-  .status {
-    float: left;
-    margin-right: 5px;
-  }
-
-  h4 {
-    font-size: 14px;
-    margin: 0;
-    line-height: 28px;
-  }
-
-}
-/*
-@media (max-width: @screen-xs-max) {
-
-}
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-
-}
-@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
-
-}
-@media (min-width: @screen-lg-min) {
-
-}
-*/
-/*
-==================================
 Pulsing Background
 ==================================
 */
 
-.pulse-red {
-  @animation: pulse-red-frames 2s 4 alternate;
+.group.critical {
+  h2 span {
+    animation: pulse-critical-frames 2s infinite alternate;
+  }
 }
 
-.pulse-red.infinite {
-  @animation: pulse-red-frames 2s infinite alternate;
+.group.warning {
+  h2 span {
+    animation: pulse-warning-frames 2s infinite alternate;
+  }
 }
 
-@keyframes pulse-red-frames {
+@keyframes pulse-critical-frames {
   0% {background-color: @background;}
-  100% {background-color: #A10007;}
+  100% {background-color: @critical;}
+}
+
+@keyframes pulse-warning-frames {
+  0% {background-color: @background;}
+  100% {background-color: @warning;}
 }
 
 /*

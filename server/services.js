@@ -1,5 +1,5 @@
 var _ = require('underscore');
-
+var crypto = require('crypto');
 /*
 Exports and processing workflow
 */
@@ -34,7 +34,8 @@ Services.prototype.addIncidents = function (incidents) {
 Services.prototype.package = function () {
   return {
     groups: this.groups,
-    problems: this.problems
+    problems: this.problems,
+    hash: crypto.createHash('md5').update(JSON.stringify(this.groups)).digest("hex")
   };
 }
 

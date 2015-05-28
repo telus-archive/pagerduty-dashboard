@@ -87,6 +87,9 @@ module.exports = function (grunt) {
         options: {
           plugins: [
             new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]})
+          ],
+          paths: [
+            'node_modules/bootstrap/less'
           ]
         },
         files: {
@@ -126,7 +129,7 @@ module.exports = function (grunt) {
           mangle: false
         },
         files: {
-          'public_html/assets/deps.js': [
+          'public_html/assets/libs.js': [
             'node_modules/jquery/dist/jquery.js',
             'node_modules/angular/angular.js',
             'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
@@ -141,8 +144,7 @@ module.exports = function (grunt) {
           },
           files: {
             'public_html/assets/dashboard.js': [
-            'public_html/assets/deps.js',
-            'public_html/assets/ng-dashboard.js'
+              'public_html/assets/ng-dashboard.js'
             ]
           }
         }

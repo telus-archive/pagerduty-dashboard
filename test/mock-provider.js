@@ -1,5 +1,6 @@
 var services = require('./mock-services.json');
 var incidents = require('./mock-incidents.json');
+var _ = require('underscore');
 
 function makeServices() {
   var currService, servicesArray = [];
@@ -33,8 +34,7 @@ function makeServices() {
 
   services.services.forEach(function(service) {
     currService = JSON.parse(JSON.stringify(SERVICE_TEMPLATE));
-    currService.name = service.name;
-    currService.status = service.status;
+    _.extend(currService, service);
     servicesArray.push(currService);
   });
 
@@ -80,9 +80,7 @@ function makeIncidents() {
 
   incidents.incidents.forEach(function(incident) {
     currIncident = JSON.parse(JSON.stringify(INCIDENT_TEMPLATE));
-    currIncident.status = incident.status;
-    currIncident.service.name = incident.service.name;
-    currIncident.trigger_summary_data.subject = incident.trigger_summary_data.subject;
+    _.extend(currIncident, incident);
     incidentArray.push(currIncident);
   });
 

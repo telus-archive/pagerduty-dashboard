@@ -50,11 +50,16 @@
     };
 
     socket.on('error', function (data) {
-      noty.update('warning', 'Error communicating with PagerDuty: ' + data);
       serverWarningReset();
+      noty.update('warning', 'Error communicating with PagerDuty: ' + data);
     });
 
     socket.on('update', function (data) {
+      serverWarningReset();
+      if($scope.hash === data.hash) {
+        return;
+      }
+      $scope.hash = data.hash;
       $scope.loaded = true;
       $scope.data = data;
       if(!$scope.cachedData) {
@@ -62,7 +67,7 @@
         $scope.cachedData = data;
       }
       hasProblem = data.problems;
-      serverWarningReset();
+
     });
 
   });
@@ -76,16 +81,6 @@
   });
 
   app.controller('groupController', function ($scope) {
-    var group = $scope.group;
-    $scope.featuresSize = function() {
-      if(group.site || group.server || group.dependencies.length > 0) {
-        if((group.site || group.server) && group.dependencies.length > 0) {
-          return 'small';
-        }
-        return 'medium';
-      }
-      return 'large';
-    };
   });
 
   /*
