@@ -1,49 +1,140 @@
-(function() {
-  var app = angular.module('pagerdutyDashboard', []);
+(function () {
+  var app = angular.module('pagerdutyDashboard', ['ngRoute']);
 
-  app.controller('dashboardController', function(socket, $scope, noty) {
-    $scope.loaded = false;
-    $scope.statusAnimation = '';
+  /*
+  Routing Configuration
+  */
 
-    // Helper to wait for the server to keep sending information
-    // Takes care of two things:
-    // 1) Client disconnected from the server
-    // 2) Server stalled on network call or did not handle an error properly
-    var serverTimeout;
-    function serverCheck() {
+  app.config(function ($routeProvider) {
+    $routeProvider
+    .when('/', {
+      templateUrl: 'assets/dashboard.html'
+    })
+    .when('/customize', {
+      templateUrl: 'assets/customize.html',
+      controller: 'customizationController'
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
+  });
+
+  /*
+  Main Controller
+  */
+
+  app.controller('appController', function ($scope, noty, socket) {
+    var timeoutWarning;
+    function serverWarningReset() {
       var SECONDS = 30;
-      if(serverTimeout !== undefined) {
-        clearTimeout(serverTimeout);
+      if(timeoutWarning !== undefined) {
+        clearTimeout(timeoutWarning);
       }
-      serverTimeout =  window.setTimeout(function() {
+      noty.clear();
+      timeoutWarning =  setTimeout(function () {
         noty.update('warning',
-        'There have been no updates from the server for ' + SECONDS + ' seconds.');
+          'There have been no updates from the server for ' + SECONDS + ' seconds.');
       }, 1000 * SECONDS);
     }
+    serverWarningReset();
 
-    // When the server properly handles an API/connection error
-    socket.on('error', function(data) {
+    $scope.loaded = false;
+
+    var hasProblem = false;
+    $scope.getUiSettings = function () {
+      var classes = '';
+      if(hasProblem) {
+        classes += 'problem';
+      }
+      return classes;
+    };
+
+    socket.on('error', function (data) {
       noty.update('warning', 'Error communicating with PagerDuty: ' + data);
-      // reset the server connection check countdown
-      serverCheck();
+      serverWarningReset();
     });
 
-    // When the server sends a data update
-    socket.on('update', function(data) {
-      if(data.stats.problems > 0) {
-        $scope.statusAnimation = 'pulse-red';
-      } else {
-        $scope.statusAnimation = '';
-      }
-      $scope.data = data;
+    socket.on('update', function (data) {
       $scope.loaded = true;
-      // reset the server connection check countdown
-      serverCheck();
+      $scope.data = data;
+      if(!$scope.cachedData) {
+        // cache the inital update to avoid flickering on customization page
+        $scope.cachedData = data;
+      }
+      hasProblem = data.problems;
+      serverWarningReset();
     });
 
   });
 
-  // Simple factory wrapper around Socket.io
+  /*
+  Secondary Controllers
+  */
+
+  app.controller('customizationController', function ($location, $scope) {
+    $scope.baseUrl = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/#/?';
+  });
+
+  app.controller('groupController', function ($scope) {
+    var group = $scope.group;
+    $scope.featuresSize = function() {
+      if(group.site || group.server || group.dependencies.length > 0) {
+        if((group.site || group.server) && group.dependencies.length > 0) {
+          return 'small';
+        }
+        return 'medium';
+      }
+      return 'large';
+    };
+  });
+
+  /*
+  Custom filters
+  */
+
+  app.filter('filterGroups', function () {
+    // Order
+    // 1) Offline core groups
+    // 2) Offline other services
+    // 3) Online core groups
+    // 4) Online other services
+
+    function compareGroups(a, b) {
+      if(a.status === b.status) {
+        return a.features.length > b.features.length ? -1 : 1;
+      }
+      return a.statusNumber > b.statusNumber ? -1 : 1;
+    }
+
+    // TODO: take include/exclude list into consideration
+    return function (groups) {
+      var offCore = [], offOther = [], onCore = [], onOther = [];
+      if(!groups) {
+        return groups;
+      }
+      groups.forEach(function (group) {
+        if(group.name === "Other Products") {
+          onOther = group;
+        } else if (group.name === "Other Issues") {
+          offOther = group;
+        } else if(group.isOnline) {
+          onCore.push(group);
+        } else {
+          offCore.push(group);
+        }
+      });
+
+      onCore.sort(compareGroups);
+      offCore.sort(compareGroups);
+
+      return offCore.concat(offOther, onCore, onOther);
+    };
+  });
+
+  /*
+  Custom factory services
+  */
+
   app.factory('socket', function ($rootScope) {
     var socket = io.connect();
     return {
@@ -54,53 +145,35 @@
             callback.apply(socket, args);
           });
         });
-      },
-      emit: function (eventName, data, callback) {
-        socket.emit(eventName, data, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            if (callback) {
-              callback.apply(socket, args);
-            }
-          });
-        });
       }
     };
   });
 
-  // Simple factory wrapper around Noty
-  // - limits notifications to one at a time
-  // - will not update if the message and type are the same
   app.factory('noty', function () {
-    var currentNoty;
+    var current;
     return {
-      update: function(type, message) {
-        if(undefined === currentNoty ||
-          type != currentNoty.options.type ||
-          message != currentNoty.options.text ||
-          currentNoty.closed) {
+      update: function (type, message) {
+        if(!current || message !== current.options.text || current.closed) {
           $.noty.closeAll();
-          currentNoty = noty({
+          current = noty({
             text: message,
             layout: 'bottom',
             type: type
           });
         }
-      }
+      },
+      clear: $.noty.closeAll
     };
   });
 
-  app.directive('coreGroup', function() {
-    return {
-      restrict: 'E',
-      templateUrl: 'assets/core-group.html'
-    };
-  });
+  /*
+  Custom directives
+  */
 
-  app.directive('feature', function() {
+  app.directive('service', function () {
     return {
       restrict: 'E',
-      templateUrl: 'assets/feature.html'
+      templateUrl: 'assets/service.html'
     };
   });
 

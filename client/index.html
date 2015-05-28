@@ -9,38 +9,10 @@
   <script src="assets/dashboard.js"></script>
   <link rel="stylesheet" href="assets/dashboard.css">
 </head>
-<body ng-controller="dashboardController" ng-class="statusAnimation" class="infinite">
+<body ng-controller="appController" ng-class="getUiSettings()">
   <div class="container">
-    <div ng-hide="loaded" class="loader"></div>
-
-    <!-- "Bad" core groups -->
-    <core-group ng-repeat="group in data.coreGroups.bad"></core-group>
-
-    <!-- "Bad" other services -->
-    <div class="otherGroup group" ng-show="data.otherGroup.badCount > 0">
-      <h2><span>Other</span></h2>
-      <div class="details">
-        <ul>
-          <feature ng-repeat="feature in data.otherGroup.bad"></feature>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-
-    <!-- "Good" core groups -->
-    <core-group ng-repeat="group in data.coreGroups.good"></core-group>
-
-    <!-- "Good" other services -->
-    <div class="otherGroup group" ng-show="data.otherGroup.goodCount > 0">
-      <h2><span>Other</span></h2>
-      <div class="details">
-        <ul>
-          <feature ng-repeat="feature in data.otherGroup.good"></feature>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-
+  	<div ng-hide="loaded" class="loader"></div>
+    <ng-view ng-show="loaded"></ng-view>
   </div>
 </body>
 </html>

@@ -3,33 +3,19 @@ var request = require('request');
 var subdomain;
 var apiKey;
 
-/*
-Send and JSON-parse an API call
-*/
-function apiRequest(resource, callback, params) {
-  request({
-    uri: 'https://' + subdomain + '.pagerduty.com/api/v1/' + resource,
-    qs: params || {},
-    headers: {
-      'Authorization': 'Token token=' + apiKey
-    }
-  }, function (error, response, body) {
-    var jsonBody;
-    try {
-      jsonBody = JSON.parse(body);
-    } catch(e) {
-      jsonBody = {};
-    }
-    callback(error, response, jsonBody);
-  });
-}
+module.exports = function(domain, key) {
+  subdomain = domain;
+  apiKey = key;
+  return {
+    getAll: getAllResources
+  };
+};
 
 /*
-Get all of a certain resource
-
 The API limits the returned resources to 100, so multiple requests may be needed
 getAllResources's inner functions are mutually recursive
 */
+
 function getAllResources(resource, callback, params) {
   var resources = [];
   params = params || {};
@@ -69,13 +55,20 @@ function getAllResources(resource, callback, params) {
   getResources(0, 100);
 }
 
-/*
-Require a domain and key to give access to the API
-*/
-module.exports = function(domain, key) {
-  subdomain = domain;
-  apiKey = key;
-  return {
-    getAll: getAllResources
-  };
-};
+function apiRequest(resource, callback, params) {
+  request({
+    uri: 'https://' + subdomain + '.pagerduty.com/api/v1/' + resource,
+    qs: params || {},
+    headers: {
+      'Authorization': 'Token token=' + apiKey
+    }
+  }, function (error, response, body) {
+    var jsonBody;
+    try {
+      jsonBody = JSON.parse(body);
+    } catch(e) {
+      jsonBody = {};
+    }
+    callback(error, response, jsonBody);
+  });
+}

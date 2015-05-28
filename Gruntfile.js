@@ -35,7 +35,7 @@ module.exports = function (grunt) {
       },
       clientHtml: {
         files: ['client/*.html', 'client/assets/*.html'],
-        tasks: ['copy', 'watch']
+        tasks: ['copy:client', 'watch']
       },
       server: {
         files: ['server/*', 'config.json', 'app.js'],
@@ -59,6 +59,18 @@ module.exports = function (grunt) {
             ]
           }
         ]
+      },
+      fonts: {
+        files: [
+          {
+            dest: 'public_html/',
+            cwd: 'node_modules/bootstrap/',
+            expand: true,
+            src: [
+              'fonts/**'
+            ]
+          }
+        ]
       }
     },
 
@@ -72,8 +84,15 @@ module.exports = function (grunt) {
 
     less: {
       main: {
+        options: {
+          plugins: [
+            new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]})
+          ]
+        },
         files: {
-          'public_html/assets/dashboard.css': 'client/dashboard.less'
+          'public_html/assets/dashboard.css': [
+            'client/dashboard.less'
+          ]
         }
       }
     },
@@ -111,7 +130,8 @@ module.exports = function (grunt) {
             'node_modules/jquery/dist/jquery.js',
             'node_modules/angular/angular.js',
             'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
-            //'node_modules/bootstrap/dist/js/bootstrap.js',
+            'node_modules/bootstrap/dist/js/bootstrap.js',
+            'node_modules/angular-route/angular-route.js'
             ]
           }
         },
