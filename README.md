@@ -20,9 +20,9 @@ During development, running `grunt dev` will restart the server and/or run build
 
 To load some sample data, add `"mock": true` to `config.json`.
 
-## Custom View Wizard
+## Custom View Configuration
 
-... the dashboard custom view wizard is coming soon ...
+To configure what the dashboard displays, go to `localhost:3000/#/customize` and note down the generated URL.
 
 ## Conventions
 

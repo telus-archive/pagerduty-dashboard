@@ -1,6 +1,8 @@
 (function () {
   var app = angular.module('pagerdutyDashboard', ['ngRoute']);
 
+  var globalStatus = '';
+
   /*
   Routing Configuration
   */
@@ -23,7 +25,7 @@
   Main Controller
   */
 
-  app.controller('appController', function ($scope, noty, socket) {
+  app.controller('appController', function ($scope, noty, socket, $routeParams) {
     var timeoutWarning;
     function serverWarningReset() {
       var SECONDS = 30;
@@ -40,11 +42,13 @@
 
     $scope.loaded = false;
 
-    var hasProblem = false;
     $scope.getUiSettings = function () {
-      var classes = '';
-      if(hasProblem) {
-        classes += 'problem';
+      var classes = globalStatus;
+      if($routeParams.animatepage !== 'false') {
+        classes += ' animate-background';
+      }
+      if($routeParams.animateheadings === 'true') {
+        classes += ' animate-headings';
       }
       return classes;
     };
@@ -66,8 +70,6 @@
         // cache the inital update to avoid flickering on customization page
         $scope.cachedData = data;
       }
-      hasProblem = data.problems;
-
     });
 
   });
@@ -84,6 +86,8 @@
     $scope.queryGroups = {};
     $scope.otherProducts = true;
     $scope.otherIssues = true;
+    $scope.animateHeadings = false;
+    $scope.animatePage = true;
 
     $scope.getUrl = function () {
       var url = baseUrl, key, selected = [], groups = $scope.queryGroups;
@@ -105,6 +109,13 @@
       }
       if(!$scope.otherIssues) {
         url += 'otherissues=false&';
+      }
+
+      if($scope.animateHeadings) {
+        url += 'animateheadings=true&';
+      }
+      if(!$scope.animatePage) {
+        url += 'animatepage=false&';
       }
 
       return url;
@@ -152,7 +163,11 @@
       onCore.sort(compareGroups);
       offCore.sort(compareGroups);
 
-      return offCore.concat(offOther, onCore, onOther);
+      groups = offCore.concat(offOther, onCore, onOther);
+
+      globalStatus = groups[0] ? groups[0].status : 'disabled';
+
+      return groups;
     };
   });
 

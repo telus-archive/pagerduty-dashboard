@@ -251,25 +251,34 @@ Pulsing Background
 ==================================
 */
 
-.group.critical {
-  h2 span {
-    animation: pulse-critical-frames 2s infinite alternate;
+.animate-headings {
+  .group.critical {
+    h2 span {
+      animation: pulse-critical-frames 2s infinite alternate;
+    }
+  }
+  .group.warning {
+    h2 span {
+      animation: pulse-warning-frames 2s infinite alternate;
+    }
   }
 }
 
-.group.warning {
-  h2 span {
-    animation: pulse-warning-frames 2s infinite alternate;
-  }
+body.critical.animate-background {
+  animation: pulse-critical-frames 2s infinite alternate;
+}
+
+body.warning.animate-background {
+  animation: pulse-warning-frames 2s infinite alternate;
 }
 
 @keyframes pulse-critical-frames {
-  0% {background-color: @background;}
+  0%, 20% {background-color: @background;}
   100% {background-color: @critical;}
 }
 
 @keyframes pulse-warning-frames {
-  0% {background-color: @background;}
+  0%, 20% {background-color: @background;}
   100% {background-color: @warning;}
 }
 
@@ -349,16 +358,9 @@ a.customize-link {
   }
 }
 
-.customize-url {
-  color: #666;
-  width: 100%;
-  font-size: 15px;
-  padding: 6px 9px;
-}
-
-.query-list {
+.customization ul {
   list-style: none;
-  margin: 20px 0 10px 0;
+  margin: 10px 0;
   padding: 0;
 }
 
