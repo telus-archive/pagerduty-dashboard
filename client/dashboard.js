@@ -77,23 +77,45 @@
   */
 
   app.controller('customizationController', function ($location, $scope) {
-    $scope.baseUrl = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/#/?';
-  });
+    var baseUrl = $location.protocol() + "://" + $location.host();
+    baseUrl += ":" + $location.port() + '/#/?';
 
-  app.controller('groupController', function ($scope) {
+    $scope.querymode = 'includeall';
+    $scope.queryGroups = {};
+    $scope.otherProducts = true;
+    $scope.otherIssues = true;
+
+    $scope.getUrl = function () {
+      var url = baseUrl, key, selected = [], groups = $scope.queryGroups;
+
+      for (key in groups) {
+        if (groups.hasOwnProperty(key) && groups[key]) {
+          selected.push(key);
+        }
+      }
+
+      if('include' === $scope.querymode) {
+        url += 'include=' + selected.join() + '&';
+      } else if ('exclude' === $scope.querymode) {
+        url += 'exclude=' + selected.join() + '&';
+      }
+
+      if(!$scope.otherProducts) {
+        url += 'otherproducts=false&';
+      }
+      if(!$scope.otherIssues) {
+        url += 'otherissues=false&';
+      }
+
+      return url;
+    };
   });
 
   /*
   Custom filters
   */
 
-  app.filter('filterGroups', function () {
-    // Order
-    // 1) Offline core groups
-    // 2) Offline other services
-    // 3) Online core groups
-    // 4) Online other services
-
+  app.filter('filterGroups', function ($routeParams) {
     function compareGroups(a, b) {
       if(a.status === b.status) {
         return a.features.length > b.features.length ? -1 : 1;
@@ -101,21 +123,29 @@
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
 
-    // TODO: take include/exclude list into consideration
     return function (groups) {
+      var otherProducts = $routeParams.otherproducts !== 'false';
+      var otherIssues = $routeParams.otherissues !== 'false';
+      var queryMode = $routeParams.include !== undefined ? 'include' : 'exclude';
+      var queryList = $routeParams[queryMode] ? $routeParams[queryMode].split(',') : [];
       var offCore = [], offOther = [], onCore = [], onOther = [];
       if(!groups) {
         return groups;
       }
       groups.forEach(function (group) {
         if(group.name === "Other Products") {
-          onOther = group;
+          onOther = otherProducts ? group : [];
         } else if (group.name === "Other Issues") {
-          offOther = group;
-        } else if(group.isOnline) {
-          onCore.push(group);
+          offOther = otherIssues ?  group : [];
         } else {
-          offCore.push(group);
+          if((queryMode === 'exclude' && queryList.indexOf(group.id) === -1) ||
+           (queryMode === 'include' && queryList.indexOf(group.id) !== -1)) {
+            if(group.isOnline) {
+              onCore.push(group);
+            } else {
+              offCore.push(group);
+            }
+          }
         }
       });
 

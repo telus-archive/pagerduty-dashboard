@@ -1,6 +1,56 @@
-<ul>
-	<li>Pulse background on error: <input type="checkbox" ng-model="pulse" /></li>
-</ul>
-<textarea class="customize-url">
-{{baseUrl + 'pulse=' + pulse + '&'}}
-</textarea>
+<div class="customization">
+  <h2>Custom View Configuration</h2>
+
+  <textarea rows="1" disabled class="customize-url">{{getUrl()}}</textarea>
+  <a ng-href="{{getUrl()}}" class="btn btn-success">Open</a>
+
+  <form>
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Include / Exclude</h3>
+
+        <div>
+          <label>
+            <input type="checkbox" ng-model="otherProducts" />
+            Show &quot;Other Products&quot;
+          </label>
+          <label>
+            <input type="checkbox" ng-model="otherIssues" />
+            Show &quot;Other Issues&quot;
+          </label>
+        </div>
+
+        <div class="querymodes">
+          <label>
+            <input type="radio" ng-model="querymode" value="includeall" />
+            Include All
+          </label>
+          <label>
+            <input type="radio" ng-model="querymode" value="include" />
+            Include
+          </label>
+          <label>
+            <input type="radio" ng-model="querymode" value="exclude" />
+            Exclude
+          </label>
+        </div>
+
+        <ul class="query-list" ng-hide="querymode === 'includeall'">
+          <li ng-repeat="group in cachedData.groups" ng-hide="group.isOtherGroup">
+            <label>
+              <input type="checkbox" ng-model="queryGroups[group.id]" />
+              {{group.name}}
+            </label>
+          </li>
+        </ul>
+
+      </div>
+      <div class="col-sm-4">
+        <h3>Notifications</h3>
+      </div>
+      <div class="col-sm-4">
+        <h3></h3>
+      </div>
+    </div>
+  </form>
+</div>

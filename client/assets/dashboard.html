@@ -1,6 +1,6 @@
 <a class="customize-link" href="#/customize"><span class="glyphicon glyphicon-cog"></span></a>
 
-<div class="group" ng-controller="groupController" ng-repeat="group in data.groups | filterGroups" ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
+<div class="group" ng-repeat="group in data.groups | filterGroups" ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
   <h2><span>{{group.name}}</span></h2>
   <div class="details">
 

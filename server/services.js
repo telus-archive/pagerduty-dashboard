@@ -125,7 +125,7 @@ function addServiceToGroup(service, groupName, groups) {
       features: [],
       site: false,
       server: false,
-      isOtherGroup: service.group.indexOf('Other ') !== -1
+      isOtherGroup: groupName === 'Other Products' || groupName === 'Other Issues'
     };
   }
   groups[groupName].features.push(service);
@@ -145,6 +145,7 @@ function processGroup(group) {
   group.statusNumber = statusToNumber(group.status);
   group.isOnline = isOnline(group.statusNumber);
   group.nonSiteServerFeatures = group.features.length;
+  group.id = group.name.toLowerCase().replace(/\s/g,'-');
   if(group.site) {
     group.nonSiteServerFeatures -= 1;
   }
