@@ -33,7 +33,7 @@ Core services get separated into their own groups. The remaining services get pu
 
 Core groups are generated from the core service names. A colon acts as a separator between the group name and individual service (eg. `<group>: <service>`). These core services are called "features".
 
-Core groups can have dependencies, which are specified in their services. To specific a dependency, add `[dashboard-depends|Dependency Service 1,Dependency Service 2]` to the service's description. Dependencies of dependencies do not get added (i.e. dependencies are only followed to a depth of 1). In the interface, these dependencies are labelled as "services".
+Core groups can have dependencies, which are specified in their services. To specific a dependency, add `[dashboard-depends|Some Service,Dependency.*]` to the service's description. Each comma-delimited entry can be a service name (`Some Service`) or a regular expression (`Dependency.*`). Dependencies of dependencies do not get added (i.e. dependencies are only followed to a depth of 1). In the interface, these dependencies are labeled as "services".
 
 A core group's status is only determined from its features (main services) and not its dependencies.
 
@@ -41,10 +41,6 @@ A core group's status is only determined from its features (main services) and n
 
 If one or more services within the other group are failing, the group gets broken up into two pieces, one holding the offline/failing services and the other holding the online/okay services.
 
-Services are listed in the normal format in several columns.
-
 ### Data Processing
 
 The original properties of the services remain unchanged throughout their processing (so this can be used as an invariant). However, new attributes do get added server-side which get used client-side, like `properName`.
-
-In general, as much processing/calculation as possible gets done server-side.

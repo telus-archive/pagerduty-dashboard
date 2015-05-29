@@ -82,13 +82,28 @@ function parseServiceDependencies(service, services) {
     dependencies = dependencies[1].split(',');
     _.each(dependencies, function (dependency) {
       dependency = dependency.trim();
-      if(services[dependency]) {
-        // prevents duplication by overwriting
-        service.dependencies[dependency] = services[dependency];
-      }
+      addDependencyToService(dependency, service, services);
     });
   }
   service.dependencies = _.toArray(service.dependencies);
+}
+
+function addDependencyToService (dependency, service, services) {
+  if(services[dependency]) {
+    // prevents duplication by overwriting
+    service.dependencies[dependency] = services[dependency];
+  } else {
+    // attempt to parse as regex
+    try {
+      var pattern = new RegExp(dependency, 'i');
+      _.each(services, function (s) {
+        if(pattern.exec(s.name)) {
+          service.dependencies[s.name] = s;
+        }
+      });
+    } catch (error) {
+    }
+  }
 }
 
 /*
@@ -205,6 +220,6 @@ function isOnline(statusNumber) {
 
 function worseStatusService(firstService, secondService) {
   return (firstService.statusNumber > secondService.statusNumber
-  ? firstService
-  : secondService);
+    ? firstService
+    : secondService);
 }
