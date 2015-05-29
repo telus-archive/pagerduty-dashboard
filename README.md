@@ -8,10 +8,11 @@ Grabs services from PagerDuty, groups them, and then highlights issues.
 
 ## Setup
 
-1. Enter configuration (API) information in `config.json`
-2. Install dependencies: `npm install`
-3. Build the front-end/client: `grunt`
-4. Start the back-end/server: `node app.js`
+1. Install [Node.js](https://nodejs.org/)
+2. Enter configuration information in `config.json`
+3. Install dependencies: `npm install`
+4. Build the front-end/client: `grunt`
+5. Start the back-end/server: `node app.js`
 
 You can then access the page at `localhost:3000` (or at whatever port was configured).
 
@@ -19,9 +20,9 @@ During development, running `grunt dev` will restart the server and/or run build
 
 To load some sample data, add `"mock": true` to `config.json`.
 
-## Options
+## Custom View Wizard
 
-... the dashboard options wizard is coming soon ...
+... the dashboard custom view wizard is coming soon ...
 
 ## Conventions
 
