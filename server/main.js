@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/../public_html'));
 
 module.exports = function(provider, port) {
   dataProvider = provider; //could be the API or the mock data
-  server.listen(port, function () {
+  server.listen(port, function() {
     console.log('Server listening at port %d', port);
   });
   return {
@@ -21,7 +21,7 @@ module.exports = function(provider, port) {
 function updateStatus() {
   get('services', function(apiServices) {
     var data = services.processServices(apiServices);
-    if(data.problems) {
+    if (data.problems) {
       get('incidents', function(incidents) {
         data.addIncidents(incidents);
         sendUpdate(data.package());
@@ -34,7 +34,7 @@ function updateStatus() {
 
 function get(resource, callback, params) {
   dataProvider.getAll(resource, function(error, data) {
-    if(error === null) {
+    if (error === null) {
       callback(data);
     } else {
       sockets.emit('error', error.message);

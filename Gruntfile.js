@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-express-server');
@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build']);
   grunt.registerTask('dev', ['express', 'build', 'watch']);
-  grunt.registerTask('build',[
+  grunt.registerTask('build', [
     'clean',
     'copy',
     'ngAnnotate',
@@ -49,27 +49,27 @@ module.exports = function (grunt) {
     copy: {
       client: {
         files: [
-          {
-            dest: 'public_html/',
-            cwd: 'client/',
-            expand: true,
-            src: [
-              'index.html',
-              'assets/**.html'
-            ]
-          }
+        {
+          dest: 'public_html/',
+          cwd: 'client/',
+          expand: true,
+          src: [
+          'index.html',
+          'assets/**.html'
+          ]
+        }
         ]
       },
       fonts: {
         files: [
-          {
-            dest: 'public_html/',
-            cwd: 'node_modules/bootstrap/',
-            expand: true,
-            src: [
-              'fonts/**'
-            ]
-          }
+        {
+          dest: 'public_html/',
+          cwd: 'node_modules/bootstrap/',
+          expand: true,
+          src: [
+          'fonts/**'
+          ]
+        }
         ]
       }
     },
@@ -86,15 +86,15 @@ module.exports = function (grunt) {
       main: {
         options: {
           plugins: [
-            new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]})
+          new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]})
           ],
           paths: [
-            'node_modules/bootstrap/less'
+          'node_modules/bootstrap/less'
           ]
         },
         files: {
           'public_html/assets/dashboard.css': [
-            'client/dashboard.less'
+          'client/dashboard.less'
           ]
         }
       }
@@ -104,9 +104,9 @@ module.exports = function (grunt) {
       client: {
         files: {
           'public_html/assets/dashboard.css': [
-            'node_modules/bootstrap/dist/css/bootstrap.css',
-            'node_modules/bootstrap/dist/css/bootstrap-theme.css',
-            'public_html/assets/dashboard.css'
+          'node_modules/bootstrap/dist/css/bootstrap.css',
+          'node_modules/bootstrap/dist/css/bootstrap-theme.css',
+          'public_html/assets/dashboard.css'
           ]
         }
       }
@@ -130,25 +130,25 @@ module.exports = function (grunt) {
         },
         files: {
           'public_html/assets/libs.js': [
-            'node_modules/jquery/dist/jquery.js',
-            'node_modules/angular/angular.js',
-            'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
-            'node_modules/bootstrap/dist/js/bootstrap.js',
-            'node_modules/angular-route/angular-route.js'
-            ]
-          }
+          'node_modules/jquery/dist/jquery.js',
+          'node_modules/angular/angular.js',
+          'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
+          'node_modules/bootstrap/dist/js/bootstrap.js',
+          'node_modules/angular-route/angular-route.js'
+          ]
+        }
+      },
+      core: {
+        options: {
+          mangle: false
         },
-        core: {
-          options: {
-            mangle: false
-          },
-          files: {
-            'public_html/assets/dashboard.js': [
-              'public_html/assets/ng-dashboard.js'
-            ]
-          }
+        files: {
+          'public_html/assets/dashboard.js': [
+          'public_html/assets/ng-dashboard.js'
+          ]
         }
       }
+    }
 
-    });
+  });
 };

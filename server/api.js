@@ -27,13 +27,14 @@ function getAllResources(resource, callback, params) {
   }
 
   function processResources(error, response, data) {
-    if(error || !response) {
+    if (error || !response) {
       callback(error, {});
     } else if (response.statusCode < 200 || response.statusCode >= 400) {
       var errorMessage = 'HTTP ' + response.statusCode;
-      if(data.error && data.error.message) {
+      if (data.error && data.error.message) {
         errorMessage += ': ' + data.error.message;
       }
+
       callback(new Error(errorMessage), {});
     } else {
       accumulateResources(data);
@@ -42,9 +43,9 @@ function getAllResources(resource, callback, params) {
 
   function accumulateResources(data) {
     resources = resources.concat(data[resource]);
-    if(data.total > resources.length) {
+    if (data.total > resources.length) {
       // got to keep going and get the remaining resources
-      getResources(body.offset + data.limit, data.limit);
+      getResources(data.offset + data.limit, data.limit);
     } else {
       // we have retrieved all the resources
       callback(null, resources);
@@ -62,13 +63,14 @@ function apiRequest(resource, callback, params) {
     headers: {
       'Authorization': 'Token token=' + apiKey
     }
-  }, function (error, response, body) {
+  }, function(error, response, body) {
     var jsonBody;
     try {
       jsonBody = JSON.parse(body);
-    } catch(e) {
+    } catch (e) {
       jsonBody = {};
     }
+
     callback(error, response, jsonBody);
   });
 }

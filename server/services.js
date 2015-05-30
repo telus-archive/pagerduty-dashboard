@@ -1,43 +1,48 @@
 var _ = require('underscore');
-var crypto = require('crypto');
+var hash = require('crypto').createHash;
+
 /*
 Exports and processing workflow
 */
 
 module.exports = {
-  processServices: function (services) {
+  processServices: function(services) {
     return new Services(services);
   }
 };
 
-function Services (services) {
-  // this.services is an object
+function Services(services) {
+  // this.services is an object that maps service names to services
+  // it is used for service lookup in incident and dependency processing
   this.services = processServices(services);
   parseServicesDependencies(this.services);
-  // this.groups is an array
+
+  // this.groups is an array; each group contains an array of services
+  // arrays are used so Angular's built-in filter/sort will work
   this.groups = buildGroups(this.services);
   processGroups(this.groups);
-  this.problems = _.any(this.groups, function (group) {
+
+  this.problems = _.any(this.groups, function(group) {
     return !isOnline(group.statusNumber);
   });
 }
 
-Services.prototype.addIncidents = function (incidents) {
-  var services = this.services;
-  _.each(incidents, function (incident) {
-    if(services[incident.service.name]) {
+Services.prototype.addIncidents = function(incidents) {
+  var services = this.services; // cannot use 'this' inside of closure below
+  _.each(incidents, function(incident) {
+    if (services[incident.service.name]) {
       addIncidentToService(incident, services[incident.service.name]);
     }
   });
-}
+};
 
-Services.prototype.package = function () {
+Services.prototype.package = function() {
   return {
     groups: this.groups,
     problems: this.problems,
-    hash: crypto.createHash('md5').update(JSON.stringify(this.groups)).digest("hex")
+    hash: hash('md5').update(JSON.stringify(this.groups)).digest('hex')
   };
-}
+};
 
 /*
 Service Processing
@@ -45,7 +50,7 @@ Service Processing
 
 function processServices(services) {
   var servicesObject = {};
-  _.each(services, function (service) {
+  _.each(services, function(service) {
     servicesObject[service.name] = processService(service);
   });
   return servicesObject;
@@ -54,50 +59,49 @@ function processServices(services) {
 function processService(service) {
   service.statusNumber = statusToNumber(service.status);
   service.isOnline = isOnline(service.statusNumber);
-  if(isPrimaryService(service)) {
+
+  if (isPrimaryService(service)) {
     service.properName = serviceNameFromFullName(service.name);
     service.group = groupNameFromFullName(service.name);
   } else {
     service.properName = service.name;
-    if(isOnline(service.statusNumber)) {
-      service.group = 'Other Products';
-    } else {
-      service.group = 'Other Issues';
-    }
+    service.group = service.isOnline ? 'Other Products' : 'Other Issues';
   }
+
   return service;
 }
 
-function parseServicesDependencies (services) {
-  _.each(services, function (service) {
+function parseServicesDependencies(services) {
+  _.each(services, function(service) {
     parseServiceDependencies(service, services);
   });
 }
 
 function parseServiceDependencies(service, services) {
-  // Format: [dashboard-depends:Service Name 1, Service Name 2]
-  var dependencies = /\[dashboard-depends\|(.*)]/.exec(service.description);
   service.dependencies = {};
-  if(dependencies) {
-    dependencies = dependencies[1].split(',');
-    _.each(dependencies, function (dependency) {
+
+  // Format: [dashboard-depends:Some Service, Dependency.*]
+  var dependencies = /\[dashboard-depends\|(.*)]/.exec(service.description);
+  if (dependencies) {
+    _.each(dependencies[1].split(','), function(dependency) {
       dependency = dependency.trim();
       addDependencyToService(dependency, service, services);
     });
   }
+
   service.dependencies = _.toArray(service.dependencies);
 }
 
-function addDependencyToService (dependency, service, services) {
-  if(services[dependency]) {
+function addDependencyToService(dependency, service, services) {
+  if (services[dependency]) {
     // prevents duplication by overwriting
     service.dependencies[dependency] = services[dependency];
   } else {
     // attempt to parse as regex
     try {
       var pattern = new RegExp(dependency, 'i');
-      _.each(services, function (s) {
-        if(pattern.exec(s.name)) {
+      _.each(services, function(s) {
+        if (pattern.exec(s.name)) {
           service.dependencies[s.name] = s;
         }
       });
@@ -112,14 +116,14 @@ Group Processing
 
 function buildGroups(services) {
   var groups = {};
-  _.each(services, function (service) {
+  _.each(services, function(service) {
     addServiceToGroup(service, service.group, groups);
   });
   return _.toArray(groups);
 }
 
 function addServiceToGroup(service, groupName, groups) {
-  if(!groups[groupName]) {
+  if (!groups[groupName]) {
     groups[groupName] = {
       name: groupName,
       features: [],
@@ -128,38 +132,43 @@ function addServiceToGroup(service, groupName, groups) {
       isOtherGroup: groupName === 'Other Products' || groupName === 'Other Issues'
     };
   }
+
   groups[groupName].features.push(service);
-  if(service.properName === 'Site' || service.properName === 'Server') {
+  if (service.properName === 'Site' || service.properName === 'Server') {
+    // the front-end needs a quick shortcut to check for and get sites/servers
     groups[groupName][service.properName.toLowerCase()] = service;
   }
 }
 
 function processGroups(groups) {
-  _.each(groups, function (group) {
-    processGroup(group);
-  });
+  _.each(groups, processGroup);
 }
 
 function processGroup(group) {
   group.status = _.reduce(group.features, worseStatusService).status;
   group.statusNumber = statusToNumber(group.status);
   group.isOnline = isOnline(group.statusNumber);
+  group.id = group.name.toLowerCase().replace(/\s/g, '-');
+
+  // used by the client (cleaner to calculate it here)
   group.nonSiteServerFeatures = group.features.length;
-  group.id = group.name.toLowerCase().replace(/\s/g,'-');
-  if(group.site) {
+  if (group.site) {
     group.nonSiteServerFeatures -= 1;
   }
-  if(group.server) {
+
+  if (group.server) {
     group.nonSiteServerFeatures -= 1;
   }
+
   resolveGroupDependencies(group);
+
   return group;
 }
 
 function resolveGroupDependencies(group) {
   var dependencies = {};
-  _.each(group.features, function (service){
-    _.each(service.dependencies, function (dependency) {
+  _.each(group.features, function(service) {
+    _.each(service.dependencies, function(dependency) {
       // prevents duplication by overwriting
       dependencies[dependency.name] = dependency;
     });
@@ -172,9 +181,10 @@ Incident Processing
 */
 
 function addIncidentToService(incident, service) {
-  if(!service.incidents) {
+  if (!service.incidents) {
     service.incidents = [];
   }
+
   service.incidents.push(incident);
 }
 
@@ -201,17 +211,17 @@ function serviceNameFromFullName(name) {
 }
 
 function statusToNumber(status) {
-  switch(status) {
+  switch (status) {
     case 'critical':
-    return 4;
+      return 4;
     case 'warning':
-    return 3;
+      return 3;
     case 'active':
-    return 2;
+      return 2;
     case 'maintenance':
-    return 1;
+      return 1;
     case 'disabled':
-    return 0;
+      return 0;
   }
 }
 
@@ -220,7 +230,7 @@ function isOnline(statusNumber) {
 }
 
 function worseStatusService(firstService, secondService) {
-  return (firstService.statusNumber > secondService.statusNumber
-    ? firstService
-    : secondService);
+  return firstService.statusNumber > secondService.statusNumber ?
+    firstService :
+    secondService;
 }
