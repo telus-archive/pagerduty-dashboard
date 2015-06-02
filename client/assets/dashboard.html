@@ -6,13 +6,17 @@
 
     <div class="serversite" ng-show="group.site || group.server">
       <div class="server" ng-show="group.server">
-        <h3>Server</h3>
-        <div class="status" ng-class="group.server.status"></div>
+        <a ng-href="https://{{data.subdomain}}.pagerduty.com{{group.server.service_url}}">
+          <h3>Server</h3>
+          <div class="status" ng-class="group.server.status"></div>
+        </a>
         <div class="clearfix"></div>
       </div>
       <div class="site" ng-show="group.site">
-        <h3>Site</h3>
-        <div class="status" ng-class="group.site.status"></div>
+        <a ng-href="https://{{data.subdomain}}.pagerduty.com{{group.site.service_url}}">
+          <h3>Site</h3>
+          <div class="status" ng-class="group.site.status"></div>
+        </a>
         <div class="clearfix"></div>
       </div>
       <div class="clearfix"></div>
