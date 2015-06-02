@@ -1,5 +1,4 @@
 var services = require('./mock-services.json');
-var incidents = require('./mock-incidents.json');
 var _ = require('underscore');
 
 var resources = [];
@@ -38,40 +37,6 @@ resources.services = makeResources(services.services, {
     'id': 'BCDEFGH',
     'name': 'Some Policy'
   }
-});
-
-resources.incidents = makeResources(incidents.incidents, {
-  'id': 'ABCDEFG',
-  'incident_number': 1000,
-  'created_on': '2015-04-19T19:08:39Z',
-  'status': 'acknowledged',
-  'pending_actions': [],
-  'html_url': 'https://acme.pagerduty.com/incidents/ABCDEFG',
-  'incident_key': '- key name',
-  'service': {},
-  'escalation_policy': {
-    'id': 'BCDEFGH',
-    'name': 'Some Policy',
-    'deleted_at': null
-  },
-  'assigned_to_user': null,
-  'trigger_summary_data': {},
-  'trigger_details_html_url': 'https://acme.pagerduty.com/incidents/ABCDEFG/log_entries/Q2V3',
-  'trigger_type': 'email_trigger',
-  'last_status_change_on': '2015-04-19T19:29:30Z',
-  'last_status_change_by': null,
-  'number_of_escalations': 1,
-  'resolved_by_user': null,
-  'assigned_to': [{
-    'at': '2015-04-19T08:00:00Z',
-    'object': {
-      'id': 'PERSON001',
-      'name': 'John Doe',
-      'email': 'j.doe@acme.com',
-      'html_url': 'https://acme.pagerduty.com/users/PERSON001',
-      'type': 'user'
-    }
-  }]
 });
 
 function getAll(resource, callback, params) {
