@@ -31,6 +31,12 @@ gulp.task('build-js-dashboard', function() {
     .pipe(gulp.dest(ASSETS_DIR));
 });
 
+gulp.task('build-js-dashboard-dev', function() {
+  return gulp.src(SOURCE_DIR + '/dashboard.js')
+    .pipe(ngAnnotate())
+    .pipe(gulp.dest(ASSETS_DIR));
+});
+
 gulp.task('build-js-libs', function() {
   return gulp.src([
       'node_modules/jquery/dist/jquery.js',
@@ -74,7 +80,7 @@ gulp.task('dev-server', function() {
 
 gulp.task('watch', function() {
   gulp.watch('client/**/*.html', ['copy-html']);
-  gulp.watch('client/*.js', ['build-js-dashboard']);
+  gulp.watch('client/*.js', ['build-js-dashboard-dev']);
   gulp.watch('client/*.less', ['build-css-dashboard']);
   gulp.watch(['server/*', 'config.json'], ['dev-server']);
 });
@@ -87,5 +93,5 @@ gulp.task('build', [
   'build-css-libs',
   'build-css-dashboard'
 ]);
-gulp.task('dev', ['build', 'dev-server', 'watch']);
+gulp.task('dev', ['build', 'dev-server', 'build-js-dashboard-dev', 'watch']);
 gulp.task('default', ['build']);

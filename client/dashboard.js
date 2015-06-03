@@ -1,8 +1,6 @@
 (function() {
   var app = angular.module('pagerdutyDashboard', ['ngRoute']);
 
-  var globalStatus = '';
-
   /*
   Routing Configuration
   */
@@ -10,7 +8,8 @@
   app.config(function($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'assets/dashboard.html'
+        templateUrl: 'assets/dashboard.html',
+        controller: 'dashboardController'
       })
       .when('/customize', {
         templateUrl: 'assets/customize.html',
@@ -25,119 +24,62 @@
   Main Controller
   */
 
-  app.controller('appController', function($scope, noty, socket, $routeParams) {
-    var timeoutWarning;
+  app.controller('appController',
+    function($scope, noty, socket, settings, serverWarning) {
+      var hash;
+      $scope.loaded = false;
+      $scope.getUiSettings = settings.toBodyCssClass;
 
-    function serverWarningReset() {
-      var SECONDS = 30;
-      if (timeoutWarning !== undefined) {
-        clearTimeout(timeoutWarning);
-      }
-      noty.clear();
-      timeoutWarning = setTimeout(function() {
-        noty.update('warning', 'The server has not sent updates in the last ' +
-          SECONDS + ' seconds.');
-      }, 1000 * SECONDS);
+      serverWarning.reset();
+
+      socket.on('error', function(data) {
+        serverWarning.reset();
+        noty.update('warning', 'Error communicating with PagerDuty: ' + data);
+      });
+
+      socket.on('update', function(data) {
+        serverWarning.reset();
+        if (hash === data.hash) {
+          // no need to trigger a new render if the data is the same
+          return;
+        }
+        $scope.cachedData = $scope.cachedData || data;
+        if (data.groups.length !== $scope.cachedData.groups.length) {
+          $scope.cachedData = data;
+        }
+        hash = data.hash;
+        $scope.loaded = true;
+        $scope.data = data;
+
+        if (settings.settings.scrollTop) {
+          $('html, body').animate({
+            scrollTop: 0
+          });
+        }
+      });
     }
-    serverWarningReset();
-
-    $scope.loaded = false;
-
-    $scope.getUiSettings = function() {
-      var classes = globalStatus;
-      if ($routeParams.animatepage !== 'false') {
-        classes += ' animate-background';
-      }
-      if ($routeParams.animateheadings === 'true') {
-        classes += ' animate-headings';
-      }
-      return classes;
-    };
-
-    socket.on('error', function(data) {
-      serverWarningReset();
-      noty.update('warning', 'Error communicating with PagerDuty: ' + data);
-    });
-
-    socket.on('update', function(data) {
-      serverWarningReset();
-      if ($scope.hash === data.hash) {
-        return;
-      }
-      if ($routeParams.scrollTop !== 'false') {
-        $('html, body').animate({scrollTop: 0});
-      }
-
-      $scope.hash = data.hash;
-      $scope.loaded = true;
-      $scope.data = data;
-      if (!$scope.cachedData) {
-        // cache the inital update to avoid flickering on customization page
-        $scope.cachedData = data;
-      }
-    });
-
-  });
+  );
 
   /*
   Secondary Controllers
   */
 
-  app.controller('customizationController', function($location, $scope) {
-    var baseUrl = $location.protocol() + '://' + $location.host();
-    baseUrl += ':' + $location.port() + '/#/?';
+  app.controller('customizationController', function($scope, settings) {
+    $scope.settings = settings.settings;
+    $scope.settingControl = settings;
+  });
 
-    $scope.querymode = 'includeall';
-    $scope.queryGroups = {};
-    $scope.otherProducts = true;
-    $scope.otherIssues = true;
-    $scope.animateHeadings = false;
-    $scope.animatePage = true;
-    $scope.scrollTop = true;
-
-    $scope.getUrl = function() {
-      var url = baseUrl;
-      var selected = [];
-      var groups = $scope.queryGroups;
-
-      for (var key in groups) {
-        if (groups.hasOwnProperty(key) && groups[key]) {
-          selected.push(key);
-        }
-      }
-
-      if ('include' === $scope.querymode) {
-        url += 'include=' + selected.join() + '&';
-      } else if ('exclude' === $scope.querymode) {
-        url += 'exclude=' + selected.join() + '&';
-      }
-
-      if (!$scope.otherProducts) {
-        url += 'otherproducts=false&';
-      }
-      if (!$scope.otherIssues) {
-        url += 'otherissues=false&';
-      }
-
-      if ($scope.animateHeadings) {
-        url += 'animateheadings=true&';
-      }
-      if (!$scope.animatePage) {
-        url += 'animatepage=false&';
-      }
-      if (!$scope.scrollTop) {
-        url += 'scrollTop=false&';
-      }
-
-      return url;
-    };
+  app.controller('dashboardController', function(settings) {
+    settings.setSettingsfromRouteParams();
   });
 
   /*
-  Custom filters
+  Group Filtering and Sorting
   */
 
-  app.filter('filterGroups', function($routeParams) {
+  app.filter('filterGroups', function(settings) {
+    var s = settings.settings;
+
     function compareGroups(a, b) {
       if (a.status === b.status) {
         return a.features.length > b.features.length ? -1 : 1;
@@ -145,19 +87,21 @@
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
 
+    function isVisible(group) {
+      if (s.queryMode === 'exclude' && s.queryGroups[group.id]) {
+        return false;
+      }
+      if (s.queryMode === 'include' && !s.queryGroups[group.id]) {
+        return false;
+      }
+      return true;
+    }
+
     return function(groups) {
       if (!groups) {
         return groups;
       }
 
-      var otherProducts = $routeParams.otherproducts !== 'false';
-      var otherIssues = $routeParams.otherissues !== 'false';
-      var queryMode = $routeParams.include !== undefined ?
-        'include' :
-        'exclude';
-      var queryList = $routeParams[queryMode] ?
-        $routeParams[queryMode].split(',') :
-        [];
       var offCore = [];
       var offOther = [];
       var onCore = [];
@@ -165,34 +109,29 @@
 
       groups.forEach(function(group) {
         if (group.name === 'Other Products') {
-          onOther = otherProducts ? group : [];
+          onOther = s.otherProducts ? group : [];
         } else if (group.name === 'Other Issues') {
-          offOther = otherIssues ? group : [];
+          offOther = s.otherIssues ? group : [];
         } else {
-          if ((queryMode === 'exclude' && queryList.indexOf(group.id) === -1) ||
-            (queryMode === 'include' && queryList.indexOf(group.id) !== -1)) {
-            if (group.isOnline) {
-              onCore.push(group);
-            } else {
-              offCore.push(group);
-            }
+          if (isVisible(group)) {
+            (group.isOnline ? onCore : offCore).push(group);
           }
         }
       });
 
-      onCore.sort(compareGroups);
-      offCore.sort(compareGroups);
+      groups = offCore.sort(compareGroups).concat(
+        offOther,
+        onCore.sort(compareGroups),
+        onOther);
 
-      groups = offCore.concat(offOther, onCore, onOther);
-
-      globalStatus = groups[0] ? groups[0].status : 'disabled';
+      settings.setGlobalStatus(groups[0] ? groups[0].status : '');
 
       return groups;
     };
   });
 
   /*
-  Custom factory services
+  Socket.io Service
   */
 
   app.factory('socket', function($rootScope) {
@@ -209,6 +148,10 @@
     };
   });
 
+  /*
+  Noty Service
+  */
+
   app.factory('noty', function() {
     var current;
     return {
@@ -223,6 +166,120 @@
         }
       },
       clear: $.noty.closeAll
+    };
+  });
+
+  /*
+  Server Communication Problem Service
+  */
+  app.factory('serverWarning', function(noty) {
+    var SECONDS = 30;
+    var timeoutWarning;
+
+    return {
+      reset: function() {
+        if (timeoutWarning !== undefined) {
+          noty.clear();
+          clearTimeout(timeoutWarning);
+        }
+        timeoutWarning = setTimeout(function() {
+          noty.update('warning',
+            'The server has not sent updates in the last ' +
+            SECONDS + ' seconds.');
+        }, 1000 * SECONDS);
+      }
+    };
+  });
+
+  /*
+  Dashboard View Settings
+  */
+
+  app.factory('settings', function($routeParams, $location) {
+    var settings = {};
+    var globalStatus = '';
+    var defaults = {
+      queryMode: 'includeall',
+      queryGroups: {},
+      otherProducts: true,
+      otherIssues: true,
+      animateHeadings: false,
+      animatePage: true,
+      scrollTop: true
+    };
+
+    setDefaultSettings();
+
+    function setDefaultSettings() {
+      Object.keys(defaults).forEach(function(setting) {
+        settings[setting] = defaults[setting];
+      });
+      settings.queryGroups = {};
+      globalStatus = '';
+    }
+
+    function isDefault(setting) {
+      return settings[setting] === defaults[setting];
+    }
+
+    function toUrl() {
+      var url = $location.protocol() + '://' + $location.host() + ':' +
+        $location.port() + '/#/?';
+
+      Object.keys(settings).forEach(function(setting) {
+        if (!isDefault(setting) && setting.indexOf('query') === -1) {
+          url += setting + '=' + !defaults[setting] + '&';
+        }
+      });
+
+      if (!isDefault('queryMode')) {
+        url += settings.queryMode + '=';
+        Object.keys(settings.queryGroups).forEach(function(groupId) {
+          if (settings.queryGroups[groupId]) {
+            url += groupId + ',';
+          }
+        });
+      }
+
+      return url;
+    }
+
+    function setGlobalStatus(status) {
+      globalStatus = status;
+    }
+
+    function toBodyCssClass() {
+      var classes = globalStatus;
+      if (settings.animatePage) {
+        classes += ' animate-background';
+      }
+      if (settings.animateHeadings) {
+        classes += ' animate-headings';
+      }
+      return classes;
+    }
+
+    function setSettingsfromRouteParams() {
+      setDefaultSettings();
+      Object.keys($routeParams).forEach(function(routeParam) {
+        if (defaults[routeParam] !== undefined) {
+          settings[routeParam] = ($routeParams[routeParam] === 'true');
+        } else if (routeParam === 'exclude' || routeParam === 'include') {
+          settings.queryMode = routeParam;
+          $routeParams[routeParam].split(',').forEach(function(service) {
+            settings.queryGroups[service] = !!service;
+          });
+        }
+      });
+    }
+
+    return {
+      setGlobalStatus: setGlobalStatus,
+      settings: settings,
+      setDefaultSettings: setDefaultSettings,
+      toUrl: toUrl,
+      toBodyCssClass: toBodyCssClass,
+      setSettingsfromRouteParams: setSettingsfromRouteParams
     };
   });
 

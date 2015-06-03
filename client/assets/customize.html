@@ -1,14 +1,15 @@
 <div class="customization">
   <h2>Custom View Configuration</h2>
 
-  <div class="input-group">
-    <span class="input-group-btn">
-      <a ng-href="{{getUrl()}}" class="btn btn-success">Open</a>
-    </span>
-    <input disabled type="text" class="form-control" ng-bind="" value="{{getUrl()}}">
-  </div>
-
   <form>
+    <div class="url">
+      <input disabled type="text" class="form-control" ng-value="settingControl.toUrl()">
+      <div class="btn-group">
+        <a ng-href="{{settingControl.toUrl()}}" class="btn btn-success">Open</a>
+        <button ng-click="settingControl.setDefaultSettings()" type="button" class="btn btn-warning">Reset</button>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-6">
         <h3>Include / Exclude</h3>
@@ -17,13 +18,13 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="otherProducts" />
+              <input type="checkbox" ng-model="settings.otherProducts" />
               Show &quot;Other Products&quot;
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="otherIssues" />
+              <input type="checkbox" ng-model="settings.otherIssues" />
               Show &quot;Other Issues&quot;
             </label>
           </li>
@@ -32,23 +33,23 @@
         <h4>Core Groups</h4>
         <div class="querymodes">
           <label>
-            <input type="radio" ng-model="querymode" value="includeall" />
+            <input type="radio" ng-model="settings.queryMode" value="includeall" />
             Include All
           </label>
           <label>
-            <input type="radio" ng-model="querymode" value="include" />
+            <input type="radio" ng-model="settings.queryMode" value="include" />
             Include
           </label>
           <label>
-            <input type="radio" ng-model="querymode" value="exclude" />
+            <input type="radio" ng-model="settings.queryMode" value="exclude" />
             Exclude
           </label>
         </div>
 
-        <ul class="query-list" ng-hide="querymode === 'includeall'">
+        <ul class="query-list" ng-hide="settings.queryMode === 'includeall'">
           <li ng-repeat="group in cachedData.groups" ng-hide="group.isOtherGroup">
             <label>
-              <input type="checkbox" ng-model="queryGroups[group.id]" />
+              <input type="checkbox" ng-model="settings.queryGroups[group.id]" />
               {{group.name}}
             </label>
           </li>
@@ -61,19 +62,19 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="animateHeadings" />
+              <input type="checkbox" ng-model="settings.animateHeadings" />
               Animated Group Headers on Errors
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="animatePage" />
+              <input type="checkbox" ng-model="settings.animatePage" />
               Animated Background on Errors
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="scrollTop" />
+              <input type="checkbox" ng-model="settings.scrollTop" />
               Scroll-to-top on Status Change
             </label>
           </li>
