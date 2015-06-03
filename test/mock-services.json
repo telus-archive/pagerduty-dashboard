@@ -1,10 +1,6 @@
 {
   "services": [{
     "status": "active",
-    "name": "App 1: Site",
-    "description": "[dashboard-primary]"
-  }, {
-    "status": "active",
     "name": "App 1: Server",
     "description": "[dashboard-primary]"
   }, {
