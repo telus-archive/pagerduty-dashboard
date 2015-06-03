@@ -6,8 +6,8 @@ ADD . /opt/pagerduty-dashboard
 WORKDIR /opt/pagerduty-dashboard
 
 RUN npm install \
-    && npm install -g grunt-cli \
-    && grunt build
+    && npm install -g gulp \
+    && gulp
 
 EXPOSE 3000
 
