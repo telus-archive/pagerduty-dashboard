@@ -8,15 +8,15 @@ Grabs services from [PagerDuty](http://www.pagerduty.com/), groups them, and the
 
 ## Setup
 
-1. Install [Node.js](https://nodejs.org/)
+1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
 2. Enter configuration information in `config.json`
 3. Install dependencies: `npm install`
-4. Build the front-end/client: `grunt`
+4. Build the front-end/client: `gulp`
 5. Start the back-end/server: `node app.js`
 
 You can then access the page at `localhost:3000` (or at whatever port was configured).
 
-During development, running `grunt dev` will restart the server and/or run builds when files change.
+During development, running `gulp dev` will restart the server and/or run builds when files change.
 
 To load some sample data, add `"mock": true` to `config.json`.
 
