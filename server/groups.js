@@ -5,7 +5,7 @@ Exports and processing workflow
 */
 
 module.exports = function(rawServices) {
-  return _.each(buildGroups(buildServices(rawServices)), processGroup);
+  return buildGroups(buildServices(rawServices));
 };
 
 /*
@@ -25,11 +25,10 @@ function buildServices(rawServices) {
 
 function buildService(rawService) {
   var service = {
-    statusNumber: statusToNumber(rawService.status),
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
-    isOnline: isOnline(rawService)
   };
+  injectStatusProperties(service, rawService.status);
   return _.extend(service, rawService);
 }
 
@@ -71,7 +70,7 @@ function buildGroups(services) {
   _.each(services, function(service) {
     addServiceToGroup(service, groups);
   });
-  return _.toArray(groups);
+  return _.map(groups, processGroup);
 }
 
 function addServiceToGroup(service, groups) {
@@ -89,6 +88,7 @@ function addServiceToGroup(service, groups) {
 function newGroup(groupName) {
   return {
     name: groupName,
+    id: groupName.toLowerCase().replace(/\s/g, '-'),
     features: [],
     site: false,
     server: false,
@@ -99,26 +99,21 @@ function newGroup(groupName) {
 function processGroup(group) {
   var dependencies = {};
   var worstService;
-  var allServices = group.features;
-  allServices = allServices.concat(group.site || []).concat(group.server || []);
+  var allServices = group.features
+    .concat(group.site || [])
+    .concat(group.server || []);
 
   worstService = allServices[0];
-
   _.each(allServices, function(service) {
     worstService = worseStatusService(worstService, service);
     _.each(service.dependencies, function(dependency) {
       dependencies[dependency.name] = dependency;
     });
   });
-
-  group.status = worstService.status;
-  group.statusNumber = statusToNumber(group.status);
-  group.isOnline = isOnline(group);
-
-  group.id = group.name.toLowerCase().replace(/\s/g, '-');
-
+  injectStatusProperties(group, worstService.status);
   group.dependencies = _.toArray(dependencies);
 
+  return group;
 }
 
 /*
@@ -168,4 +163,10 @@ function worseStatusService(firstService, secondService) {
   return firstService.statusNumber > secondService.statusNumber ?
     firstService :
     secondService;
+}
+
+function injectStatusProperties(object, status) {
+  object.status = status;
+  object.statusNumber = statusToNumber(status);
+  object.isOnline = isOnline(object);
 }

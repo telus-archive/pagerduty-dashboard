@@ -34,7 +34,6 @@ function getAllResources(resource, callback, params) {
       if (data.error && data.error.message) {
         errorMessage += ': ' + data.error.message;
       }
-
       callback(new Error(errorMessage), {});
     } else {
       accumulateResources(data);
@@ -44,15 +43,12 @@ function getAllResources(resource, callback, params) {
   function accumulateResources(data) {
     resources = resources.concat(data[resource]);
     if (data.total > resources.length) {
-      // got to keep going and get the remaining resources
       getResources(data.offset + data.limit, data.limit);
     } else {
-      // we have retrieved all the resources
       callback(null, resources);
     }
   }
 
-  // start off the resource gathering process
   getResources(0, 100);
 }
 
@@ -70,7 +66,6 @@ function apiRequest(resource, callback, params) {
     } catch (e) {
       jsonBody = {};
     }
-
     callback(error, response, jsonBody);
   });
 }
