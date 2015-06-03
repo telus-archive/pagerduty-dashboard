@@ -9,16 +9,16 @@
 
   app.config(function($routeProvider) {
     $routeProvider
-    .when('/', {
-      templateUrl: 'assets/dashboard.html'
-    })
-    .when('/customize', {
-      templateUrl: 'assets/customize.html',
-      controller: 'customizationController'
-    })
-    .otherwise({
-      redirectTo: '/'
-    });
+      .when('/', {
+        templateUrl: 'assets/dashboard.html'
+      })
+      .when('/customize', {
+        templateUrl: 'assets/customize.html',
+        controller: 'customizationController'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
   });
 
   /*
@@ -27,15 +27,16 @@
 
   app.controller('appController', function($scope, noty, socket, $routeParams) {
     var timeoutWarning;
+
     function serverWarningReset() {
       var SECONDS = 30;
       if (timeoutWarning !== undefined) {
         clearTimeout(timeoutWarning);
       }
       noty.clear();
-      timeoutWarning =  setTimeout(function() {
+      timeoutWarning = setTimeout(function() {
         noty.update('warning', 'The server has not sent updates in the last ' +
-                    SECONDS + ' seconds.');
+          SECONDS + ' seconds.');
       }, 1000 * SECONDS);
     }
     serverWarningReset();
@@ -158,10 +159,10 @@
         if (group.name === 'Other Products') {
           onOther = otherProducts ? group : [];
         } else if (group.name === 'Other Issues') {
-          offOther = otherIssues ?  group : [];
+          offOther = otherIssues ? group : [];
         } else {
           if ((queryMode === 'exclude' && queryList.indexOf(group.id) === -1) ||
-           (queryMode === 'include' && queryList.indexOf(group.id) !== -1)) {
+            (queryMode === 'include' && queryList.indexOf(group.id) !== -1)) {
             if (group.isOnline) {
               onCore.push(group);
             } else {
