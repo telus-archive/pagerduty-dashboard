@@ -64,6 +64,10 @@
       if ($scope.hash === data.hash) {
         return;
       }
+      if ($routeParams.scrollTop !== 'false') {
+        $('html, body').animate({scrollTop: 0});
+      }
+
       $scope.hash = data.hash;
       $scope.loaded = true;
       $scope.data = data;
@@ -89,6 +93,7 @@
     $scope.otherIssues = true;
     $scope.animateHeadings = false;
     $scope.animatePage = true;
+    $scope.scrollTop = true;
 
     $scope.getUrl = function() {
       var url = baseUrl;
@@ -119,6 +124,9 @@
       }
       if (!$scope.animatePage) {
         url += 'animatepage=false&';
+      }
+      if (!$scope.scrollTop) {
+        url += 'scrollTop=false&';
       }
 
       return url;
