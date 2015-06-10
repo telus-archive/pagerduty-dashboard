@@ -12,44 +12,18 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <h3>Include / Exclude</h3>
+        <h3>Group Order</h3>
 
-        <h4>Other Groups</h4>
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox" ng-model="settings.otherProducts" />
-              Show &quot;Other Products&quot;
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" ng-model="settings.otherIssues" />
-              Show &quot;Other Issues&quot;
-            </label>
-          </li>
-        </ul>
+        <p>Groups are always sorted by status first. These settings determine the second sort order. The default value is 0.</p>
 
-        <h4>Core Groups</h4>
-        <div class="querymodes">
-          <label>
-            <input type="radio" ng-model="settings.queryMode" value="includeall" />
-            Include All
-          </label>
-          <label>
-            <input type="radio" ng-model="settings.queryMode" value="include" />
-            Include
-          </label>
-          <label>
-            <input type="radio" ng-model="settings.queryMode" value="exclude" />
-            Exclude
-          </label>
-        </div>
+        <label class="group-order">
+              Hide groups with an order lower than: <input type="text" ng-model="settings.groupCutoff" />
+        </label>
 
-        <ul class="query-list" ng-hide="settings.queryMode === 'includeall'">
-          <li ng-repeat="group in cachedData.groups" ng-hide="group.isOtherGroup">
+        <ul class="group-order">
+          <li ng-repeat="group in cachedData.groups">
             <label>
-              <input type="checkbox" ng-model="settings.queryGroups[group.id]" />
+              <input type="text" ng-model="settings.groups[group.id]" />
               {{group.name}}
             </label>
           </li>

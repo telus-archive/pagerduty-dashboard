@@ -67,6 +67,8 @@ Group Processing
 
 function buildGroups(services) {
   var groups = {};
+  groups['Other Products'] = newGroup('Other Products');
+  groups['Other Issues'] = newGroup('Other Issues');
   _.each(services, function(service) {
     addServiceToGroup(service, groups);
   });

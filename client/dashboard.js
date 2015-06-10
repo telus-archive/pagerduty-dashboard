@@ -81,17 +81,21 @@
     var s = settings.settings;
 
     function compareGroups(a, b) {
+      var aCutoff = s.groups[a.id];
+      var bCutoff = s.groups[b.id];
       if (a.status === b.status) {
-        return a.features.length > b.features.length ? -1 : 1;
+        if(aCutoff === bCutoff) {
+          return a.features.length > b.features.length ? -1 : 1;
+        }
+          return aCutoff > bCutoff ? -1 : 1;
       }
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
 
     function isVisible(group) {
-      if (s.queryMode === 'exclude' && s.queryGroups[group.id]) {
-        return false;
-      }
-      if (s.queryMode === 'include' && !s.queryGroups[group.id]) {
+      var groupOrder = s.groups[group.id] || 0;
+      var groupCutoff = s.groupCutoff || 0;
+      if (groupOrder < groupCutoff) {
         return false;
       }
       return true;
@@ -102,27 +106,16 @@
         return groups;
       }
 
-      var offCore = [];
-      var offOther = [];
-      var onCore = [];
-      var onOther = [];
+      var online = [];
+      var offline = [];
 
       groups.forEach(function(group) {
-        if (group.name === 'Other Products') {
-          onOther = s.otherProducts ? group : [];
-        } else if (group.name === 'Other Issues') {
-          offOther = s.otherIssues ? group : [];
-        } else {
-          if (isVisible(group)) {
-            (group.isOnline ? onCore : offCore).push(group);
-          }
+        if (isVisible(group)) {
+          (group.isOnline ? online : offline).push(group);
         }
       });
 
-      groups = offCore.sort(compareGroups).concat(
-        offOther,
-        onCore.sort(compareGroups),
-        onOther);
+      groups = offline.sort(compareGroups).concat(online.sort(compareGroups));
 
       settings.setGlobalStatus(groups[0] ? groups[0].status : '');
 
@@ -199,9 +192,8 @@
     var settings = {};
     var globalStatus = '';
     var defaults = {
-      queryMode: 'includeall',
-      queryGroups: {},
       otherProducts: true,
+      groupCutoff: 0,
       otherIssues: true,
       animateHeadings: false,
       animatePage: true,
@@ -214,7 +206,7 @@
       Object.keys(defaults).forEach(function(setting) {
         settings[setting] = defaults[setting];
       });
-      settings.queryGroups = {};
+      settings.groups = {};
       globalStatus = '';
     }
 
@@ -227,19 +219,20 @@
         $location.port() + '/#/?';
 
       Object.keys(settings).forEach(function(setting) {
-        if (!isDefault(setting) && setting.indexOf('query') === -1) {
+        if (!isDefault(setting) && setting.indexOf('group') === -1) {
           url += setting + '=' + !defaults[setting] + '&';
         }
       });
 
-      if (!isDefault('queryMode')) {
-        url += settings.queryMode + '=';
-        Object.keys(settings.queryGroups).forEach(function(groupId) {
-          if (settings.queryGroups[groupId]) {
-            url += groupId + ',';
-          }
-        });
+      if (!isDefault('groupCutoff')) {
+        url += 'groupCutoff=' + settings.groupCutoff + '&';
       }
+
+      Object.keys(settings.groups).forEach(function(groupId) {
+        if (settings.groups[groupId]) {
+          url += groupId + '-group=' + settings.groups[groupId] + '&';
+        }
+      });
 
       return url;
     }
@@ -264,13 +257,14 @@
       Object.keys($routeParams).forEach(function(routeParam) {
         if (defaults[routeParam] !== undefined) {
           settings[routeParam] = ($routeParams[routeParam] === 'true');
-        } else if (routeParam === 'exclude' || routeParam === 'include') {
-          settings.queryMode = routeParam;
-          $routeParams[routeParam].split(',').forEach(function(service) {
-            settings.queryGroups[service] = !!service;
-          });
+          if(routeParam === 'groupCutoff') {
+            settings[routeParam] = $routeParams[routeParam];
+          }
+        } else {
+          settings.groups[routeParam.replace('-group', '')] = $routeParams[routeParam];
         }
       });
+      console.log(settings);
     }
 
     return {
