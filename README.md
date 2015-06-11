@@ -5,11 +5,12 @@ PagerDuty Dashboard
 [![devDependency Status](https://david-dm.org/gondek/pagerduty-dashboard/dev-status.svg)](https://david-dm.org/gondek/pagerduty-dashboard#info=devDependencies)
 
 Grabs services from [PagerDuty](http://www.pagerduty.com/), groups them, and then highlights issues.
+For details on the grouping process, refer to the "Conventions" section below.
 
 ## Setup
 
 1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
-2. Enter configuration information in `config.json` and set up your PagerDuty services as outlined in the `Conventions` below.
+2. Copy `config.sample.json` to `config.json`, enter your API information, and change "mock" to `false`.
 3. Install dependencies: `npm install`
 4. Build the front-end/client: `gulp`
 5. Start the back-end/server: `node app.js`
@@ -18,7 +19,7 @@ You can then access the page at `localhost:3000` (or at whatever port was config
 
 During development, running `gulp dev` will restart the server and/or run builds when files change.
 
-To load some sample data, add `"mock": true` to `config.json`.
+To use the sample data, set "mock" to `true` to `config.json`.
 
 ## Custom View Configuration
 

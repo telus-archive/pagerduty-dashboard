@@ -1,0 +1,7 @@
+{
+  "apiSubdomain": "",
+  "apiKey": "",
+  "updateInterval": 10,
+  "serverPort": 3000,
+  "mock": true
+}
