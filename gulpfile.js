@@ -3,7 +3,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
-var server = require('gulp-express');
+var gls = require('gulp-live-server');
 var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
@@ -75,7 +75,8 @@ gulp.task('build-css-dashboard', function() {
 });
 
 gulp.task('dev-server', function() {
-  server.run(['app.js']);
+  var server = gls.new('app.js');
+  server.start();
 });
 
 gulp.task('watch', function() {
