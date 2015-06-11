@@ -3,10 +3,12 @@
 
   <form>
     <div class="url">
-      <input disabled type="text" class="form-control" ng-value="settingControl.toUrl()">
+      <input disabled type="text" class="form-control"
+      ng-value="settingControl.toUrl()">
       <div class="btn-group">
         <a ng-href="{{settingControl.toUrl()}}" class="btn btn-success">Open</a>
-        <button ng-click="settingControl.setDefaultSettings()" type="button" class="btn btn-warning">Reset</button>
+        <button ng-click="settingControl.setDefaultSettings()"
+        type="button" class="btn btn-warning">Reset All</button>
       </div>
     </div>
 
@@ -14,10 +16,13 @@
       <div class="col-sm-6">
         <h3>Group Order</h3>
 
-        <p>Groups are always sorted by status first. These settings determine the second sort order. The default value is 0.</p>
+        <p>Groups are always sorted by status first.
+        The numbers below determine the second sort order.
+        Groups with no number are considered to have a value of 0.</p>
 
         <label class="group-order">
-              Hide groups with an order lower than: <input type="text" ng-model="settings.groupCutoff" />
+          Hide groups with an order lower than:
+          <input type="text" ng-model="settings.groupCutoff" />
         </label>
 
         <ul class="group-order">
@@ -28,6 +33,9 @@
             </label>
           </li>
         </ul>
+
+        <button ng-click="settings.groups = {}" type="button"
+        class="btn btn-warning">Reset Order</button>
 
       </div>
       <div class="col-sm-6">

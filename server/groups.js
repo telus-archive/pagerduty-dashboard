@@ -65,10 +65,13 @@ function addDependencyToService(dependencyName, service, services) {
 Group Processing
 */
 
+var OTHER_PRODUCTS = 'Other Products';
+var OTHER_ISSUES = 'Other Issues';
+
 function buildGroups(services) {
   var groups = {};
-  groups['Other Products'] = newGroup('Other Products');
-  groups['Other Issues'] = newGroup('Other Issues');
+  groups[OTHER_PRODUCTS] = newGroup(OTHER_PRODUCTS);
+  groups[OTHER_ISSUES] = newGroup(OTHER_ISSUES);
   _.each(services, function(service) {
     addServiceToGroup(service, groups);
   });
@@ -94,7 +97,7 @@ function newGroup(groupName) {
     features: [],
     site: false,
     server: false,
-    isOtherGroup: groupName === 'Other Products' || groupName === 'Other Issues'
+    isOtherGroup: groupName === OTHER_PRODUCTS || groupName === OTHER_ISSUES
   };
 }
 
@@ -112,7 +115,10 @@ function processGroup(group) {
       dependencies[dependency.name] = dependency;
     });
   });
-  injectStatusProperties(group, worstService.status);
+
+  var worseStatus = worstService ? worstService.status : 'disabled';
+
+  injectStatusProperties(group, worseStatus);
   group.dependencies = _.toArray(dependencies);
 
   return group;
@@ -136,7 +142,7 @@ function getServiceGroupName(service) {
   if (isPrimaryService(service)) {
     return groupRegexComponent(service.name, 1);
   }
-  return isOnline(service) ? 'Other Products' : 'Other Issues';
+  return isOnline(service) ? OTHER_PRODUCTS : OTHER_ISSUES;
 }
 
 function getServiceName(service) {

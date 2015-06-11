@@ -69,8 +69,11 @@
     $scope.settingControl = settings;
   });
 
-  app.controller('dashboardController', function(settings) {
+  app.controller('dashboardController', function($scope, settings) {
     settings.setSettingsfromRouteParams();
+    $scope.noGroups = function() {
+      return settings.numberGroups < 1;
+    };
   });
 
   /*
@@ -81,13 +84,16 @@
     var s = settings.settings;
 
     function compareGroups(a, b) {
-      var aCutoff = s.groups[a.id];
-      var bCutoff = s.groups[b.id];
+      var aCutoff = s.groups[a.id] || 0;
+      var bCutoff = s.groups[b.id] || 0;
       if (a.status === b.status) {
-        if(aCutoff === bCutoff) {
+        if (aCutoff === bCutoff) {
+          if (a.isOtherGroup) {
+            return 1;
+          }
           return a.features.length > b.features.length ? -1 : 1;
         }
-          return aCutoff > bCutoff ? -1 : 1;
+        return aCutoff > bCutoff ? -1 : 1;
       }
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
@@ -98,7 +104,10 @@
       if (groupOrder < groupCutoff) {
         return false;
       }
-      return true;
+      if(group.features.length || group.site || group.server) {
+        return true;
+      }
+      return false;
     }
 
     return function(groups) {
@@ -118,6 +127,7 @@
       groups = offline.sort(compareGroups).concat(online.sort(compareGroups));
 
       settings.setGlobalStatus(groups[0] ? groups[0].status : '');
+      settings.numberGroups = groups.length;
 
       return groups;
     };
@@ -191,6 +201,7 @@
   app.factory('settings', function($routeParams, $location) {
     var settings = {};
     var globalStatus = '';
+    var numberGroups = 0;
     var defaults = {
       otherProducts: true,
       groupCutoff: 0,
@@ -229,7 +240,7 @@
       }
 
       Object.keys(settings.groups).forEach(function(groupId) {
-        if (settings.groups[groupId]) {
+        if (settings.groups[groupId] && settings.groups[groupId] !== '0') {
           url += groupId + '-group=' + settings.groups[groupId] + '&';
         }
       });
@@ -257,17 +268,17 @@
       Object.keys($routeParams).forEach(function(routeParam) {
         if (defaults[routeParam] !== undefined) {
           settings[routeParam] = ($routeParams[routeParam] === 'true');
-          if(routeParam === 'groupCutoff') {
+          if (routeParam === 'groupCutoff') {
             settings[routeParam] = $routeParams[routeParam];
           }
         } else {
           settings.groups[routeParam.replace('-group', '')] = $routeParams[routeParam];
         }
       });
-      console.log(settings);
     }
 
     return {
+      numberGroups: numberGroups,
       setGlobalStatus: setGlobalStatus,
       settings: settings,
       setDefaultSettings: setDefaultSettings,
