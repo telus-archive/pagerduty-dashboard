@@ -7,6 +7,15 @@ PagerDuty Dashboard
 Grabs services from [PagerDuty](http://www.pagerduty.com/), groups them, and then highlights issues.
 For details on the grouping process, refer to the "Conventions" section below.
 
+## Docker Image
+
+Running the [`gondek/pagerduty-dashboard` docker image](https://registry.hub.docker.com/u/gondek/pagerduty-dashboard/) starts the dashboard with the mock data. For deployment, you will have to copy in your API information. You could use a Dockerfile like this (where `config.json` contains the API information):
+
+```
+FROM gondek/pagerduty-dashboard
+ADD ./config.json /opt/pagerduty-dashboard/
+```
+
 ## Setup
 
 1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
