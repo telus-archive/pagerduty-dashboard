@@ -51,7 +51,7 @@ function addDependencyToService(dependencyName, service, services) {
     service.dependencies[dependencyName] = services[dependencyName];
   } else {
     try {
-      var pattern = new RegExp(dependency, 'i');
+      var pattern = new RegExp(dependencyName, 'i');
       _.each(services, function(s) {
         if (pattern.exec(s.name)) {
           service.dependencies[s.name] = s;
