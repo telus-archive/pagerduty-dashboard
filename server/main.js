@@ -3,12 +3,13 @@ var app = express();
 var server = require('http').createServer(app);
 var sockets = require('socket.io')(server);
 var hash = require('crypto').createHash;
+var path = require('path');
 
 var buildGroups = require('./groups');
 var dataProvider;
 var subdomain;
 
-app.use(express.static(__dirname + '/../public_html'));
+app.use(express.static(path.join(__dirname, '..', 'public_html')));
 
 module.exports = function(provider, domain, port) {
   dataProvider = provider; //could be the API or the mock data
