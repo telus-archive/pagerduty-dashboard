@@ -19,7 +19,7 @@ ADD ./config.json /opt/pagerduty-dashboard/
 ## Setup
 
 1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
-2. Copy `config.sample.json` to `config.json`, enter your API information, and change "mock" to `false`.
+2. Copy `config.sample.json` to `config.json`, enter your API and app information, and change `mock` to `false`.
 3. Install dependencies: `npm install`
 4. Build the front-end/client: `gulp`
 5. Start the back-end/server: `node app.js`

@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var sockets = require('socket.io')(server);
+var sockets = require('socket.io')();
 var hash = require('crypto').createHash;
 var path = require('path');
 
@@ -13,8 +13,11 @@ module.exports = function(provider, domain, port, base) {
   dataProvider = provider; //could be the API or the mock data
   subdomain = domain;
 
+  base = base.replace(/\/$/, '');
+
   app.use(base, express.static(path.join(__dirname, '..', 'public_html')));
-  sockets.path(base + '/socket.io');
+  sockets.path((base === '/' ? '' : base) + '/socket.io');
+  sockets.attach(server);
   server.listen(port, function() {
     console.log('Server listening at port %d', port);
   });

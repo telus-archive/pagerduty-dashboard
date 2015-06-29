@@ -104,7 +104,7 @@
       if (groupOrder < groupCutoff) {
         return false;
       }
-      if(group.features.length || group.site || group.server) {
+      if (group.features.length || group.site || group.server) {
         return true;
       }
       return false;
@@ -138,7 +138,9 @@
   */
 
   app.factory('socket', function($rootScope) {
-    var socket = io.connect();
+    var socket = io(window.location.origin, {
+      path: window.location.pathname + 'socket.io'
+    });
     return {
       on: function(eventName, callback) {
         socket.on(eventName, function() {
