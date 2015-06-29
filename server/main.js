@@ -9,18 +9,12 @@ var buildGroups = require('./groups');
 var dataProvider;
 var subdomain;
 
-function basePathRouter(req, res, next) {
-  var reqPath = /.*\/((assets|fonts|socket\.io)\/.*)/ig.exec(req.url) || [];
-  req.url = '/' + (reqPath[1] || '');
-  next();
-}
-
-module.exports = function(provider, domain, port) {
+module.exports = function(provider, domain, port, base) {
   dataProvider = provider; //could be the API or the mock data
   subdomain = domain;
 
-  app.use(basePathRouter);
-  app.use(express.static(path.join(__dirname, '..', 'public_html')));
+  app.use(base, express.static(path.join(__dirname, '..', 'public_html')));
+  sockets.path(base + '/socket.io');
   server.listen(port, function() {
     console.log('Server listening at port %d', port);
   });
