@@ -74,8 +74,11 @@ gulp.task('build-css-dashboard', function() {
     .pipe(gulp.dest(ASSETS_DIR));
 });
 
+var server;
 gulp.task('dev-server', function() {
-  var server = gls.new('app.js');
+  if(!server) {
+    server = gls.new('app.js');
+  }
   server.start();
 });
 
