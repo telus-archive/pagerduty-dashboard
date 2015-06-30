@@ -228,8 +228,8 @@
     }
 
     function toUrl() {
-      var url = $location.protocol() + '://' + $location.host() + ':' +
-        $location.port() + '/#/?';
+      var url = $location.absUrl();
+      url = url.substring(0, url.indexOf('#')) + '#/?';
 
       Object.keys(settings).forEach(function(setting) {
         if (!isDefault(setting) && setting.indexOf('group') === -1) {
