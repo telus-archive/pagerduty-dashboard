@@ -28,6 +28,8 @@ function buildService(rawService) {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
   };
+  service.isSiteOrServer =
+    service.properName === 'Site' || service.properName === 'Server';
   injectStatusProperties(service, rawService.status);
   return _.extend(service, rawService);
 }
@@ -83,7 +85,7 @@ function addServiceToGroup(service, groups) {
   if (!groups[groupName]) {
     groups[groupName] = newGroup(groupName);
   }
-  if (service.properName === 'Site' || service.properName === 'Server') {
+  if (service.isSiteOrServer) {
     groups[groupName][service.properName.toLowerCase()] = service;
   } else {
     groups[groupName].features.push(service);

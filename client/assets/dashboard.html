@@ -5,27 +5,17 @@
   <div class="details">
 
     <div class="serversite" ng-show="group.site || group.server">
-      <div class="server" ng-show="group.server">
-        <a ng-href="https://{{data.subdomain}}.pagerduty.com{{group.server.service_url}}">
-          <h3>Server</h3>
-          <div class="status" ng-class="group.server.status"></div>
-        </a>
-        <div class="clearfix"></div>
-      </div>
-      <div class="site" ng-show="group.site">
-        <a ng-href="https://{{data.subdomain}}.pagerduty.com{{group.site.service_url}}">
-          <h3>Site</h3>
-          <div class="status" ng-class="group.site.status"></div>
-        </a>
-        <div class="clearfix"></div>
-      </div>
+      <service class="server" service="group.server" ng-show="group.server"></service>
+      <service class="site" service="group.site" ng-show="group.site"></service>
       <div class="clearfix"></div>
     </div>
 
     <div class="dependencies header" ng-hide="group.dependencies.length === 0">
       <h3>Services</h3>
       <ul>
-        <service ng-repeat="service in group.dependencies | orderBy:'-statusNumber'"></service>
+        <li ng-repeat="service in group.dependencies | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
       </ul>
        <div class="clearfix"></div>
     </div>
@@ -35,9 +25,9 @@
     <div class="features" ng-hide="group.features.length === 0">
       <h3 ng-hide="group.isOtherGroup">Features</h3>
       <ul>
-        <service
-        ng-repeat="service in group.features | orderBy:'-statusNumber'"
-        ng-hide="feature.properName === 'Site' || feature.properName === 'Server'"></service>
+        <li ng-repeat="service in group.features | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
       </ul>
        <div class="clearfix"></div>
     </div>
@@ -45,7 +35,9 @@
     <div class="dependencies" ng-hide="group.dependencies.length === 0">
       <h3>Services</h3>
       <ul>
-        <service ng-repeat="service in group.dependencies | orderBy:'-statusNumber'"></service>
+        <li ng-repeat="service in group.dependencies | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
       </ul>
        <div class="clearfix"></div>
     </div>

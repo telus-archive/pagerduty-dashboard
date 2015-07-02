@@ -50,6 +50,7 @@
         hash = data.hash;
         $scope.loaded = true;
         $scope.data = data;
+        settings.subdomain = data.subdomain;
 
         if (settings.settings.scrollTop) {
           $('html, body').animate({
@@ -203,6 +204,7 @@
   app.factory('settings', function($routeParams, $location) {
     var settings = {};
     var globalStatus = '';
+    var subdomain;
     var numberGroups = 0;
     var defaults = {
       otherProducts: true,
@@ -281,6 +283,7 @@
 
     return {
       numberGroups: numberGroups,
+      subdomain: subdomain,
       setGlobalStatus: setGlobalStatus,
       settings: settings,
       setDefaultSettings: setDefaultSettings,
@@ -294,10 +297,16 @@
   Custom directives
   */
 
-  app.directive('service', function() {
+  app.directive('service', function(settings) {
     return {
       restrict: 'E',
-      templateUrl: 'assets/service.html'
+      templateUrl: 'assets/service.html',
+      scope: {
+        service: '='
+      },
+      link: function(scope) {
+        scope.subdomain = settings.subdomain;
+      }
     };
   });
 
