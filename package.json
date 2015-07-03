@@ -1,6 +1,6 @@
 {
   "name": "pagerduty-dashboard",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "PagerDuty Dashboard",
   "repository": {
     "type": "git",
