@@ -8,6 +8,7 @@ var path = require('path');
 var buildGroups = require('./groups');
 var dataProvider;
 var subdomain;
+var dataPackageCache;
 
 module.exports = function(provider, domain, port, base) {
   dataProvider = provider; //could be the API or the mock data
@@ -18,8 +19,15 @@ module.exports = function(provider, domain, port, base) {
   app.use(base, express.static(path.join(__dirname, '..', 'public_html')));
   sockets.path((base === '/' ? '' : base) + '/socket.io');
   sockets.attach(server);
+
   server.listen(port, function() {
     console.log('Server listening at port %d', port);
+  });
+
+  sockets.on('connection', function(socket) {
+    if (dataPackageCache) {
+      sendUpdate(dataPackageCache);
+    }
   });
 
   return {
@@ -29,7 +37,9 @@ module.exports = function(provider, domain, port, base) {
 
 function updateStatus() {
   get('services', function(services) {
-    sendUpdate(buildGroups(services));
+    dataPackageCache = makeUpdatePackage(services);
+    console.log(new Date() + ': Sending update.');
+    sendUpdate(dataPackageCache);
   });
 }
 
@@ -42,13 +52,17 @@ function get(resource, callback, params) {
   }, params);
 }
 
-function sendUpdate(data) {
-  console.log(new Date() + ': Sending update.');
-  sockets.emit('update', {
-    groups: data,
+function makeUpdatePackage(services) {
+  var groups = buildGroups(services);
+  return {
+    groups: groups,
     subdomain: subdomain,
-    hash: hash('sha256').update(JSON.stringify(data)).digest('hex')
-  });
+    hash: hash('sha256').update(JSON.stringify(groups)).digest('hex')
+  };
+}
+
+function sendUpdate(updatePackage) {
+  sockets.emit('update', updatePackage);
 }
 
 function sendError(error) {
