@@ -310,4 +310,14 @@
     };
   });
 
+  app.directive('status', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'assets/status.html',
+      scope: {
+        status: '='
+      }
+    };
+  });
+
 }());

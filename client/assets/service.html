@@ -1,7 +1,5 @@
 <a ng-href="https://{{subdomain}}.pagerduty.com{{service.service_url}}">
   <h3 ng-show="service.isSiteOrServer">{{service.properName}}</h3>
-  <div class="status" ng-class="service.status">
-    <span>!</span>
-  </div>
+  <status status="service.status"></status>
   <h4 ng-hide="service.isSiteOrServer">{{service.properName}}</h4>
 </a>
