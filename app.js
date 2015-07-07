@@ -1,7 +1,7 @@
 var config = require('./config.json');
 
 var dataProvider = config.mock ?
-  require('./test/mock-provider') :
+  require('./mock/mock-provider') :
   require('./server/api')(config.apiSubdomain, config.apiKey);
 
 var dashboard = require('./server/main')(

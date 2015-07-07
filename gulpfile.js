@@ -4,11 +4,15 @@ var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 var gls = require('gulp-live-server');
+var insert = require('gulp-insert');
 var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 
 var SOURCE_DIR = 'client';
+var JS_SOURCES = SOURCE_DIR + '/**/*.js';
+var HTML_SOURCES = SOURCE_DIR + '/**/*.html';
+var LESS_SOURCES = SOURCE_DIR + '/**/*.less';
 var PUBLIC_DIR = 'public_html';
 var ASSETS_DIR = 'public_html/assets';
 
@@ -19,21 +23,25 @@ gulp.task('copy-fonts', function() {
 });
 
 gulp.task('copy-html', function() {
-  return gulp.src(SOURCE_DIR + '/**/*.html')
+  return gulp.src(HTML_SOURCES)
     .pipe(changed(PUBLIC_DIR))
     .pipe(gulp.dest(PUBLIC_DIR));
 });
 
 gulp.task('build-js-dashboard', function() {
-  return gulp.src(SOURCE_DIR + '/dashboard.js')
+  return gulp.src(JS_SOURCES)
     .pipe(ngAnnotate())
+    .pipe(concat('dashboard.js'))
+    .pipe(insert.wrap('(function(){', '})();'))
     .pipe(uglify())
     .pipe(gulp.dest(ASSETS_DIR));
 });
 
 gulp.task('build-js-dashboard-dev', function() {
-  return gulp.src(SOURCE_DIR + '/dashboard.js')
+  return gulp.src(JS_SOURCES)
     .pipe(ngAnnotate())
+    .pipe(concat('dashboard.js'))
+    .pipe(insert.wrap('(function(){', '})();'))
     .pipe(gulp.dest(ASSETS_DIR));
 });
 
@@ -63,7 +71,7 @@ gulp.task('build-css-libs', function() {
 });
 
 gulp.task('build-css-dashboard', function() {
-  return gulp.src(SOURCE_DIR + '/dashboard.less')
+  return gulp.src(LESS_SOURCES)
     .pipe(less({
       paths: ['node_modules/bootstrap/less']
     }))
@@ -83,9 +91,9 @@ gulp.task('dev-server', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('client/**/*.html', ['copy-html']);
-  gulp.watch('client/*.js', ['build-js-dashboard-dev']);
-  gulp.watch('client/*.less', ['build-css-dashboard']);
+  gulp.watch(HTML_SOURCES, ['copy-html']);
+  gulp.watch(JS_SOURCES, ['build-js-dashboard-dev']);
+  gulp.watch(LESS_SOURCES, ['build-css-dashboard']);
   gulp.watch(['server/*', 'config.json'], ['dev-server']);
 });
 
