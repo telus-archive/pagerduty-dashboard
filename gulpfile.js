@@ -3,7 +3,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
-var gls = require('gulp-live-server');
+var nodemon = require('gulp-nodemon');
 var insert = require('gulp-insert');
 var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
@@ -82,19 +82,18 @@ gulp.task('build-css-dashboard', function() {
     .pipe(gulp.dest(ASSETS_DIR));
 });
 
-var server;
 gulp.task('dev-server', function() {
-  if(!server) {
-    server = gls.new('app.js');
-  }
-  server.start();
+  nodemon({
+    script: 'app.js',
+    watch: ['server', 'app.js', 'config.json'],
+    ext: 'js json'
+  });
 });
 
 gulp.task('watch', function() {
   gulp.watch(HTML_SOURCES, ['copy-html']);
   gulp.watch(JS_SOURCES, ['build-js-dashboard-dev']);
   gulp.watch(LESS_SOURCES, ['build-css-dashboard']);
-  gulp.watch(['server/*', 'config.json'], ['dev-server']);
 });
 
 gulp.task('build', [

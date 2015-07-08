@@ -27,6 +27,6 @@
     "gulp-less": "^3.0.3",
     "gulp-ng-annotate": "^1.0.0",
     "gulp-uglify": "^1.2.0",
-    "gulp-live-server": "^0.0.22"
+    "gulp-nodemon": "^2.0.3"
   }
 }
