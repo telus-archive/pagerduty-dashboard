@@ -1,4 +1,4 @@
-app.controller('customizationController', function($scope, settings) {
-  $scope.settings = settings.settings;
-  $scope.settingControl = settings;
+app.controller('customizationController', function($scope, dashboardSettings) {
+  $scope.settings = dashboardSettings.settings;
+  $scope.settingControl = dashboardSettings;
 });
