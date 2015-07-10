@@ -2,6 +2,7 @@
   "name": "pagerduty-dashboard",
   "version": "1.5.0",
   "description": "PagerDuty Dashboard",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/gondek/pagerduty-dashboard.git"
