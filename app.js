@@ -10,4 +10,5 @@ var dashboard = require('./server/main')(
   config.serverPort,
   config.basePath);
 
+dashboard.updateStatus();
 setInterval(dashboard.updateStatus, 1000 * config.updateInterval);
