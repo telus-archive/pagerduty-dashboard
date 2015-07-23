@@ -28,7 +28,7 @@ app.filter('filterGroups', function(dashboardSettings) {
     return false;
   }
 
-  return function(groups) {
+  return function(groups, status) {
     if (!groups) {
       return groups;
     }
@@ -38,7 +38,12 @@ app.filter('filterGroups', function(dashboardSettings) {
 
     groups.forEach(function(group) {
       if (isVisible(group)) {
-        (group.isOnline ? online : offline).push(group);
+        if(group.isOnline && status !== 'offline') {
+          online.push(group);
+        }
+        if(!group.isOnline && status !== 'online') {
+          offline.push(group);
+        }
       }
     });
 
