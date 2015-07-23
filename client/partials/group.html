@@ -1,0 +1,46 @@
+<div class="group"
+  ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
+  <h2><span>{{group.name}}</span></h2>
+  <div class="details">
+
+    <div class="serversite" ng-show="group.site || group.server">
+      <service class="server" service="group.server" ng-show="group.server"></service>
+      <service class="site" service="group.site" ng-show="group.site"></service>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="dependencies header" ng-hide="group.dependencies.length === 0">
+      <h3>Services</h3>
+      <ul>
+        <li ng-repeat="service in group.dependencies | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="features" ng-hide="group.features.length === 0">
+      <h3 ng-hide="group.isOtherGroup">Features</h3>
+      <ul>
+        <li ng-repeat="service in group.features | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
+    <div class="dependencies" ng-hide="group.dependencies.length === 0">
+      <h3>Services</h3>
+      <ul>
+        <li ng-repeat="service in group.dependencies | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+</div>
