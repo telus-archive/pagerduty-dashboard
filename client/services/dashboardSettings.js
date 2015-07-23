@@ -10,6 +10,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     animateHeadings: false,
     animatePage: true,
     hideScrollBar: false,
+    flashOnWarning: false,
     scrollTop: true
   };
 
@@ -64,6 +65,9 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     }
     if (settings.hideScrollBar) {
       classes += ' hide-scroll-bar';
+    }
+    if( settings.flashOnWarning) {
+      classes += ' animate-warnings';
     }
     return classes;
   }
