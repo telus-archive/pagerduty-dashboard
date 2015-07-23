@@ -58,6 +58,7 @@ If one or more services within the other group are failing, the group gets broke
 
 - Play sound on status change (or other event)
 - Display assigned users of failing services/features
+- Display outage time (either globally or group-wise)
 - Dependencies: Allow dependency chains of more than depth 1. Dependency failures trickle up the chain:
   - Immediate (distance 1) dependency failures give the dependent a status of `dependency-down` (a status worse than active and better than warning)
   - Upstream (distance >1) dependency failures give the dependent a status of `dependency-degraded` (a status worse than active and better than `dependency-down`)
