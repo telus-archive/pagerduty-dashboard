@@ -9,6 +9,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     otherIssues: true,
     animateHeadings: false,
     animatePage: true,
+    hideScrollBar: false,
     scrollTop: true
   };
 
@@ -60,6 +61,9 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     }
     if (settings.animateHeadings) {
       classes += ' animate-headings';
+    }
+    if (settings.hideScrollBar) {
+      classes += ' hide-scroll-bar';
     }
     return classes;
   }
