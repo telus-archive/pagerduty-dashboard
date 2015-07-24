@@ -39,7 +39,7 @@
 
       </div>
       <div class="col-sm-6">
-        <h3>Notifications</h3>
+        <h3>Animations</h3>
 
         <ul>
           <li>
@@ -60,6 +60,11 @@
               Also include the &quot;warning&quot; state in the above options
             </label>
           </li>
+        </ul>
+
+        <h3>Scrolling</h3>
+
+        <ul>
           <li>
             <label>
               <input type="checkbox" ng-model="settings.scrollTop" />
@@ -74,22 +79,33 @@
           </li>
         </ul>
 
+        <h3>Sounds</h3>
+
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.playSounds" />
+              Play sounds on status change
+            </label>
+          </li>
+        </ul>
+
         <h3>Legend</h3>
         <div class="legend">
-          <ul>
-            <li>
+          <ul class="row">
+            <li class="col-md-4 col-sm-6">
               <status status="'critical'"></status> Critical
             </li>
-            <li>
+            <li class="col-md-4 col-sm-6">
               <status status="'warning'"></status> Warning
             </li>
-            <li>
+            <li class="col-md-4 col-sm-6">
               <status status="'active'"></status> Active
             </li>
-            <li>
+            <li class="col-md-4 col-sm-6">
               <status status="'maintenance'"></status> Maintenance
             </li>
-            <li>
+            <li class="col-md-4 col-sm-6">
               <status status="'disabled'"></status> Disabled
             </li>
           </ul>

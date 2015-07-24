@@ -11,6 +11,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     animatePage: true,
     hideScrollBar: false,
     flashOnWarning: false,
+    playSounds: false,
     scrollTop: true
   };
 
