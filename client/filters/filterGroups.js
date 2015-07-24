@@ -9,6 +9,9 @@ app.filter('filterGroups', function(dashboardSettings) {
         if (a.isOtherGroup) {
           return 1;
         }
+        if (b.isOtherGroup) {
+          return -1;
+        }
         return a.features.length > b.features.length ? -1 : 1;
       }
       return aCutoff > bCutoff ? -1 : 1;
