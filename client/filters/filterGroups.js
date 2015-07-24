@@ -4,19 +4,19 @@ app.filter('filterGroups', function(dashboardSettings) {
   function compareGroups(a, b) {
     var aCutoff = s.groups[a.id] || 0;
     var bCutoff = s.groups[b.id] || 0;
-    if (a.status === b.status) {
-      if (aCutoff === bCutoff) {
-        if (a.isOtherGroup) {
-          return 1;
-        }
-        if (b.isOtherGroup) {
-          return -1;
-        }
-        return a.features.length > b.features.length ? -1 : 1;
-      }
+    if (a.status !== b.status) {
+      return a.statusNumber > b.statusNumber ? -1 : 1;
+    }
+    if (aCutoff !== bCutoff) {
       return aCutoff > bCutoff ? -1 : 1;
     }
-    return a.statusNumber > b.statusNumber ? -1 : 1;
+    if (a.isOtherGroup) {
+      return 1;
+    }
+    if (b.isOtherGroup) {
+      return -1;
+    }
+    return a.features.length > b.features.length ? -1 : 1;
   }
 
   function isVisible(group) {
@@ -41,10 +41,10 @@ app.filter('filterGroups', function(dashboardSettings) {
 
     groups.forEach(function(group) {
       if (isVisible(group)) {
-        if(group.isOnline && status !== 'offline') {
+        if (group.isOnline && status !== 'offline') {
           online.push(group);
         }
-        if(!group.isOnline && status !== 'online') {
+        if (!group.isOnline && status !== 'online') {
           offline.push(group);
         }
       }
