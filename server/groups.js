@@ -90,6 +90,9 @@ function addServiceToGroup(service, groups) {
   } else {
     groups[groupName].features.push(service);
   }
+  if(!service.isOnline) {
+    groups[groupName].numberFailures += 1;
+  }
 }
 
 function newGroup(groupName) {
@@ -99,6 +102,7 @@ function newGroup(groupName) {
     features: [],
     site: false,
     server: false,
+    numberFailures: 0,
     isOtherGroup: groupName === OTHER_PRODUCTS || groupName === OTHER_ISSUES
   };
 }

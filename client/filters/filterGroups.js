@@ -16,7 +16,13 @@ app.filter('filterGroups', function(dashboardSettings) {
     if (b.isOtherGroup) {
       return -1;
     }
-    return a.features.length > b.features.length ? -1 : 1;
+    if(a.numberFailures !== b.numberFailures) {
+      return a.numberFailures > b.numberFailures ? -1 : 1;
+    }
+    if(a.features.length !== b.features.length) {
+      return a.features.length > b.features.length ? -1 : 1;
+    }
+    return 0;
   }
 
   function isVisible(group) {
