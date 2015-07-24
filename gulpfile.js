@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var autoprefixer = require('gulp-autoprefixer');
-var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 var nodemon = require('gulp-nodemon');
@@ -18,13 +17,11 @@ var ASSETS_DIR = 'public_html/assets';
 
 gulp.task('copy-fonts', function() {
   return gulp.src('node_modules/bootstrap/fonts/*')
-    .pipe(changed(PUBLIC_DIR + '/fonts'))
     .pipe(gulp.dest(PUBLIC_DIR + '/fonts'));
 });
 
 gulp.task('copy-html', function() {
   return gulp.src(HTML_SOURCES)
-    .pipe(changed(PUBLIC_DIR))
     .pipe(gulp.dest(PUBLIC_DIR));
 });
 
@@ -48,12 +45,12 @@ gulp.task('build-js-dashboard-dev', function() {
 gulp.task('build-js-libs', function() {
   return gulp.src([
       'node_modules/jquery/dist/jquery.js',
+      'node_modules/salvattore/dist/salvattore.js',
       'node_modules/angular/angular.js',
       'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/angular-route/angular-route.js'
     ])
-    .pipe(changed(ASSETS_DIR))
     .pipe(uglify())
     .pipe(concat('libs.js'))
     .pipe(gulp.dest(ASSETS_DIR));
@@ -64,7 +61,6 @@ gulp.task('build-css-libs', function() {
       'node_modules/bootstrap/dist/css/bootstrap.css',
       'node_modules/bootstrap/dist/css/bootstrap-theme.css',
     ])
-    .pipe(changed(ASSETS_DIR))
     .pipe(concat('libs.css'))
     .pipe(cssmin())
     .pipe(gulp.dest(ASSETS_DIR));
