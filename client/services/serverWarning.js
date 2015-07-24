@@ -1,18 +1,28 @@
-app.factory('serverWarning', function(noty) {
+app.factory('serverWarning', function(noty, socket) {
   var SECONDS = 30;
   var timeoutWarning;
 
-  return {
-    reset: function() {
-      if (timeoutWarning !== undefined) {
-        noty.clear();
-        clearTimeout(timeoutWarning);
-      }
-      timeoutWarning = setTimeout(function() {
-        noty.update('warning',
-          'The server has not sent updates in the last ' +
-          SECONDS + ' seconds.');
-      }, 1000 * SECONDS);
+  function reset() {
+    if (timeoutWarning !== undefined) {
+      noty.clear();
+      clearTimeout(timeoutWarning);
     }
+    timeoutWarning = setTimeout(function() {
+      noty.update('warning',
+        'The server has not sent updates in the last ' +
+        SECONDS + ' seconds.');
+    }, 1000 * SECONDS);
+  }
+
+  reset();
+
+  socket.on('update', reset);
+  socket.on('error', function() {
+    reset();
+    noty.update('warning', 'Error communicating with PagerDuty: ' + data);
+  });
+
+  return {
+    reset: reset
   };
 });

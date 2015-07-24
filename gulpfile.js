@@ -3,6 +3,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 var nodemon = require('gulp-nodemon');
+var plumber = require('gulp-plumber');
 var insert = require('gulp-insert');
 var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
@@ -27,6 +28,7 @@ gulp.task('copy-html', function() {
 
 gulp.task('build-js-dashboard', function() {
   return gulp.src(JS_SOURCES)
+    .pipe(plumber())
     .pipe(ngAnnotate())
     .pipe(concat('dashboard.js'))
     .pipe(insert.wrap('(function(){', '})();'))
@@ -36,6 +38,7 @@ gulp.task('build-js-dashboard', function() {
 
 gulp.task('build-js-dashboard-dev', function() {
   return gulp.src(JS_SOURCES)
+    .pipe(plumber())
     .pipe(ngAnnotate())
     .pipe(concat('dashboard.js'))
     .pipe(insert.wrap('(function(){', '})();'))
@@ -68,6 +71,7 @@ gulp.task('build-css-libs', function() {
 
 gulp.task('build-css-dashboard', function() {
   return gulp.src(LESS_SOURCES)
+    .pipe(plumber())
     .pipe(less({
       paths: ['node_modules/bootstrap/less']
     }))
