@@ -2,9 +2,8 @@ app.factory('serverWarning', function(noty, socket) {
   var SECONDS = 30;
   var timeoutWarning;
 
-  function reset() {
+  function resetTimeout() {
     if (timeoutWarning !== undefined) {
-      noty.clear();
       clearTimeout(timeoutWarning);
     }
     timeoutWarning = setTimeout(function() {
@@ -14,9 +13,14 @@ app.factory('serverWarning', function(noty, socket) {
     }, 1000 * SECONDS);
   }
 
+  function reset() {
+    noty.clear();
+    resetTimeout();
+  }
+
   socket.on('update', reset);
   socket.on('error', function(data) {
-    reset();
+    resetTimeout();
     noty.update('warning', 'Error communicating with PagerDuty: ' + data);
   });
 
