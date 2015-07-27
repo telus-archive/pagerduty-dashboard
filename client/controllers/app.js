@@ -1,5 +1,5 @@
 app.controller('appController',
-  function($scope, dashboardSettings, onDataUpdate) {
+  function($scope, dashboardSettings, onDataUpdate, serverWarning) {
     $scope.loaded = false;
     $scope.getUiSettings = dashboardSettings.toBodyCssClass;
 
@@ -17,5 +17,7 @@ app.controller('appController',
         });
       }
     });
+
+    serverWarning.reset();
   }
 );

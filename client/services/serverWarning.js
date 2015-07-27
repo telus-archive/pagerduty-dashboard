@@ -14,10 +14,8 @@ app.factory('serverWarning', function(noty, socket) {
     }, 1000 * SECONDS);
   }
 
-  reset();
-
   socket.on('update', reset);
-  socket.on('error', function() {
+  socket.on('error', function(data) {
     reset();
     noty.update('warning', 'Error communicating with PagerDuty: ' + data);
   });
