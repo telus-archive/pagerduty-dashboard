@@ -1,8 +1,42 @@
-app.factory('audioNotification', function(onDataUpdate) {
+app.factory('audioNotification', function(dashboardSettings) {
+  var lastStatus;
+  var audioElement;
+
+  function getDegradeSound() {
+    return 'sounds/serviceDown.mp3';
+  }
+
+  function playDegradeSound() {
+    if (dashboardSettings.getSettings().playSounds) {
+      audioElement.src = getDegradeSound();
+      audioElement.play();
+    }
+  }
+
+  function getImproveSound() {
+    return 'sounds/serviceUp.mp3';
+  }
+
+  function playImproveSound() {
+    if (dashboardSettings.getSettings().playSounds) {
+      audioElement.src = getImproveSound();
+      audioElement.play();
+    }
+  }
+
   function init() {
-    var body = angular.element(document).find('body').eq(0);
-    var audio = angular.element('<audio></audio>');
-    body.append(audio);
+    audioElement = document.createElement('audio');
+
+    dashboardSettings.onGlobalStatusChange(function(status) {
+      if (lastStatus !== 'critical' && status === 'critical') {
+        playDegradeSound();
+      } else if (lastStatus !== 'warning' && lastStatus !== 'critical' && status === 'warning') {
+        playDegradeSound();
+      } else if (lastStatus !== status) {
+        playImproveSound();
+      }
+      lastStatus = status;
+    });
   }
 
   return {

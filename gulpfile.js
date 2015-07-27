@@ -13,6 +13,7 @@ var SOURCE_DIR = 'client';
 var JS_SOURCES = SOURCE_DIR + '/**/*.js';
 var HTML_SOURCES = SOURCE_DIR + '/**/*.html';
 var LESS_SOURCES = SOURCE_DIR + '/**/*.less';
+var SOUND_SOURCES = SOURCE_DIR + '/**/*.mp3';
 var PUBLIC_DIR = 'public_html';
 var ASSETS_DIR = 'public_html/assets';
 
@@ -23,6 +24,11 @@ gulp.task('copy-fonts', function() {
 
 gulp.task('copy-html', function() {
   return gulp.src(HTML_SOURCES)
+    .pipe(gulp.dest(PUBLIC_DIR));
+});
+
+gulp.task('copy-sounds', function() {
+  return gulp.src(SOUND_SOURCES)
     .pipe(gulp.dest(PUBLIC_DIR));
 });
 
@@ -99,6 +105,7 @@ gulp.task('watch', function() {
 gulp.task('build', [
   'copy-fonts',
   'copy-html',
+  'copy-sounds',
   'build-js-dashboard',
   'build-js-libs',
   'build-css-libs',

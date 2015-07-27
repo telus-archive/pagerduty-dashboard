@@ -11,8 +11,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     animatePage: true,
     hideScrollBar: false,
     flashOnWarning: false,
-    soundOnDegrade: false,
-    soundOnImprove: false,
+    playSounds: false,
     scrollTop: true
   };
 
@@ -55,6 +54,17 @@ app.factory('dashboardSettings', function($routeParams, $location) {
 
   function setGlobalStatus(status) {
     globalStatus = status;
+    statusChangeListeners.forEach(function(listener) {
+      try {
+        listener(globalStatus);
+      } catch (e) {}
+    });
+  }
+
+  var statusChangeListeners = [];
+
+  function onGlobalStatusChange(listener) {
+    statusChangeListeners.push(listener);
   }
 
   function toBodyCssClass() {
@@ -91,6 +101,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
   return {
     numberGroups: numberGroups,
     subdomain: subdomain,
+    onGlobalStatusChange: onGlobalStatusChange,
     setGlobalStatus: setGlobalStatus,
     getSettings: function() {
       return settings;
