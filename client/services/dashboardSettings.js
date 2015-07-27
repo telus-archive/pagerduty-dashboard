@@ -11,7 +11,8 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     animatePage: true,
     hideScrollBar: false,
     flashOnWarning: false,
-    playSounds: false,
+    soundOnDegrade: false,
+    soundOnImprove: false,
     scrollTop: true
   };
 
@@ -67,7 +68,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     if (settings.hideScrollBar) {
       classes += ' hide-scroll-bar';
     }
-    if( settings.flashOnWarning) {
+    if (settings.flashOnWarning) {
       classes += ' animate-warnings';
     }
     return classes;
@@ -91,7 +92,9 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     numberGroups: numberGroups,
     subdomain: subdomain,
     setGlobalStatus: setGlobalStatus,
-    settings: settings,
+    getSettings: function() {
+      return settings;
+    },
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
     toBodyCssClass: toBodyCssClass,

@@ -11,7 +11,7 @@ app.controller('appController',
       $scope.loaded = true;
       $scope.data = data;
       dashboardSettings.subdomain = data.subdomain;
-      if (dashboardSettings.settings.scrollTop) {
+      if (dashboardSettings.getSettings().scrollTop) {
         $('html, body').animate({
           scrollTop: 0
         });

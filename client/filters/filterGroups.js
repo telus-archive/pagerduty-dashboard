@@ -1,5 +1,5 @@
 app.filter('filterGroups', function(dashboardSettings) {
-  var s = dashboardSettings.settings;
+  var s = dashboardSettings.getSettings();
 
   function compareGroups(a, b) {
     var aCutoff = s.groups[a.id] || 0;

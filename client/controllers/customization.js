@@ -1,4 +1,4 @@
 app.controller('customizationController', function($scope, dashboardSettings) {
-  $scope.settings = dashboardSettings.settings;
+  $scope.settings = dashboardSettings.getSettings();
   $scope.settingControl = dashboardSettings;
 });
