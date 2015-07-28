@@ -1,10 +1,6 @@
 app.factory('dashboardSettings', function($routeParams, $location) {
   var settings = {};
 
-  var globalStatus = ''; // todo remove
-  var subdomain; // todo remove
-  var numberGroups = 0; // todo remove
-
   // do not prefix any property with "order-"
   var defaults = {
     orderCutoff: 0,
@@ -79,24 +75,8 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     return value;
   }
 
-  // todo remove
-  function setGlobalStatus(status) {
-    globalStatus = status;
-    statusChangeListeners.forEach(function(listener) {
-      try {
-        listener(globalStatus);
-      } catch (e) {}
-    });
-  }
-
-  var statusChangeListeners = [];
-
-  // todo remove
-  function onGlobalStatusChange(listener) {
-    statusChangeListeners.push(listener);
-  }
-
   function toBodyCssClass() {
+    /*
     var classes = globalStatus;
     if (settings.animatePage) {
       classes += ' animate-background';
@@ -110,7 +90,8 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     if (settings.flashOnWarning) {
       classes += ' animate-warnings';
     }
-    return classes;
+    return classes;*/
+    return ''; //TODO
   }
 
   function setSettingsfromRouteParams() {
@@ -129,20 +110,13 @@ app.factory('dashboardSettings', function($routeParams, $location) {
   }
 
   return {
-    numberGroups: numberGroups,
-    subdomain: subdomain,
     resetGroupOrder: resetGroupOrder,
-    onGlobalStatusChange: onGlobalStatusChange,
-    setGlobalStatus: setGlobalStatus,
-    getSettingsz: function() {
-      return settings;
-    },
-    // todo: remove settings:settings
     settings: settings,
     getValue: getValue,
     getGroupOrder: getGroupOrder,
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
+    // todo: remove bodycssclass
     toBodyCssClass: toBodyCssClass,
     setSettingsfromRouteParams: setSettingsfromRouteParams
   };

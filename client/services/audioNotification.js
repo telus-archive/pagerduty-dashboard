@@ -1,4 +1,4 @@
-app.factory('audioNotification', function(dashboardSettings) {
+app.factory('audioNotification', function(dashboardSettings, onDataChange) {
   var audioElements = {
     'critical': document.createElement('audio'),
     'warning': document.createElement('audio'),
@@ -20,21 +20,18 @@ app.factory('audioNotification', function(dashboardSettings) {
   }
 
   function init() {
-    var lastStatus;
-
     updateSound('active');
     updateSound('warning');
     updateSound('critical');
 
-    dashboardSettings.onGlobalStatusChange(function(status) {
-      if (lastStatus !== 'critical' && status === 'critical') {
+    onDataChange(function(newStatus, oldStatus) {
+      if (oldStatus !== 'critical' && newStatus === 'critical') {
         playSound('critical');
-      } else if (lastStatus !== 'warning' && status === 'warning') {
+      } else if (oldStatus !== 'warning' && newStatus === 'warning') {
         playSound('warning');
-      } else if (lastStatus !== status && status === 'active') {
+      } else if (oldStatus !== newStatus && newStatus === 'active') {
         playSound('active');
       }
-      lastStatus = status;
     });
   }
 

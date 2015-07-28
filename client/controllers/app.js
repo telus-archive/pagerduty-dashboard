@@ -1,10 +1,10 @@
 app.controller('appController', function(
-  $scope, dashboardSettings, onDataUpdate, serverWarning, audioNotification) {
+  $scope, dashboardSettings, onDataChange, serverWarning, audioNotification, processDataPackage) {
 
   $scope.loaded = false;
   $scope.getUiSettings = dashboardSettings.toBodyCssClass;
 
-  onDataUpdate(function(data) {
+  onDataChange(function(data) {
     $scope.cachedData = $scope.cachedData || data;
     if (data.groups.length !== $scope.cachedData.groups.length) {
       $scope.cachedData = data;

@@ -1,10 +1,12 @@
-app.factory('onDataUpdate', function(socket) {
-  var listeners = [];
+app.factory('onDataChange', function(socket) {
   var currentData;
+  var listeners = [];
 
-  function addListener(listener) {
+  function onDataChange(listener) {
     listeners.push(listener);
-    sendDataToListener(listener);
+    if (currentData) {
+      sendDataToListener(listener);
+    }
   }
 
   socket.on('update', function(data) {
@@ -16,11 +18,9 @@ app.factory('onDataUpdate', function(socket) {
 
   function sendDataToListener(listener) {
     try {
-      if (currentData) {
-        listener(currentData);
-      }
+      listener(currentData);
     } catch (e) {}
   }
 
-  return addListener;
+  return onDataChange;
 });
