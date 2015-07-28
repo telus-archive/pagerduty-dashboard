@@ -1,9 +1,7 @@
 app.filter('filterGroups', function(dashboardSettings) {
-  var s = dashboardSettings.getSettings();
-
   function compareGroups(a, b) {
-    var aCutoff = s.groups[a.id] || 0;
-    var bCutoff = s.groups[b.id] || 0;
+    var aCutoff = dashboardSettings.getGroupOrder(a.id);
+    var bCutoff = dashboardSettings.getGroupOrder(b.id);
     if (a.status !== b.status) {
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
@@ -26,8 +24,8 @@ app.filter('filterGroups', function(dashboardSettings) {
   }
 
   function isVisible(group) {
-    var groupOrder = s.groups[group.id] || 0;
-    var groupCutoff = s.groupCutoff || 0;
+    var groupOrder = dashboardSettings.getGroupOrder(group.id);
+    var groupCutoff = dashboardSettings.getValue('orderCutoff');
     if (groupOrder < groupCutoff) {
       return false;
     }

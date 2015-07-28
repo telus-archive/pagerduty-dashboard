@@ -1,32 +1,47 @@
 app.factory('dashboardSettings', function($routeParams, $location) {
   var settings = {};
-  var globalStatus = '';
-  var subdomain;
-  var numberGroups = 0;
+
+  var globalStatus = ''; // todo remove
+  var subdomain; // todo remove
+  var numberGroups = 0; // todo remove
+
+  // do not prefix any property with "order-"
   var defaults = {
-    otherProducts: true,
-    groupCutoff: 0,
-    otherIssues: true,
+    orderCutoff: 0,
+
     animateHeadings: false,
     animatePage: true,
-    hideScrollBar: false,
-    flashOnWarning: false,
-    playSounds: false,
-    scrollTop: true
+    animateWarnings: false,
+
+    scrollHideBar: false,
+    scrollGoToTop: true,
+
+    soundsPlay: false,
+    soundsActive: '',
+    soundsWarning: '',
+    soundsCritical: ''
   };
 
   setDefaultSettings();
 
   function setDefaultSettings() {
+    resetGroupOrder();
     Object.keys(defaults).forEach(function(setting) {
       settings[setting] = defaults[setting];
     });
-    settings.groups = {};
-    globalStatus = '';
+  }
+
+  function resetGroupOrder() {
+    Object.keys(settings).forEach(function(setting) {
+      if(setting.indexOf('order-') === 0) {
+        settings[setting] = undefined;
+      }
+    });
   }
 
   function isDefault(setting) {
-    return settings[setting] === defaults[setting];
+    var value = parseValue(settings[setting]);
+    return value === defaults[setting] || value === '';
   }
 
   function toUrl() {
@@ -34,24 +49,37 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     url = url.substring(0, url.indexOf('#')) + '#/?';
 
     Object.keys(settings).forEach(function(setting) {
-      if (!isDefault(setting) && setting.indexOf('group') === -1) {
-        url += setting + '=' + !defaults[setting] + '&';
-      }
-    });
-
-    if (!isDefault('groupCutoff')) {
-      url += 'groupCutoff=' + settings.groupCutoff + '&';
-    }
-
-    Object.keys(settings.groups).forEach(function(groupId) {
-      if (settings.groups[groupId] && settings.groups[groupId] !== '0') {
-        url += groupId + '-group=' + settings.groups[groupId] + '&';
+      if (!isDefault(setting)) {
+        url += setting + '=' + encodeParam(settings[setting]) + '&';
       }
     });
 
     return url;
   }
 
+  function encodeParam(value) {
+    return encodeURIComponent(value);
+  }
+
+  function decodeParam(value) {
+    return parseValue(decodeURIComponent(value));
+  }
+
+  function parseValue(value) {
+    if (value === 'true') {
+      return true;
+    }
+    if (value === 'false') {
+      return false;
+    }
+    var numberValue = parseInt(value);
+    if (numberValue || numberValue === 0) {
+      return numberValue;
+    }
+    return value;
+  }
+
+  // todo remove
   function setGlobalStatus(status) {
     globalStatus = status;
     statusChangeListeners.forEach(function(listener) {
@@ -63,6 +91,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
 
   var statusChangeListeners = [];
 
+  // todo remove
   function onGlobalStatusChange(listener) {
     statusChangeListeners.push(listener);
   }
@@ -87,25 +116,31 @@ app.factory('dashboardSettings', function($routeParams, $location) {
   function setSettingsfromRouteParams() {
     setDefaultSettings();
     Object.keys($routeParams).forEach(function(routeParam) {
-      if (defaults[routeParam] !== undefined) {
-        settings[routeParam] = ($routeParams[routeParam] === 'true');
-        if (routeParam === 'groupCutoff') {
-          settings[routeParam] = $routeParams[routeParam];
-        }
-      } else {
-        settings.groups[routeParam.replace('-group', '')] = $routeParams[routeParam];
-      }
+      settings[routeParam] = decodeParam($routeParams[routeParam]);
     });
+  }
+
+  function getValue(value) {
+    return settings[value];
+  }
+
+  function getGroupOrder(groupId) {
+    return settings['order-' + groupId] || 0;
   }
 
   return {
     numberGroups: numberGroups,
     subdomain: subdomain,
+    resetGroupOrder: resetGroupOrder,
     onGlobalStatusChange: onGlobalStatusChange,
     setGlobalStatus: setGlobalStatus,
-    getSettings: function() {
+    getSettingsz: function() {
       return settings;
     },
+    // todo: remove settings:settings
+    settings: settings,
+    getValue: getValue,
+    getGroupOrder: getGroupOrder,
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
     toBodyCssClass: toBodyCssClass,

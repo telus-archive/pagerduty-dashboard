@@ -3,12 +3,10 @@
 
   <form>
     <div class="url">
-      <input disabled type="text" class="form-control"
-      ng-value="settingControl.toUrl()">
+      <input disabled type="text" class="form-control" ng-value="url()">
       <div class="btn-group">
-        <a ng-href="{{settingControl.toUrl()}}" class="btn btn-success">Open</a>
-        <button ng-click="settingControl.setDefaultSettings()"
-        type="button" class="btn btn-warning">Reset All</button>
+        <a ng-href="{{url()}}" class="btn btn-success">Open</a>
+        <button ng-click="resetAll()" type="button" class="btn btn-warning">Reset All</button>
       </div>
     </div>
 
@@ -22,20 +20,18 @@
 
         <label class="group-order">
           Hide groups with an order lower than:
-          <input type="text" ng-model="settings.groupCutoff" />
+          <input type="text" ng-model="settings.orderCutoff" />
         </label>
 
         <ul class="group-order">
           <li ng-repeat="group in cachedData.groups">
             <label>
-              <input type="text" ng-model="settings.groups[group.id]" />
+              <input type="text" ng-model="settings['order-' + group.id]" />
               {{group.name}}
             </label>
           </li>
         </ul>
-
-        <button ng-click="settings.groups = {}" type="button"
-        class="btn btn-warning">Reset Order</button>
+        <button ng-click="resetGroupOrder()" type="button" class="btn btn-warning">Reset Order</button>
 
       </div>
       <div class="col-sm-6">
@@ -56,7 +52,7 @@
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.flashOnWarning" />
+              <input type="checkbox" ng-model="settings.animateWarnings" />
               Also include the &quot;warning&quot; state in the above options
             </label>
           </li>
@@ -67,13 +63,13 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.scrollTop" />
+              <input type="checkbox" ng-model="settings.scrollGoToTop" />
               Scroll-to-top on status change
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.hideScrollBar" />
+              <input type="checkbox" ng-model="settings.scrollHideBar" />
               Disable and hide the scroll bar
             </label>
           </li>
@@ -84,11 +80,34 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.playSounds" />
+              <input type="checkbox" ng-model="settings.soundsPlay" />
               Play sounds on status changes
             </label>
           </li>
         </ul>
+
+        <div ng-show="settings.soundsPlay">
+        <ul>
+          <li>
+            <label>
+              <input type="text" ng-model="settings.soundsActive" />
+              Active
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="text" ng-model="settings.soundsWarning" />
+              Warning
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="text" ng-model="settings.soundsCritical" />
+              Critical
+            </label>
+          </li>
+        </ul>
+        </div>
 
         <h3>Legend</h3>
         <div class="legend">
