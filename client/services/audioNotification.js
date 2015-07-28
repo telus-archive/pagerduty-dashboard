@@ -1,39 +1,38 @@
 app.factory('audioNotification', function(dashboardSettings) {
-  var lastStatus;
-  var audioElement;
+  var audioElements = {
+    'critical': document.createElement('audio'),
+    'warning': document.createElement('audio'),
+    'active': document.createElement('audio')
+  };
 
-  function getDegradeSound() {
-    return 'sounds/serviceDown.mp3';
+  function getDefaultSound(type) {
+    return 'sounds/' + type + '.mp3';
   }
 
-  function playDegradeSound() {
-    if (dashboardSettings.getSettings().playSounds) {
-      audioElement.src = getDegradeSound();
-      audioElement.play();
-    }
+  function updateSound(type) {
+    audioElements[type].src = getDefaultSound(type);
   }
 
-  function getImproveSound() {
-    return 'sounds/serviceUp.mp3';
-  }
-
-  function playImproveSound() {
-    if (dashboardSettings.getSettings().playSounds) {
-      audioElement.src = getImproveSound();
-      audioElement.play();
+  function playSound(type) {
+    if(dashboardSettings.getSettings().playSounds) {
+      audioElements[type].play();
     }
   }
 
   function init() {
-    audioElement = document.createElement('audio');
+    var lastStatus;
+
+    updateSound('active');
+    updateSound('warning');
+    updateSound('critical');
 
     dashboardSettings.onGlobalStatusChange(function(status) {
       if (lastStatus !== 'critical' && status === 'critical') {
-        playDegradeSound();
-      } else if (lastStatus !== 'warning' && lastStatus !== 'critical' && status === 'warning') {
-        playDegradeSound();
-      } else if (lastStatus !== status) {
-        playImproveSound();
+        playSound('critical');
+      } else if (lastStatus !== 'warning' && status === 'warning') {
+        playSound('warning');
+      } else if (lastStatus !== status && status === 'active') {
+        playSound('active');
       }
       lastStatus = status;
     });
