@@ -1,4 +1,4 @@
-var services = require('./mock-services.json');
+var services = require('./mock.services.json');
 var _ = require('underscore');
 
 var resources = [];
