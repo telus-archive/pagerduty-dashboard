@@ -24,7 +24,7 @@
         </label>
 
         <ul class="group-order">
-          <li ng-repeat="group in cachedData.groups">
+          <li ng-repeat="group in data.groups">
             <label>
               <input type="text" ng-model="settings['order-' + group.id]" />
               {{group.name}}
@@ -107,6 +107,7 @@
             </label>
           </li>
         </ul>
+        <!-- todo: add reset button -->
         </div>
 
         <h3>Legend</h3>

@@ -1,11 +1,9 @@
-app.controller('dashboardController', function($scope, dashboardSettings, onDataChange, processDataPackage) {
+app.controller('dashboardController', function(dashboardSettings, $scope, dataPackage) {
+  $scope.groups = [];
   dashboardSettings.setSettingsfromRouteParams();
 
-  $scope.noGroups = function() {
-    return !$scope.groups || $scope.groups.length === 0;
-  };
+  dataPackage.onChange(function(data, groupsToShow) {
+    $scope.groups = groupsToShow;
+  });
 
-  $scope.getGroups = function() {
-    return processDataPackage($scope.data).groups;
-  };
 });

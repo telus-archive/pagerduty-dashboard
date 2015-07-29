@@ -1,4 +1,4 @@
-app.factory('serverWarning', function(noty, socket) {
+app.factory('serverNotification', function(noty, socket) {
   var SECONDS = 30;
   var timeoutWarning;
 

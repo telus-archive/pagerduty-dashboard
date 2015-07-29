@@ -75,23 +75,6 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     return value;
   }
 
-  function toBodyCssClass() {
-    var classes = '';
-    if (settings.animatePage) {
-      classes += ' animate-background';
-    }
-    if (settings.animateHeadings) {
-      classes += ' animate-headings';
-    }
-    if (settings.scrollHideBar) {
-      classes += ' hide-scroll-bar';
-    }
-    if (settings.animateWarnings) {
-      classes += ' animate-warnings';
-    }
-    return classes;
-  }
-
   function setSettingsfromRouteParams() {
     setDefaultSettings();
     Object.keys($routeParams).forEach(function(routeParam) {
@@ -114,8 +97,6 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     getGroupOrder: getGroupOrder,
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
-    // todo: remove bodycssclass
-    toBodyCssClass: toBodyCssClass,
     setSettingsfromRouteParams: setSettingsfromRouteParams
   };
 });

@@ -1,4 +1,4 @@
-app.factory('processDataPackage', function(dashboardSettings) {
+app.factory('buildGroupsToShow', function(dashboardSettings) {
 
   function compareGroups(a, b) {
     var aCutoff = dashboardSettings.getGroupOrder(a.id);
@@ -36,16 +36,9 @@ app.factory('processDataPackage', function(dashboardSettings) {
     return false;
   }
 
-  function processDataPackage(data) {
-    var groups = data.groups.filter(isVisible).sort(compareGroups);
-    return {
-      status: groups[0] ? groups[0].status : '',
-      groups: groups,
-      hash: data.hash,
-      allGroups: data.groups,
-      subdomain: data.subdomain
-    };
+  function buildGroupsToShow(rawGroups) {
+    return rawGroups.filter(isVisible).sort(compareGroups);
   }
 
-  return processDataPackage;
+  return buildGroupsToShow;
 });

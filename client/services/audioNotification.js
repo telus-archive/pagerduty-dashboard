@@ -1,4 +1,4 @@
-app.factory('audioNotification', function(dashboardSettings, onDataChange) {
+app.factory('audioNotification', function(dashboardSettings) {
   var audioElements = {
     'critical': document.createElement('audio'),
     'warning': document.createElement('audio'),
@@ -19,11 +19,13 @@ app.factory('audioNotification', function(dashboardSettings, onDataChange) {
     }
   }
 
-  function init() {
+  function handleDataChange(data) {
     updateSound('active');
     updateSound('warning');
     updateSound('critical');
 
+/*
+  //todo
     onDataChange(function(newStatus, oldStatus) {
       if (oldStatus !== 'critical' && newStatus === 'critical') {
         playSound('critical');
@@ -32,10 +34,10 @@ app.factory('audioNotification', function(dashboardSettings, onDataChange) {
       } else if (oldStatus !== newStatus && newStatus === 'active') {
         playSound('active');
       }
-    });
+    });*/
   }
 
   return {
-    init: init
+    handleDataChange: handleDataChange
   };
 });

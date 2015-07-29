@@ -30,6 +30,14 @@ During development, running `gulp dev` will restart the server and/or run builds
 
 To use the sample data, set "mock" to `true` to `config.json`.
 
+## Testing
+
+1. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
+2. Install/update Selenium: `webdriver-manager update`
+3. Run Selenium: `webdriver-manager start`
+4. Run the server with `mock: true` and `port: 3000` (as in `config.sample.json`)
+5. Run `protractor protractor.js`
+
 ## Custom View Configuration
 
 To configure how the dashboard functions, go to `localhost:3000/#/customize` and note down the generated URL.
