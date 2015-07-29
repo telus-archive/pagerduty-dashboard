@@ -36,7 +36,7 @@ To use the sample data, set "mock" to `true` to `config.json`.
 2. Install/update Selenium: `webdriver-manager update`
 3. Run Selenium: `webdriver-manager start`
 4. Run the server with `mock: true` and `port: 3000` (as in `config.sample.json`)
-5. Run `protractor protractor.js`
+5. Run `protractor test/protractor.js`
 
 ## Custom View Configuration
 
