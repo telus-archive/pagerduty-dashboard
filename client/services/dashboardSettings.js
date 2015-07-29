@@ -76,22 +76,20 @@ app.factory('dashboardSettings', function($routeParams, $location) {
   }
 
   function toBodyCssClass() {
-    /*
-    var classes = globalStatus;
+    var classes = '';
     if (settings.animatePage) {
       classes += ' animate-background';
     }
     if (settings.animateHeadings) {
       classes += ' animate-headings';
     }
-    if (settings.hideScrollBar) {
+    if (settings.scrollHideBar) {
       classes += ' hide-scroll-bar';
     }
-    if (settings.flashOnWarning) {
+    if (settings.animateWarnings) {
       classes += ' animate-warnings';
     }
-    return classes;*/
-    return ''; //TODO
+    return classes;
   }
 
   function setSettingsfromRouteParams() {

@@ -1,7 +1,7 @@
 <a class="customize-link" href="#/customize"><span class="glyphicon glyphicon-cog"></span></a>
 
 <div class="groups">
-  <group ng-repeat="group in groups" group="group"></group>
+  <group ng-repeat="group in getGroups()" group="group"></group>
 </div>
 
 <div ng-show="noGroups()">
