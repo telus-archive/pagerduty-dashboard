@@ -5,8 +5,10 @@
     <div class="url">
       <input disabled type="text" class="form-control" ng-value="url()">
       <div class="btn-group">
-        <a ng-href="{{url()}}" class="btn btn-success">Open</a>
-        <button ng-click="resetAll()" type="button" class="btn btn-warning">Reset All</button>
+        <a ng-href="{{url()}}" class="btn btn-success" name="open">Open</a>
+        <button ng-click="resetAll()" type="button" class="btn btn-warning" name="reset">
+          Reset All
+        </button>
       </div>
     </div>
 
@@ -20,13 +22,13 @@
 
         <label class="group-order">
           Hide groups with an order lower than:
-          <input type="text" ng-model="settings.orderCutoff" />
+          <input type="text" name="orderCutoff" ng-model="settings.orderCutoff" />
         </label>
 
         <ul class="group-order">
           <li ng-repeat="group in data.groups">
             <label>
-              <input type="text" ng-model="settings['order-' + group.id]" />
+              <input type="text" ng-model="settings['order-' + group.id]" name="{{'order-' + group.id}}"/>
               {{group.name}}
             </label>
           </li>
@@ -87,27 +89,30 @@
         </ul>
 
         <div ng-show="settings.soundsPlay">
-        <ul>
-          <li>
-            <label>
-              <input type="text" ng-model="settings.soundsActive" />
-              Active
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="text" ng-model="settings.soundsWarning" />
-              Warning
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="text" ng-model="settings.soundsCritical" />
-              Critical
-            </label>
-          </li>
-        </ul>
-        <!-- todo: add reset button -->
+          <h3>Custom Sounds</h3>
+          <p>Insert a URL to an mp3. Leave blank for default sounds.</p>
+          <ul>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsActive" />
+                Active
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsWarning" />
+                Warning
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsCritical" />
+                Critical
+              </label>
+            </li>
+
+            <button ng-click="resetSounds()" type="button" class="btn btn-warning">Reset Sounds</button>
+          </ul>
         </div>
 
         <h3>Legend</h3>

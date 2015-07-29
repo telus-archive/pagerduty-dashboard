@@ -36,6 +36,12 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     });
   }
 
+  function resetSounds() {
+    settings.soundsActive = '';
+    settings.soundsWarning = '';
+    settings.soundsCritical = '';
+  }
+
   function isDefault(setting) {
     var value = parseValue(settings[setting]);
     return value === defaults[setting] || value === '';
@@ -105,6 +111,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
 
   return {
     resetGroupOrder: resetGroupOrder,
+    resetSounds: resetSounds,
     settings: settings,
     getValue: getValue,
     getGroupOrder: getGroupOrder,
