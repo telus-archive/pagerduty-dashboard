@@ -3,7 +3,7 @@ app.controller('appController', function($scope, dashboardSettings, dataPackage)
   $scope.loaded = false;
 
   function scrollToTopIfEnabled() {
-    if (dashboardSettings.getValue('scrollTop')) {
+    if (dashboardSettings.getValue('scrollGoToTop')) {
       $('html, body').animate({
         scrollTop: 0
       });
