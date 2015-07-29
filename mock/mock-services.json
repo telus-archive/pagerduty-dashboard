@@ -1,65 +1,91 @@
 {
   "services": [{
     "status": "active",
-    "name": "App 1: Server",
+    "name": "StableSite: Server",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server *]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Site",
     "description": "[dashboard-primary]"
   }, {
     "status": "active",
-    "name": "App 1: Feature A",
-    "description": "[dashboard-primary][dashboard-depends|App 4, App 5, App 7]"
+    "name": "StableSite: Login Page",
+    "description": "[dashboard-primary][dashboard-depends|Accounts Database]"
   }, {
     "status": "active",
-    "name": "App 1: Feature B",
+    "name": "StableSite: User Profile Page",
     "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Public API",
+    "description": "[dashboard-primary][dashboard-depends|Internal API]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Registration",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "warning",
+    "name": "UnstableSite: Site",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Server",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server (A|D)]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Login",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Registration",
+    "description": "[dashboard-primary][dashboard-depends|Accounts]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Site",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server (B|C)]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Server",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "warning",
+    "name": "UnreliableSite: Legacy Database",
+    "description": "[dashboard-primary][dashboard-depends|Logging]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Products Page",
+    "description": "[dashboard-primary][dashboard-depends|Pricing]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Login Page",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnreliableSite: Mobile App",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "Accounts Database"
   }, {
     "status": "disabled",
-    "name": "App 2: Site",
-    "description": "[dashboard-primary]"
-  }, {
-    "status": "active",
-    "name": "App 2: Server",
-    "description": "[dashboard-primary][dashboard-depends|App 4, App 5]"
-  }, {
-    "status": "warning",
-    "name": "App 2: Feature A",
-    "description": "[dashboard-primary]"
-  }, {
-    "status": "active",
-    "name": "App 2: Feature B",
-    "description": "[dashboard-primary][dashboard-depends|App 4, App 9, App 8]"
-  }, {
-    "status": "critical",
-    "name": "App 3: Site",
-    "description": "[dashboard-primary]"
-  }, {
-    "status": "critical",
-    "name": "App 3: Server",
-    "description": "[dashboard-primary]"
-  }, {
-    "status": "warning",
-    "name": "App 3: Feature A",
-    "description": "[dashboard-primary]"
+    "name": "Central Logging"
   }, {
     "status": "maintenance",
-    "name": "App 3: Feature B",
-    "description": "[dashboard-primary]"
+    "name": "Internal API"
   }, {
-    "status": "maintenance",
-    "name": "App 4"
-  }, {
-    "status": "disabled",
-    "name": "App 5"
-  }, {
-    "status": "warning",
-    "name": "App 6"
+    "status": "active",
+    "name": "Caching Server Alpha"
   }, {
     "status": "critical",
-    "name": "App 7"
+    "name": "Product Pricing"
+  }, {
+    "status": "warning",
+    "name": "Caching Server Beta"
+  }, {
+    "status": "critical",
+    "name": "Caching Server Charlie"
   }, {
     "status": "active",
-    "name": "App 8"
-  }, {
-    "status": "active",
-    "name": "App 9"
+    "name": "Caching Server Delta"
   }]
 }
