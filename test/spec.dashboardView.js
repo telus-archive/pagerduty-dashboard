@@ -1,63 +1,91 @@
 describe('Dashboard View', function() {
-  var URL = 'http://localhost:3000/dashboards/pagerduty/#/?';
 
   it('should have 5 groups by default mock data', function() {
-    browser.get(URL);
-    element.all(by.css('.group')).then(function(items) {
-      expect(items.length).toBe(5);
-    });
+    getUrl();
+    expect(groupRepeater().count()).toEqual(5);
   });
 
   it('should display no groups when the cutoff is too high', function() {
-    browser.get(URL + 'orderCutoff=1');
-    element.all(by.css('.group')).then(function(items) {
-      expect(items.length).toBe(0);
-    });
+    getUrl('orderCutoff=1');
+    expect(groupRepeater().count()).toEqual(0);
   });
 
   it('should display a message when there are no groups', function() {
-    browser.get(URL + 'orderCutoff=1');
+    getUrl('orderCutoff=1');
     expect(element(by.css('.no-groups')).isDisplayed()).toBeTruthy();
   });
 
   it('can have a flashing background by default', function() {
-    browser.get(URL);
-    expect(element(by.tagName('body')).getAttribute('class')).toMatch('animate-background');
+    getUrl();
+    expect(bodyCssClass()).toMatch('animate-background');
   });
 
   it('should not have a flashing background when disabled', function() {
-    browser.get(URL + 'animatePage=false');
-    expect(element(by.tagName('body')).getAttribute('class')).not.toMatch('animate-background');
+    getUrl('animatePage=false');
+    expect(bodyCssClass()).not.toMatch('animate-background');
   });
 
   it('can have flashing headers when enabled', function() {
-    browser.get(URL + 'animateHeadings=true');
-    expect(element(by.tagName('body')).getAttribute('class')).toMatch('animate-headings');
+    getUrl('animateHeadings=true');
+    expect(bodyCssClass()).toMatch('animate-headings');
   });
 
   it('should not have flashing headers by default', function() {
-    browser.get(URL);
-    expect(element(by.tagName('body')).getAttribute('class')).not.toMatch('animate-headings');
+    getUrl();
+    expect(bodyCssClass()).not.toMatch('animate-headings');
   });
 
   it('should allow flashing headers on and flashing background off at the same time', function() {
-    browser.get(URL + 'animateHeadings=true&animatePage=false');
-    var classes = element(by.tagName('body')).getAttribute('class');
-    expect(classes).not.toMatch('animate-background');
-    expect(classes).toMatch('animate-headings');
+    getUrl('animateHeadings=true&animatePage=false');
+    expect(bodyCssClass()).not.toMatch('animate-background');
+    expect(bodyCssClass()).toMatch('animate-headings');
   });
 
   it('should have a global "critical" state by default mock data', function() {
-    browser.get(URL);
-    expect(element(by.tagName('body')).getAttribute('class')).toMatch('critical');
+    getUrl();
+    expect(bodyCssClass()).toMatch('critical');
   });
 
   it('should have a global "warning" state when the mock "critical" services are hidden', function() {
-    browser.get(URL + 'animateHeadings=true&animatePage=false&order-unreliablesite=-1&order-other-issues=-1');
-    expect(element(by.tagName('body')).getAttribute('class')).toMatch('warning');
+    getUrl('order-unreliablesite=-1&order-other-issues=-1');
+    expect(bodyCssClass()).toMatch('warning');
+    expect(bodyCssClass()).not.toMatch('critical');
   });
 
+  it('should have 3 groups when the mock "critical" services are hidden', function() {
+    getUrl('order-unreliablesite=-1&order-other-issues=-1');
+    expect(groupRepeater().count()).toEqual(3);
+  });
+
+  it('should have a global "active" state when the failing services are hidden', function() {
+    getUrl('order-other-issues=-1&order-unstablesite=-1&order-unreliablesite=-1&');
+    expect(bodyCssClass()).toMatch('active');
+    expect(bodyCssClass()).not.toMatch('critical');
+    expect(bodyCssClass()).not.toMatch('warning');
+  });
+
+  it('should have 2 groups when the mock "critical" & "warning" services are hidden', function() {
+    getUrl('order-other-issues=-1&order-unstablesite=-1&order-unreliablesite=-1&');
+    expect(groupRepeater().count()).toEqual(2);
+  });
+
+  it('should correctly sort the default mock groups', function() {
+    getUrl();
+    expect(bodyCssClass()).not.toMatch('animate-headings');
+  });
 
   // ordering
 
 });
+
+function bodyCssClass() {
+  return element(by.tagName('body')).getAttribute('class');
+}
+
+function groupRepeater() {
+  return element.all(by.repeater('group in groups'));
+}
+
+function getUrl(append) {
+  browser.get('http://localhost:3000/dashboards/pagerduty/#/?' + (append || ''));
+}
