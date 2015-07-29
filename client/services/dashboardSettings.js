@@ -1,5 +1,6 @@
 app.factory('dashboardSettings', function($routeParams, $location) {
   var settings = {};
+  var listeners = [];
 
   // do not prefix any property with "order-"
   var defaults = {
@@ -29,7 +30,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
 
   function resetGroupOrder() {
     Object.keys(settings).forEach(function(setting) {
-      if(setting.indexOf('order-') === 0) {
+      if (setting.indexOf('order-') === 0) {
         settings[setting] = undefined;
       }
     });
@@ -80,6 +81,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     Object.keys($routeParams).forEach(function(routeParam) {
       settings[routeParam] = decodeParam($routeParams[routeParam]);
     });
+    notifySettingChange();
   }
 
   function getValue(value) {
@@ -90,6 +92,17 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     return settings['order-' + groupId] || 0;
   }
 
+  function notifySettingChange() {
+    listeners.forEach(function(listener) {
+      listener();
+    });
+  }
+
+  function onSettingChange(listener) {
+    listeners.push(listener);
+    listener();
+  }
+
   return {
     resetGroupOrder: resetGroupOrder,
     settings: settings,
@@ -97,6 +110,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     getGroupOrder: getGroupOrder,
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
-    setSettingsfromRouteParams: setSettingsfromRouteParams
+    setSettingsfromRouteParams: setSettingsfromRouteParams,
+    onUpdate: onSettingChange
   };
 });

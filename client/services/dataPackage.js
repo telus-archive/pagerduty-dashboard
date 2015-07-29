@@ -1,33 +1,43 @@
-app.factory('dataPackage',
-  function(socket, audioNotification, serverNotification, buildGroupsToShow) {
-    var data;
-    var groupsToShow;
-    var listeners = [];
+app.factory('dataPackage', function(socket, audioNotification,
+  serverNotification, buildGroupsToShow, dashboardSettings) {
 
-    function sendDataToListener(listener) {
-      listener(data, groupsToShow);
+  var data;
+  var groupsToShow;
+  var listeners = [];
+
+  function sendDataToListener(listener) {
+    listener(data, groupsToShow);
+  }
+
+  function sendUpdate() {
+    if (data) {
+      groupsToShow = buildGroupsToShow(data.groups);
+      audioNotification.handleDataChange(data);
+      listeners.forEach(sendDataToListener);
     }
+  }
 
-    socket.on('update', function(newData) {
-      if (!data || data.hash !== newData.hash) {
-        data = newData;
-        groupsToShow = buildGroupsToShow(data.groups);
-
-        audioNotification.handleDataChange(data);
-        serverNotification.reset();
-        listeners.forEach(sendDataToListener);
-      }
-    });
-
-    function onDataPackageChange(listener) {
-      listeners.push(listener);
-      if (data) {
-        sendDataToListener(listener);
-      }
-    }
-
+  dashboardSettings.onUpdate(sendUpdate);
+  socket.on('update', function(newData) {
     serverNotification.reset();
-    return {
-      onChange: onDataPackageChange
-    };
+    if (!data || data.hash !== newData.hash) {
+      data = newData;
+      sendUpdate();
+    }
   });
+
+  function onDataPackageChange(listener) {
+    listeners.push(listener);
+    if (data) {
+      sendDataToListener(listener);
+    }
+  }
+
+
+
+  serverNotification.reset();
+  return {
+    onChange: onDataPackageChange,
+    updateGroupsToShow: sendUpdate
+  };
+});
