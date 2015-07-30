@@ -23,7 +23,7 @@ During development, running `gulp dev` will restart the server and/or run builds
 
 ## Custom View Configuration
 
-To configure how the dashboard functions, go to `localhost:3000/#/customize` and note down the generated URL.
+To configure how the dashboard functions, click the gear icon in the bottom left corner. Then note down or bookmark the generated URL to have the settings you chose applied when you return.
 
 ## Conventions
 
