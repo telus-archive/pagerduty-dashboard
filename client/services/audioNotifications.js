@@ -31,10 +31,9 @@ app.factory('audioNotifications', function(dashboardSettings) {
   dashboardSettings.onUpdate(function() {
     eventTypes.forEach(function(eventType) {
       var settingName = 'sounds' + eventType.charAt(0).toUpperCase() + eventType.slice(1);
-      setEventSound(eventType, dashboardSettings.getValue('settingName'));
+      setEventSound(eventType, dashboardSettings.getValue(settingName));
     });
   });
-
 
   function handleDataChange(data, groupsToShow) {
     var globalStatus = groupsToShow[0] ? groupsToShow[0].status : '';
