@@ -1,5 +1,4 @@
-app.factory('dataPackage', function(socket, audioNotification,
-  serverNotification, buildGroupsToShow, dashboardSettings) {
+app.factory('dataPackage', function(socket, buildGroupsToShow, dashboardSettings, audioNotifications) {
 
   var data;
   var groupsToShow;
@@ -12,14 +11,14 @@ app.factory('dataPackage', function(socket, audioNotification,
   function sendUpdate() {
     if (data) {
       groupsToShow = buildGroupsToShow(data.groups);
-      audioNotification.handleDataChange(data);
+      audioNotifications.handleDataChange(data, groupsToShow);
       listeners.forEach(sendDataToListener);
     }
   }
 
   dashboardSettings.onUpdate(sendUpdate);
   socket.on('update', function(newData) {
-    serverNotification.reset();
+    //serverNotification.reset();
     if (!data || data.hash !== newData.hash) {
       data = newData;
       sendUpdate();
@@ -33,9 +32,6 @@ app.factory('dataPackage', function(socket, audioNotification,
     }
   }
 
-
-
-  serverNotification.reset();
   return {
     onChange: onDataPackageChange,
     updateGroupsToShow: sendUpdate

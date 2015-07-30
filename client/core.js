@@ -14,3 +14,8 @@ app.config(function($routeProvider) {
       redirectTo: '/'
     });
 });
+
+app.run(function(serverNotifications, audioNotifications){
+  serverNotifications.initialize();
+  audioNotifications.initialize();
+});

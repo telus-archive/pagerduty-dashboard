@@ -1,4 +1,4 @@
-app.factory('serverNotification', function(noty, socket) {
+app.factory('serverNotifications', function(noty, socket) {
   var SECONDS = 30;
   var timeoutWarning;
 
@@ -18,13 +18,13 @@ app.factory('serverNotification', function(noty, socket) {
     resetTimeout();
   }
 
-  socket.on('update', reset);
-  socket.on('error', function(data) {
-    resetTimeout();
-    noty.update('warning', 'Error communicating with PagerDuty: ' + data);
-  });
-
   return {
-    reset: reset
+    initialize: function() {
+      socket.on('update', reset);
+      socket.on('error', function(data) {
+        resetTimeout();
+        noty.update('warning', 'Error communicating with PagerDuty: ' + data);
+      });
+    }
   };
 });

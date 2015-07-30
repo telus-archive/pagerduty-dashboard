@@ -104,7 +104,7 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     });
   }
 
-  function onSettingChange(listener) {
+  function onUpdate(listener) {
     listeners.push(listener);
     listener();
   }
@@ -118,6 +118,6 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     setDefaultSettings: setDefaultSettings,
     toUrl: toUrl,
     setSettingsfromRouteParams: setSettingsfromRouteParams,
-    onUpdate: onSettingChange
+    onUpdate: onUpdate
   };
 });
