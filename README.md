@@ -4,7 +4,7 @@ PagerDuty Dashboard
 [![Dependency Status](https://david-dm.org/gondek/pagerduty-dashboard.svg)](https://david-dm.org/gondek/pagerduty-dashboard)
 [![devDependency Status](https://david-dm.org/gondek/pagerduty-dashboard/dev-status.svg)](https://david-dm.org/gondek/pagerduty-dashboard#info=devDependencies)
 
-![PagerDuty Dashboard screenshot](/doc/screenshot.png?raw=true)
+[![PagerDuty Dashboard screenshot](/doc/screenshot.png?raw=true)](/doc/screenshot-full.png?raw=true)
 
 Grabs services from [PagerDuty](http://www.pagerduty.com/), groups them, and then highlights issues.
 For details on the grouping process, refer to the "Conventions" section below.
@@ -19,7 +19,7 @@ For details on the grouping process, refer to the "Conventions" section below.
 
 You can then access the page at `localhost:<port>/<path>`
 
-During development, running `gulp dev` will restart the server and/or run builds when files change. To use the sample data, set `mock` to `true` in `config.json`.
+During development, running `gulp dev` will restart the server and/or run builds when files change. To use the sample data ([click here](/doc/screenshot-full.png?raw=true) for a preview), set `mock` to `true` in `config.json`.
 
 ## Custom View Configuration
 
