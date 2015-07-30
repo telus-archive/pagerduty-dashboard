@@ -32,11 +32,12 @@ To use the sample data, set "mock" to `true` to `config.json`.
 
 ## Testing
 
-1. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
-2. Install/update Selenium: `webdriver-manager update`
-3. Run Selenium: `webdriver-manager start`
-4. Run the server with `mock: true` and `port: 3000` (as in `config.sample.json`)
-5. Run `protractor test/protractor.js`
+1. Follow the setup steps above
+2. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
+3. Install/update Selenium: `webdriver-manager update`
+4. Run Selenium: `webdriver-manager start`
+5. Run the server with `mock: true` and `port: 3000` (as in `config.sample.json`)
+6. Run `protractor test/protractor.js`
 
 ## Custom View Configuration
 
