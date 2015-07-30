@@ -44,6 +44,7 @@ app.factory('audioNotifications', function(dashboardSettings) {
     } else if (lastStatus !== globalStatus && globalStatus === 'active') {
       playSound('active');
     }
+    lastStatus = globalStatus;
   }
 
   function initialize() {
