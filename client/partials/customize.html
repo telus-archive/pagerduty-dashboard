@@ -14,6 +14,27 @@
 
     <div class="row">
       <div class="col-sm-6">
+        <h3>Legend</h3>
+        <div class="legend">
+          <ul class="row">
+            <li class="col-md-4 col-sm-6">
+              <status status="'critical'"></status> Critical
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'warning'"></status> Warning
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'active'"></status> Active
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'maintenance'"></status> Maintenance
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'disabled'"></status> Disabled
+            </li>
+          </ul>
+        </div>
+
         <h3>Group Order</h3>
 
         <p>Groups are always sorted by status first.
@@ -112,27 +133,6 @@
             </li>
 
             <button ng-click="resetSounds()" type="button" class="btn btn-warning">Reset Sounds</button>
-          </ul>
-        </div>
-
-        <h3>Legend</h3>
-        <div class="legend">
-          <ul class="row">
-            <li class="col-md-4 col-sm-6">
-              <status status="'critical'"></status> Critical
-            </li>
-            <li class="col-md-4 col-sm-6">
-              <status status="'warning'"></status> Warning
-            </li>
-            <li class="col-md-4 col-sm-6">
-              <status status="'active'"></status> Active
-            </li>
-            <li class="col-md-4 col-sm-6">
-              <status status="'maintenance'"></status> Maintenance
-            </li>
-            <li class="col-md-4 col-sm-6">
-              <status status="'disabled'"></status> Disabled
-            </li>
           </ul>
         </div>
       </div>
