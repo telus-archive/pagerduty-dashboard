@@ -1,5 +1,5 @@
 app.factory('audioNotifications', function(dashboardSettings) {
-  var lastStatus;
+  var lastStatus = 'active';
   var audioElements = {
     'critical': document.createElement('audio'),
     'warning': document.createElement('audio'),
