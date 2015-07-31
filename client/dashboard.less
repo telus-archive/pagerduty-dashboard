@@ -311,25 +311,27 @@ Pulsing Background
 ==================================
 */
 
+@animation-length: 3s;
+
 .animate-headings {
   .group.critical {
     h2 span {
-      animation: pulse-critical-frames 2s infinite alternate;
+      animation: pulse-critical-frames @animation-length infinite alternate;
     }
   }
   &.animate-warnings .group.warning {
     h2 span {
-      animation: pulse-warning-frames 2s infinite alternate;
+      animation: pulse-warning-frames @animation-length infinite alternate;
     }
   }
 }
 
 body.critical.animate-background {
-  animation: pulse-critical-frames 2s infinite alternate;
+  animation: pulse-critical-frames @animation-length infinite alternate;
 }
 
 body.warning.animate-warnings.animate-background {
-  animation: pulse-warning-frames 2s infinite alternate;
+  animation: pulse-warning-frames @animation-length infinite alternate;
 }
 
 @keyframes pulse-critical-frames {
