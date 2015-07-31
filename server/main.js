@@ -53,10 +53,9 @@ function get(resource, callback, params) {
 }
 
 function makeUpdatePackage(services) {
-  var groups = buildGroups(services);
+  var groups = buildGroups(services, subdomain);
   return {
     groups: groups,
-    subdomain: subdomain,
     hash: hash('sha256').update(JSON.stringify(groups)).digest('hex')
   };
 }

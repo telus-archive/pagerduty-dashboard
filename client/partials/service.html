@@ -1,5 +1,5 @@
 <div>
-  <a ng-href="https://{{subdomain}}.pagerduty.com{{service.service_url}}">
+  <a ng-href="{{service.link}}">
     <h3 ng-show="service.isSiteOrServer">{{service.properName}}</h3>
     <status status="service.status"></status>
     <h4 ng-hide="service.isSiteOrServer">{{service.properName}}</h4>

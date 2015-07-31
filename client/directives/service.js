@@ -5,10 +5,6 @@ app.directive('service', function(dashboardSettings) {
     templateUrl: 'partials/service.html',
     scope: {
       service: '='
-    },
-    link: function(scope) {
-      // todo - fix
-      scope.subdomain = dashboardSettings.subdomain;
     }
   };
 });

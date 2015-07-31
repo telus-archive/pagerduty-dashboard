@@ -4,7 +4,10 @@ var _ = require('underscore');
 Exports and processing workflow
 */
 
-module.exports = function(rawServices) {
+var subdomain;
+
+module.exports = function(rawServices, domain) {
+  subdomain = domain;
   return buildGroups(buildServices(rawServices));
 };
 
@@ -27,6 +30,7 @@ function buildService(rawService) {
   var service = {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
+    link: 'https://' + subdomain + '.pagerduty.com' + rawService.service_url
   };
   service.isSiteOrServer =
     service.properName === 'Site' || service.properName === 'Server';
