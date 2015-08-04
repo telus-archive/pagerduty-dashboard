@@ -10,6 +10,7 @@
   "dependencies": {
     "angular": "^1.4.0",
     "angular-route": "^1.4.0",
+    "angular-timer": "^1.2.0",
     "bootstrap": "^3.3.4",
     "express": "^4.12.4",
     "jquery": "^2.1.4",

@@ -41,6 +41,15 @@
        <div class="clearfix"></div>
     </div>
 
+    <div class="downtime" ng-hide="group.isOnline">
+      <timer start-time="group.lastIncidentTimestamp" max-time-unit="'hour'">
+        Down for:
+        <span ng-show="hours">{{hours}} hour{{hoursS}},</span>
+        <span ng-show="minutes">{{minutes}} minute{{minutesS}},</span>
+        <span>{{sseconds}} second{{secondsS}}</span>
+      </timer>
+    </div>
+
     <div class="clearfix"></div>
   </div>
 </div>

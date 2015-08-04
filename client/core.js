@@ -1,4 +1,4 @@
-var app = angular.module('pagerdutyDashboard', ['ngRoute']);
+var app = angular.module('pagerdutyDashboard', ['ngRoute', 'timer']);
 
 app.config(function($routeProvider) {
   $routeProvider

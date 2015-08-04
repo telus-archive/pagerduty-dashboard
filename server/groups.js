@@ -94,7 +94,7 @@ function addServiceToGroup(service, groups) {
   } else {
     groups[groupName].features.push(service);
   }
-  if(!service.isOnline) {
+  if (!service.isOnline) {
     groups[groupName].numberFailures += 1;
   }
 }
@@ -126,9 +126,15 @@ function processGroup(group) {
     });
   });
 
-  var worseStatus = worstService ? worstService.status : 'disabled';
+  var worseStatus = 'disabled';
+  var lastIncidentTimestamp = 0;
+  if (worstService) {
+    worseStatus = worstService.status;
+    lastIncidentTimestamp = Date.parse(worstService.last_incident_timestamp);
+  }
 
   injectStatusProperties(group, worseStatus);
+  group.lastIncidentTimestamp = lastIncidentTimestamp;
   group.dependencies = _.toArray(dependencies);
 
   return group;
