@@ -1,4 +1,7 @@
 app.factory('audioNotifications', function(dashboardSettings) {
+  var AUDIO_INTERVAL_TIME = 1000 * 60 * 30;
+  var audioInterval;
+
   var lastStatus = 'active';
   var audioElements = {
     'critical': document.createElement('audio'),
@@ -28,6 +31,16 @@ app.factory('audioNotifications', function(dashboardSettings) {
     }
   }
 
+  function setStatusState(type) {
+    if (audioInterval) {
+      clearInterval(audioInterval);
+    }
+    playSound(type);
+    audioInterval = setInterval(function() {
+      playSound(type);
+    }, AUDIO_INTERVAL_TIME);
+  }
+
   dashboardSettings.onUpdate(function() {
     eventTypes.forEach(function(eventType) {
       var settingName = 'sounds' + eventType.charAt(0).toUpperCase() + eventType.slice(1);
@@ -38,7 +51,7 @@ app.factory('audioNotifications', function(dashboardSettings) {
   function handleDataChange(data, groupsToShow) {
     var globalStatus = groupsToShow[0] ? groupsToShow[0].status : '';
     if (lastStatus !== globalStatus) {
-      playSound(globalStatus);
+      setStatusState(globalStatus);
       lastStatus = globalStatus;
     }
   }
