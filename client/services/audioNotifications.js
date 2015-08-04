@@ -23,7 +23,7 @@ app.factory('audioNotifications', function(dashboardSettings) {
   }
 
   function playSound(type) {
-    if (dashboardSettings.getValue('soundsPlay')) {
+    if (dashboardSettings.getValue('soundsPlay') && audioElements[type]) {
       audioElements[type].play();
     }
   }
@@ -37,14 +37,10 @@ app.factory('audioNotifications', function(dashboardSettings) {
 
   function handleDataChange(data, groupsToShow) {
     var globalStatus = groupsToShow[0] ? groupsToShow[0].status : '';
-    if (lastStatus !== 'critical' && globalStatus === 'critical') {
-      playSound('critical');
-    } else if (lastStatus !== 'warning' && globalStatus === 'warning') {
-      playSound('warning');
-    } else if (lastStatus !== globalStatus && globalStatus === 'active') {
-      playSound('active');
+    if (lastStatus !== globalStatus) {
+      playSound(globalStatus);
+      lastStatus = globalStatus;
     }
-    lastStatus = globalStatus;
   }
 
   function initialize() {
