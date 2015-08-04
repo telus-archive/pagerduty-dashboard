@@ -2,7 +2,7 @@ app.factory('audioNotifications', function(dashboardSettings) {
   var AUDIO_INTERVAL_TIME = 1000 * 60 * 30;
   var audioInterval;
 
-  var lastStatus = 'active';
+  var currentStatus = 'active';
   var audioElements = {
     'critical': document.createElement('audio'),
     'warning': document.createElement('audio'),
@@ -25,20 +25,19 @@ app.factory('audioNotifications', function(dashboardSettings) {
     }
   }
 
-  function playSound(type) {
-    if (dashboardSettings.getValue('soundsPlay') && audioElements[type]) {
-      audioElements[type].play();
+  function playSound() {
+    if (dashboardSettings.getValue('soundsPlay') && audioElements[currentStatus]) {
+      audioElements[currentStatus].play();
     }
   }
 
-  function setStatusState(type) {
+  function changeCurrentStatus(status) {
+    currentStatus = status;
     if (audioInterval) {
       clearInterval(audioInterval);
     }
-    playSound(type);
-    audioInterval = setInterval(function() {
-      playSound(type);
-    }, AUDIO_INTERVAL_TIME);
+    playSound();
+    audioInterval = setInterval(playSound, AUDIO_INTERVAL_TIME);
   }
 
   dashboardSettings.onUpdate(function() {
@@ -50,9 +49,8 @@ app.factory('audioNotifications', function(dashboardSettings) {
 
   function handleDataChange(data, groupsToShow) {
     var globalStatus = groupsToShow[0] ? groupsToShow[0].status : '';
-    if (lastStatus !== globalStatus) {
-      setStatusState(globalStatus);
-      lastStatus = globalStatus;
+    if (currentStatus !== globalStatus) {
+      changeCurrentStatus(globalStatus);
     }
   }
 
