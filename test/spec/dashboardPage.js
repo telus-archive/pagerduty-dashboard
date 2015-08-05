@@ -1,4 +1,4 @@
-util = require('./specUtilities');
+util = require('./utilities');
 
 describe('The dashboard page', function() {
 

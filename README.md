@@ -66,7 +66,7 @@ ADD ./config.json /opt/pagerduty-dashboard/
 2. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
 3. Install/update Selenium: `webdriver-manager update`
 4. Run Selenium: `webdriver-manager start`
-5. Run the server with `mock: true` and `port: 3000` (as in `config.sample.json`)
+5. Run the server with the port, path and mock settings from `config.sample.json`
 6. Run `protractor test/protractor.js`
 
 ## Ideas
