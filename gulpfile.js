@@ -54,7 +54,6 @@ gulp.task('build-js-dashboard-dev', function() {
 gulp.task('build-js-libs', function() {
   return gulp.src([
       'node_modules/jquery/dist/jquery.js',
-      'node_modules/salvattore/dist/salvattore.js',
       'node_modules/angular/angular.js',
       'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
