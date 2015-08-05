@@ -14,7 +14,11 @@
 <body ng-controller="appController" ng-class="getBodyCssClasses()">
   <div class="container">
   	<div ng-hide="loaded" class="loader"></div>
-    <ng-view ng-show="loaded"></ng-view>
+    <ng-view ng-show="loaded">
+      <!--[if lte IE 8]>
+        <p class="outdated">You are using an outdated version of Internet Explorer. Please upgrade to IE 9 or higher to use this dashboard.</p>
+      <![endif]-->
+    </ng-view>
   </div>
 </body>
 </html>
