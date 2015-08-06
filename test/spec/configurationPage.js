@@ -33,9 +33,9 @@ describe('The customization page', function() {
 
     element(by.name('reset')).click();
     expect(element(by.name('url')).getAttribute('value')).toEqual(defaultUrl);
-    expect(element(by.name('animateHeadings')).isSelected()).toBe(false);
-    expect(element(by.name('animatePage')).isSelected()).toBe(true);
-    expect(element(by.name('soundsPlay')).isSelected()).toBe(false);
+    expect(element(by.name('animateHeadings')).isSelected()).toBeFalsy();
+    expect(element(by.name('animatePage')).isSelected()).toBeTruthy();
+    expect(element(by.name('soundsPlay')).isSelected()).toBeFalsy();
     expect(element(by.name('soundsActive')).getAttribute('value')).toEqual('');
     util.sortOrderInputBoxNames.forEach(function(name) {
       expect(element(by.name(name)).getAttribute('value')).toEqual('');
@@ -50,9 +50,9 @@ describe('The customization page', function() {
       expect(element(by.name(name)).getAttribute('value')).toEqual('');
     });
     // and leave the rest alone
-    expect(element(by.name('animateHeadings')).isSelected()).toBe(true);
-    expect(element(by.name('animatePage')).isSelected()).toBe(false);
-    expect(element(by.name('soundsPlay')).isSelected()).toBe(true);
+    expect(element(by.name('animateHeadings')).isSelected()).toBeTruthy();
+    expect(element(by.name('animatePage')).isSelected()).toBeFalsy();
+    expect(element(by.name('soundsPlay')).isSelected()).toBeTruthy();
     expect(element(by.name('soundsActive')).getAttribute('value')).toEqual('sounds/warning.mp3');
 
   });
@@ -66,9 +66,9 @@ describe('The customization page', function() {
     util.sortOrderInputBoxNames.forEach(function(name) {
       expect(element(by.name(name)).getAttribute('value')).toEqual('1');
     });
-    expect(element(by.name('soundsPlay')).isSelected()).toBe(true);
-    expect(element(by.name('animateHeadings')).isSelected()).toBe(true);
-    expect(element(by.name('animatePage')).isSelected()).toBe(false);
+    expect(element(by.name('soundsPlay')).isSelected()).toBeTruthy();
+    expect(element(by.name('animateHeadings')).isSelected()).toBeTruthy();
+    expect(element(by.name('animatePage')).isSelected()).toBeFalsy();
   });
 
   it('should correctly link the "open" button', function() {
@@ -96,9 +96,9 @@ describe('The customization page', function() {
     util.sortOrderInputBoxNames.forEach(function(name) {
       expect(element(by.name(name)).getAttribute('value')).toEqual('1');
     });
-    expect(element(by.name('animateHeadings')).isSelected()).toBe(true);
-    expect(element(by.name('animatePage')).isSelected()).toBe(false);
-    expect(element(by.name('soundsPlay')).isSelected()).toBe(true);
+    expect(element(by.name('animateHeadings')).isSelected()).toBeTruthy();
+    expect(element(by.name('animatePage')).isSelected()).toBeFalsy();
+    expect(element(by.name('soundsPlay')).isSelected()).toBeTruthy();
     expect(element(by.name('soundsActive')).getAttribute('value')).toEqual('sounds/warning.mp3');
   });
 });
