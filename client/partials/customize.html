@@ -3,7 +3,7 @@
 
   <form>
     <div class="url">
-      <input disabled type="text" class="form-control" ng-value="url()">
+      <input disabled type="text" class="form-control" ng-value="url()" name="url">
       <div class="btn-group">
         <a ng-href="{{url()}}" class="btn btn-success" name="open">Open</a>
         <button ng-click="resetAll()" type="button" class="btn btn-warning" name="reset">
@@ -54,7 +54,7 @@
             </label>
           </li>
         </ul>
-        <button ng-click="resetGroupOrder()" type="button" class="btn btn-warning">Reset Order</button>
+        <button ng-click="resetGroupOrder()" type="button" class="btn btn-warning" name="resetGroupOrder">Reset Order</button>
 
       </div>
       <div class="col-sm-6">
@@ -63,19 +63,19 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.animateHeadings" />
+              <input type="checkbox" ng-model="settings.animateHeadings" name="animateHeadings"/>
               Animated group headers when &quot;critical&quot;
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.animatePage" />
+              <input type="checkbox" ng-model="settings.animatePage" name="animatePage"/>
               Animated background when &quot;critical&quot;
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.animateWarnings" />
+              <input type="checkbox" ng-model="settings.animateWarnings" name="animateWarnings"/>
               Also include the &quot;warning&quot; state in the above options
             </label>
           </li>
@@ -84,13 +84,13 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.scrollGoToTop" />
+              <input type="checkbox" ng-model="settings.scrollGoToTop" name="scrollGoToTop"/>
               Scroll-to-top on status change
             </label>
           </li>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.scrollHideBar" />
+              <input type="checkbox" ng-model="settings.scrollHideBar" name="scrollHideBar"/>
               Disable and hide the scroll bar
             </label>
           </li>
@@ -99,7 +99,7 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.multiColumn" />
+              <input type="checkbox" ng-model="settings.multiColumn" name="multiColumn"/>
               Enable the &ge;1200px width multi-column layout
             </label>
           </li>
@@ -110,7 +110,7 @@
         <ul>
           <li>
             <label>
-              <input type="checkbox" ng-model="settings.soundsPlay" />
+              <input type="checkbox" ng-model="settings.soundsPlay" name="soundsPlay" />
               Play sounds on status changes
             </label>
           </li>
@@ -122,24 +122,24 @@
           <ul>
             <li>
               <label>
-                <input type="text" ng-model="settings.soundsActive" />
+                <input type="text" ng-model="settings.soundsActive" name="soundsActive" />
                 Active
               </label>
             </li>
             <li>
               <label>
-                <input type="text" ng-model="settings.soundsWarning" />
+                <input type="text" ng-model="settings.soundsWarning" name="soundsWarning"/>
                 Warning
               </label>
             </li>
             <li>
               <label>
-                <input type="text" ng-model="settings.soundsCritical" />
+                <input type="text" ng-model="settings.soundsCritical" name="soundsCritical"/>
                 Critical
               </label>
             </li>
 
-            <button ng-click="resetSounds()" type="button" class="btn btn-warning">Reset Sounds</button>
+            <button ng-click="resetSounds()" type="button" class="btn btn-warning" name="resetSounds">Reset Sounds</button>
           </ul>
         </div>
       </div>

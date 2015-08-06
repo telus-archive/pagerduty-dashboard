@@ -61,44 +61,34 @@ describe('The dashboard settings service', function() {
     ]);
   });
 
-  it('should apply the animation settings', function() {});
+  it('should apply a plain background if flashing is disabled', function() {
+    element(by.name('animatePage')).click();
 
-  /*
-
-  it('can have a flashing background by default', function() {
-    dashboardUrl();
-    expect(bodyCssClass()).toMatch('animate-background');
+    util.clickOpenDashboardButton();
+    expect(util.getBodyCssClasses()).not.toMatch('animate-background');
   });
 
-  it('should not have a flashing background when disabled', function() {
-    dashboardUrl('animatePage=false');
-    expect(bodyCssClass()).not.toMatch('animate-background');
+  it('should apply flashing headers if enabled', function() {
+    element(by.name('animateHeadings')).click();
+
+    util.clickOpenDashboardButton();
+    expect(util.getBodyCssClasses()).toMatch('animate-headings');
   });
 
-  it('can have flashing headers when enabled', function() {
-    dashboardUrl('animateHeadings=true');
-    expect(bodyCssClass()).toMatch('animate-headings');
+  it('should allow flashing headers on and flashing background off at the same time', function() {
+    element(by.name('animateHeadings')).click();
+    element(by.name('animatePage')).click();
+
+    util.clickOpenDashboardButton();
+    expect(util.getBodyCssClasses()).toMatch('animate-headings');
+    expect(util.getBodyCssClasses()).not.toMatch('animate-background');
   });
 
-  it('should not have flashing headers by default', function() {
-    dashboardUrl();
-    expect(bodyCssClass()).not.toMatch('animate-headings');
+  it('should apply the scrolling settings', function() {
+    element(by.name('scrollHideBar')).click();
+
+    util.clickOpenDashboardButton();
+    expect(util.getBodyCssClasses()).toMatch('hide-scroll-bar');
   });
 
-    it('should allow flashing headers on and flashing background off at the same time', function() {
-    dashboardUrl('animateHeadings=true&animatePage=false');
-    expect(bodyCssClass()).not.toMatch('animate-background');
-    expect(bodyCssClass()).toMatch('animate-headings');
-  });
-  */
-
-  it('should apply the scrolling settings', function() {});
-
-  it('should apply the sound settings', function() {});
-
-  it('should reset the url when a user clicks "reset"', function() {});
-
-  it('should reset the group order when a user clicks "reset order"', function() {});
-
-  it('should reset the sounds when a user clicks "reset sounds"', function() {});
 });

@@ -46,4 +46,14 @@ describe('The dashboard page', function() {
     expect(util.getVisibleGroups().count()).toEqual(2);
   });
 
+  it('should have flashing backgrounds enabled by default', function() {
+    util.openDashboardPage();
+    expect(util.getBodyCssClasses()).toMatch('animate-background');
+  });
+
+  it('should not have flashing headers by default', function() {
+    util.openDashboardPage();
+    expect(util.getBodyCssClasses()).not.toMatch('animate-headings');
+  });
+
 });
