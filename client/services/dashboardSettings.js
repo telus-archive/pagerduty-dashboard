@@ -13,6 +13,8 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     scrollHideBar: false,
     scrollGoToTop: true,
 
+    multiColumn: true,
+
     soundsPlay: false,
     soundsActive: '',
     soundsWarning: '',

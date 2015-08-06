@@ -69,8 +69,9 @@ Groups
     position: absolute;
     background: @background;
     padding: 0 5px;
-    right: 10px;
-    top: -10px;
+    font-size: 10px;
+    right: 8px;
+    bottom: -7px;
   }
 }
 
@@ -78,7 +79,12 @@ Groups
   text-align: center;
   color: lighten(@background, 30%);
   padding-top: 100px;
-  font-size: 2em;
+  font-size: 30px;
+}
+
+.outdated {
+  color: lighten(@background, 30%);
+  text-align: center;
 }
 
 /*
@@ -152,10 +158,6 @@ Features / Services - Small & Up
   }
 }
 
-.dependencies .service {
-  margin-bottom: 3px;
-}
-
 /*
 ==================================
 Features / Services - Medium & Up
@@ -163,7 +165,7 @@ Features / Services - Medium & Up
 Small devices (tablets, 768px and up)
 */
 
-@media (min-width: @screen-sm-min) {
+.medium-styles {
   .serversite {
     width: 66.666%;
   }
@@ -187,6 +189,16 @@ Small devices (tablets, 768px and up)
   }
 }
 
+@media (min-width: @screen-sm-min) and (max-width: @screen-lg-min) {
+  .medium-styles();
+}
+
+@media (min-width: @screen-sm-min) {
+  .single-column {
+    .medium-styles();
+  }
+}
+
 /*
 ==================================
 Features / Services - Large & Up
@@ -194,7 +206,7 @@ Features / Services - Large & Up
 Medium devices (desktops, 992px and up)
 */
 
-@media (min-width: @screen-md-min) {
+.large-styles {
   .serversite {
     width: 33.333%;
     float: left;
@@ -230,6 +242,16 @@ Medium devices (desktops, 992px and up)
   }
 }
 
+@media (min-width: @screen-md-min) and (max-width: @screen-lg-min) {
+  .large-styles();
+}
+
+@media (min-width: @screen-md-min) {
+  .single-column {
+    .large-styles();
+  }
+}
+
 /*
 ==================================
 Features / Services - Max Width
@@ -238,21 +260,23 @@ Large devices (large desktops, 1200px and up)
 */
 
 @media (min-width: @screen-lg-min) {
-  .service {
-    width: 25%;
-  }
-  .serversite {
-    width: 25%;
-    float: left;
-  }
-  .dependencies.header {
-    display: block;
-    width: 75%;
-    float: left;
-  }
-  .dependencies {
+  .single-column {
     .service {
-      width: 33.333%;
+      width: 25%;
+    }
+    .serversite {
+      width: 25%;
+      float: left;
+    }
+    .dependencies.header {
+      display: block;
+      width: 75%;
+      float: left;
+    }
+    .dependencies {
+      .service {
+        width: 33.333%;
+      }
     }
   }
 }
@@ -423,6 +447,7 @@ a.customize-link {
   text-decoration: none;
   background: #111;
   padding: 4px 6px;
+  z-index: 1000;
 
   &:hover {
     color: #111;

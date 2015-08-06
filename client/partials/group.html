@@ -1,4 +1,5 @@
 <div class="group"
+  name='{{group.name}}'
   ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
   <h2><span>{{group.name}}</span></h2>
   <div class="details">
@@ -43,10 +44,11 @@
 
     <div class="downtime" ng-hide="group.isOnline">
       <timer start-time="group.lastIncidentTimestamp" max-time-unit="'hour'">
-        Down for:
+        Last stable:
         <span ng-show="hours">{{hours}} hour{{hoursS}},</span>
         <span ng-show="minutes">{{minutes}} minute{{minutesS}},</span>
         <span>{{sseconds}} second{{secondsS}}</span>
+         ago
       </timer>
     </div>
 

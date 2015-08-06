@@ -1,5 +1,5 @@
 function getVisibleGroups() {
-  return element.all(by.repeater('group in groups'));
+  return element.all(by.css('.groups .group'));
 }
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
     'order-unreliablesite'
   ],
   expectVisibleGroupsToEqual: function(expectedGroups) {
-    getVisibleGroups().all(by.css('h2 span')).getText().then(function(groups) {
+    getVisibleGroups().getAttribute('name').then(function(groups) {
       expect(groups).toEqual(expectedGroups);
     });
   },
