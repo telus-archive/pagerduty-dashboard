@@ -27,13 +27,13 @@ app.filter('multiColumnXof2', function(dashboardSettings) {
 
   // rough ratios based of css styles
   function getGroupHeight(group) {
-    var height = 0;
+    var height = 2;
     if (group.site || group.server) {
       height += 5;
     }
     if (group.features.length > 0) {
       height += 3 + 3 * Math.ceil(group.features.length / 2);
-      if(group.isOtherGroup) {
+      if (group.isOtherGroup) {
         // "features" heading does not get displayed
         height -= 3;
       }
@@ -47,7 +47,6 @@ app.filter('multiColumnXof2', function(dashboardSettings) {
   return function(groups, columnNumber) {
     var columnHeights = [0, 0];
     var groupsInColumn = [];
-
     groups.forEach(function(group) {
       var destinationColumn = minimumIndex(columnHeights);
       columnHeights[destinationColumn] += getGroupHeight(group);
