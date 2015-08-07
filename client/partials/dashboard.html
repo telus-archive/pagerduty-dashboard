@@ -1,10 +1,10 @@
 <a class="customize-link" href="#/customize"><span class="glyphicon glyphicon-cog"></span></a>
 
-<div class="groups" ng-hide="isMultiColumn()">
+<div class="groups">
   <group ng-repeat="group in groups" group="group"></group>
 </div>
 
-<div class="row" ng-show="isMultiColumn()">
+<div class="row groups-multi-column">
   <div class="col-lg-6">
     <group ng-repeat="group in groups | multiColumnXof2:1" group="group"></group>
   </div>

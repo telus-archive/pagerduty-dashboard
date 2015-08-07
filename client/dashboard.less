@@ -158,6 +158,10 @@ Features / Services - Small & Up
   }
 }
 
+.groups-multi-column {
+  display: none;
+}
+
 /*
 ==================================
 Features / Services - Medium & Up
@@ -260,7 +264,20 @@ Large devices (large desktops, 1200px and up)
 */
 
 @media (min-width: @screen-lg-min) {
+  .groups-multi-column {
+    display: block;
+  }
+  .groups {
+    display: none;
+  }
+
   .single-column {
+    .groups-multi-column {
+      display: none;
+    }
+    .groups {
+      display: block;
+    }
     .service {
       width: 25%;
     }

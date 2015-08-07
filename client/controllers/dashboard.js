@@ -5,10 +5,6 @@ app.controller('dashboardController', function(dashboardSettings, $scope, dataPa
   dataPackage.onChange(function(data, groupsToShow) {
     $scope.groups = groupsToShow;
   });
-
-  $scope.isMultiColumn = function() {
-    return dashboardSettings.getValue('multiColumn');
-  };
 });
 
 app.filter('multiColumnXof2', function(dashboardSettings) {
