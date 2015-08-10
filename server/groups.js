@@ -113,11 +113,11 @@ function newGroup(groupName) {
 }
 
 function processGroup(group) {
-  var lastIncidentTime = new Date().getTime();
   var dependencies = {};
   var allServices = group.features
     .concat(group.site || []).concat(group.server || []);
   var worstService = allServices[0];
+  var lastIncidentTime = worstService.lastIncidentTime;
 
   _.each(allServices, function(service) {
     if (!service.isOnline) {
