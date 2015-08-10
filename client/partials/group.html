@@ -42,11 +42,11 @@
        <div class="clearfix"></div>
     </div>
 
-    <div class="downtime" ng-hide="group.isOnline || true">
-      <timer start-time="group.lastIncidentTimestamp" max-time-unit="'hour'">
-        Last stable:
+    <div class="downtime" ng-hide="group.isOnline">
+      <timer start-time="group.lastIncidentTime" max-time-unit="'hour'">
+        Last active:
         <span ng-show="hours">{{hours}} hour{{hoursS}},</span>
-        <span ng-show="minutes">{{minutes}} minute{{minutesS}},</span>
+        <span ng-show="hours || minutes">{{minutes}} minute{{minutesS}},</span>
         <span>{{sseconds}} second{{secondsS}}</span>
          ago
       </timer>

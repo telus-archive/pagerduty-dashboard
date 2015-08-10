@@ -30,6 +30,7 @@ function buildService(rawService) {
   var service = {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
+    lastIncidentTime: Date.parse(rawService.last_incident_timestamp),
     link: 'https://' + subdomain + '.pagerduty.com' + rawService.service_url
   };
   service.isSiteOrServer =
@@ -112,29 +113,25 @@ function newGroup(groupName) {
 }
 
 function processGroup(group) {
+  var lastIncidentTime = new Date().getTime();
   var dependencies = {};
-  var worstService;
   var allServices = group.features
-    .concat(group.site || [])
-    .concat(group.server || []);
+    .concat(group.site || []).concat(group.server || []);
+  var worstService = allServices[0];
 
-  worstService = allServices[0];
   _.each(allServices, function(service) {
+    if (!service.isOnline) {
+      lastIncidentTime = Math.min(service.lastIncidentTime, lastIncidentTime);
+    }
     worstService = worseStatusService(worstService, service);
     _.each(service.dependencies, function(dependency) {
       dependencies[dependency.name] = dependency;
     });
   });
 
-  var worseStatus = 'disabled';
-  var lastIncidentTimestamp = 0;
-  if (worstService) {
-    worseStatus = worstService.status;
-    lastIncidentTimestamp = Date.parse(worstService.last_incident_timestamp);
-  }
-
+  var worseStatus = worstService ? worstService.status : 'disabled';
   injectStatusProperties(group, worseStatus);
-  group.lastIncidentTimestamp = lastIncidentTimestamp;
+  group.lastIncidentTime = lastIncidentTime;
   group.dependencies = _.toArray(dependencies);
 
   return group;
