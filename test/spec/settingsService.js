@@ -9,7 +9,7 @@ describe('The dashboard settings service', function() {
   it('should apply the group cutoff', function() {
     element(by.name('orderCutoff')).sendKeys('1');
     util.clickOpenDashboardButton();
-    expect(util.getVisibleGroups().count()).toEqual(0);
+    util.expectVisibleGroupsToEqual([]);
   });
 
   it('should apply a variable sort order', function() {

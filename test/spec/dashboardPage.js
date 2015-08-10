@@ -39,7 +39,11 @@ describe('The dashboard page', function() {
       ['order-unreliablesite', -1],
       ['order-other-issues', -1]
     ]);
-    expect(util.getVisibleGroups().count()).toEqual(3);
+    util.expectVisibleGroupsToEqual([
+      'UnstableSite',
+      'StableSite',
+      'Other Products',
+    ]);
   });
 
   it('should have a global "active" state without the failing groups', function() {
@@ -59,7 +63,10 @@ describe('The dashboard page', function() {
       ['order-unstablesite', -1],
       ['order-unreliablesite', -1]
     ]);
-    expect(util.getVisibleGroups().count()).toEqual(2);
+    util.expectVisibleGroupsToEqual([
+      'StableSite',
+      'Other Products',
+    ]);
   });
 
   it('should have flashing backgrounds enabled by default', function() {

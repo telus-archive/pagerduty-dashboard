@@ -1,15 +1,3 @@
-function getVisibleGroups() {
-  return element.all(by.css('.groups .group'));
-}
-
-function getVisibleGroup(name) {
-  return getVisibleGroups().filter(function(el) {
-    return el.getAttribute('name').then(function(n) {
-      return n === name;
-    });
-  }).first();
-}
-
 module.exports = {
   clickOpenDashboardButton: function() {
     element(by.name('open')).click();
@@ -17,8 +5,6 @@ module.exports = {
   openCustomizePage: function() {
     browser.get('http://localhost:3000/dashboards/pagerduty/#/customize');
   },
-  getVisibleGroups: getVisibleGroups,
-  getVisibleGroup: getVisibleGroup,
   getAllGroups: function() {
     return element.all(by.repeater('group in data.groups'));
   },
@@ -30,9 +16,10 @@ module.exports = {
     'order-unreliablesite'
   ],
   expectVisibleGroupsToEqual: function(expectedGroups) {
-    getVisibleGroups().getAttribute('name').then(function(groups) {
-      expect(groups).toEqual(expectedGroups);
-    });
+    element.all(by.css('.groups .group')).getAttribute('name')
+      .then(function(groups) {
+        expect(groups).toEqual(expectedGroups);
+      });
   },
   clickSettingsGearButton: function() {
     element(by.css('.customize-link')).click();
@@ -46,7 +33,11 @@ module.exports = {
     browser.get(url);
   },
   getDowntimeClockFor: function(groupName) {
-    return getVisibleGroup(groupName).element(by.css('.downtime'));
+    return element.all(by.name(groupName)).filter(function(el) {
+      return el.isDisplayed().then(function(isDisplayed) {
+        return isDisplayed;
+      });
+    }).first().element(by.css('.downtime'));
   },
   getBodyCssClasses: function() {
     return element(by.tagName('body')).getAttribute('class');

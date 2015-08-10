@@ -68,14 +68,3 @@ ADD ./config.json /opt/pagerduty-dashboard/
 4. Run Selenium: `webdriver-manager start`
 5. Run the server with the port, path and mock settings from `config.sample.json`
 6. Run `protractor test/protractor.js`
-
-## Ideas
-
-- Display assigned users of failing services/features
-- Display outage time (either globally or group-wise)
-- Dependencies: Allow dependency chains of more than depth 1. Dependency failures trickle up the chain:
-  - Immediate (distance 1) dependency failures give the dependent a status of `dependency-down` (a status worse than active and better than warning)
-  - Upstream (distance >1) dependency failures give the dependent a status of `dependency-degraded` (a status worse than active and better than `dependency-down`)
-  - The new mapping of status numbers would be: ..., active=2, dependency-degraded=3, dependency-down=4, warning=5, ...
-  - The two new statuses could have special colors or other ui changes (exclamation or question marks).
-- Spin-off project: False-positive analysis and dampen issues from services that tend to fix themselves
