@@ -5,11 +5,11 @@ describe('The dashboard page', function() {
   it('should correctly sort the 5 default mock groups', function() {
     util.openDashboardPage();
     util.expectVisibleGroupsToEqual([
-      'UnreliableSite',
-      'Other Issues',
-      'UnstableSite',
-      'StableSite',
-      'Other Products'
+      util.groupNameFor.unreliable,
+      util.groupNameFor.issues,
+      util.groupNameFor.unstable,
+      util.groupNameFor.stable,
+      util.groupNameFor.products,
     ]);
   });
 
@@ -54,6 +54,21 @@ describe('The dashboard page', function() {
   it('should not have flashing headers by default', function() {
     util.openDashboardPage();
     expect(util.getBodyCssClasses()).not.toMatch('animate-headings');
+  });
+
+  it('should not display a downtime clock for active groups', function() {
+    util.openDashboardPage();
+
+    expect(util.getVisibleGroup('StableSite').element(by.css('.downtime')).isDisplayed()).toBeFalsy();
+    expect(util.getVisibleGroup('Other Products').element(by.css('.downtime')).isDisplayed()).toBeFalsy();
+  });
+
+  it('should display the correct downtime for offline groups', function() {
+    util.openDashboardPage();
+
+    expect(util.getVisibleGroup('UnreliableSite').element(by.css('.downtime')).isDisplayed()).toBeTruthy();
+    expect(util.getVisibleGroup('Other Issues').element(by.css('.downtime')).isDisplayed()).toBeTruthy();
+    expect(util.getVisibleGroup('UnstableSite').element(by.css('.downtime')).isDisplayed()).toBeTruthy();
   });
 
 });

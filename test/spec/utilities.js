@@ -17,6 +17,13 @@ module.exports = {
     products: 'Other Products'
   },
   getVisibleGroups: getVisibleGroups,
+  getVisibleGroup: function(name) {
+    return getVisibleGroups().filter(function(el) {
+      return el.getAttribute('name').then(function(n) {
+        return n === name;
+      });
+    }).first();
+  },
   getAllGroups: function() {
     return element.all(by.repeater('group in data.groups'));
   },
@@ -34,13 +41,6 @@ module.exports = {
   },
   clickSettingsGearButton: function() {
     element(by.css('.customize-link')).click();
-  },
-  groupNames: {
-    unreliable: 'UnreliableSite',
-    issues: 'Other Issues',
-    unstable: 'UnstableSite',
-    stable: 'StableSite',
-    products: 'Other Products'
   },
   openDashboardPage: function(append) {
     browser.get('http://localhost:3000/dashboards/pagerduty/#/?' + (append || ''));

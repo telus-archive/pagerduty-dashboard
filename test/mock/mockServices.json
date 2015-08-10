@@ -26,6 +26,7 @@
   }, {
     "status": "warning",
     "name": "UnstableSite: Site",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
     "description": "[dashboard-primary]"
   }, {
     "status": "active",
@@ -34,10 +35,12 @@
   }, {
     "status": "active",
     "name": "UnstableSite: Login",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
     "description": "[dashboard-primary]"
   }, {
     "status": "active",
     "name": "UnstableSite: Registration",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
     "description": "[dashboard-primary][dashboard-depends|Accounts]"
   }, {
     "status": "critical",
@@ -50,10 +53,12 @@
   }, {
     "status": "warning",
     "name": "UnreliableSite: Legacy Database",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
     "description": "[dashboard-primary][dashboard-depends|Logging]"
   }, {
     "status": "critical",
     "name": "UnreliableSite: Products Page",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
     "description": "[dashboard-primary][dashboard-depends|Pricing]"
   }, {
     "status": "critical",
@@ -62,6 +67,7 @@
   }, {
     "status": "active",
     "name": "UnreliableSite: Mobile App",
+    "last_incident_timestamp": "2013-04-02T07:50:24-07:00",
     "description": "[dashboard-primary]"
   }, {
     "status": "active",
@@ -77,12 +83,15 @@
     "name": "Caching Server Alpha"
   }, {
     "status": "critical",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
     "name": "Product Pricing"
   }, {
     "status": "warning",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
     "name": "Caching Server Beta"
   }, {
     "status": "critical",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
     "name": "Caching Server Charlie"
   }, {
     "status": "active",
