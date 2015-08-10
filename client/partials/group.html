@@ -5,8 +5,10 @@
   <div class="details">
 
     <div class="serversite" ng-show="group.site || group.server">
-      <service class="server" service="group.server" ng-show="group.server"></service>
-      <service class="site" service="group.site" ng-show="group.site"></service>
+      <service class="server" service="group.server" ng-show="group.server">
+      </service>
+      <service class="site" service="group.site" ng-show="group.site">
+      </service>
       <div class="clearfix"></div>
     </div>
 
@@ -45,10 +47,16 @@
     <div class="downtime" ng-hide="group.isOnline">
       <timer start-time="group.lastIncidentTime" max-time-unit="'hour'">
         Last active:
-        <span ng-show="hours">{{hours}} hour{{hoursS}},</span>
-        <span ng-show="hours || minutes">{{minutes}} minute{{minutesS}},</span>
-        <span>{{sseconds}} second{{secondsS}}</span>
-         ago
+        <span ng-show="hours" class="hours">
+          {{hours}} hour{{hoursS}},
+        </span>
+        <span ng-show="hours || minutes" class="minutes">
+          {{minutes}} minute{{minutesS}},
+        </span>
+        <span>
+          {{sseconds}} second{{secondsS}}
+        </span>
+        ago
       </timer>
     </div>
 

@@ -75,16 +75,25 @@ describe('The dashboard page', function() {
   it('should not display a downtime clock for active groups', function() {
     util.openDashboardPage();
 
-    expect(util.getDowntimeClockFor('StableSite').isDisplayed()).toBeFalsy();
-    expect(util.getDowntimeClockFor('Other Products').isDisplayed()).toBeFalsy();
+    ['StableSite', 'Other Products'].forEach(function(group) {
+      expect(util.getDowntimeClockFor(group).isDisplayed()).toBeFalsy();
+    });
   });
 
   it('should display the correct downtime for offline groups', function() {
     util.openDashboardPage();
+    var expectedDowntime = Math.round(
+      (new Date().getTime() - Date.parse('2014-04-02T07:50:24-07:00')) /
+      (1000 * 60 * 60));
 
-    expect(util.getDowntimeClockFor('UnreliableSite').isDisplayed()).toBeTruthy();
-    expect(util.getDowntimeClockFor('Other Issues').isDisplayed()).toBeTruthy();
-    expect(util.getDowntimeClockFor('UnstableSite').isDisplayed()).toBeTruthy();
+    ['UnreliableSite', 'UnstableSite', 'Other Issues'].forEach(function(group) {
+      var downTimeClock = util.getDowntimeClockFor(group);
+      expect(downTimeClock.isDisplayed()).toBeTruthy();
+      downTimeClock.element(by.css('.hours')).getText()
+        .then(function(downTime) {
+          downTime = parseInt(downTime, 10);
+          expect(Math.abs(downTime - expectedDowntime) <= 1).toBeTruthy();
+        });
+    });
   });
-
 });
