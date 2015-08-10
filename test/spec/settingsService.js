@@ -21,11 +21,11 @@ describe('The dashboard settings service', function() {
     util.clickOpenDashboardButton();
 
     util.expectVisibleGroupsToEqual([
-      util.groupNameFor.issues,
-      util.groupNameFor.unreliable,
-      util.groupNameFor.unstable,
-      util.groupNameFor.products,
-      util.groupNameFor.stable
+      'Other Issues',
+      'UnreliableSite',
+      'UnstableSite',
+      'Other Products',
+      'StableSite'
     ]);
   });
 
@@ -36,11 +36,11 @@ describe('The dashboard settings service', function() {
     util.clickOpenDashboardButton();
 
     util.expectVisibleGroupsToEqual([
-      util.groupNameFor.unreliable,
-      util.groupNameFor.issues,
-      util.groupNameFor.unstable,
-      util.groupNameFor.stable,
-      util.groupNameFor.products
+      'UnreliableSite',
+      'Other Issues',
+      'UnstableSite',
+      'StableSite',
+      'Other Products'
     ]);
   });
 
@@ -54,10 +54,10 @@ describe('The dashboard settings service', function() {
     util.clickOpenDashboardButton();
 
     util.expectVisibleGroupsToEqual([
-      util.groupNameFor.unreliable,
-      util.groupNameFor.unstable,
-      util.groupNameFor.stable,
-      util.groupNameFor.products
+      'UnreliableSite',
+      'UnstableSite',
+      'StableSite',
+      'Other Products'
     ]);
   });
 
