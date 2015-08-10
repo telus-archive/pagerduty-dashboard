@@ -117,11 +117,13 @@ function processGroup(group) {
   var allServices = group.features
     .concat(group.site || []).concat(group.server || []);
   var worstService = allServices[0];
-  var lastIncidentTime = worstService.lastIncidentTime;
+  var lastIncidentTime;
 
   _.each(allServices, function(service) {
     if (!service.isOnline) {
-      lastIncidentTime = Math.min(service.lastIncidentTime, lastIncidentTime);
+      lastIncidentTime = lastIncidentTime ?
+        Math.min(service.lastIncidentTime, lastIncidentTime) :
+        service.lastIncidentTime;
     }
     worstService = worseStatusService(worstService, service);
     _.each(service.dependencies, function(dependency) {
@@ -131,7 +133,7 @@ function processGroup(group) {
 
   var worseStatus = worstService ? worstService.status : 'disabled';
   injectStatusProperties(group, worseStatus);
-  group.lastIncidentTime = lastIncidentTime;
+  group.lastIncidentTime = lastIncidentTime || 0;
   group.dependencies = _.toArray(dependencies);
 
   return group;
