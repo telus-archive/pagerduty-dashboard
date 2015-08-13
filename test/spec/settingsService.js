@@ -91,11 +91,4 @@ describe('The dashboard settings service', function() {
     expect(util.getBodyCssClasses()).toMatch('hide-scroll-bar');
   });
 
-  it('should apply the single column setting', function() {
-    element(by.name('multiColumn')).click();
-
-    util.clickOpenDashboardButton();
-    expect(util.getBodyCssClasses()).toMatch('single-column');
-  });
-
 });
