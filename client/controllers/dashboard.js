@@ -29,7 +29,7 @@ app.filter('multiColumnXof2', function(dashboardSettings) {
     }
     if (group.features.length > 0) {
       height += 3 + 3 * Math.ceil(group.features.length / 2);
-      if (group.isOtherGroup) {
+      if (group.dependencies.length === 0 && !group.site && !group.server) {
         // "features" heading does not get displayed
         height -= 3;
       }
