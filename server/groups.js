@@ -31,6 +31,7 @@ function buildService(rawService) {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
     lastIncidentTime: Date.parse(rawService.last_incident_timestamp),
+    description: '', // PagerDuty will not always return a description key
     link: 'https://' + subdomain + '.pagerduty.com' + rawService.service_url
   };
   service.isSiteOrServer =
