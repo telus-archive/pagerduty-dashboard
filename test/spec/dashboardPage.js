@@ -69,6 +69,53 @@ describe('The dashboard page', function() {
     ]);
   });
 
+  it('should display the correct number of group features', function() {
+    util.openDashboardPage();
+    [
+      ['UnreliableSite', 4],
+      ['Other Issues', 3],
+      ['UnstableSite', 2],
+      ['StableSite', 4],
+      ['Other Products', 5],
+    ].forEach(function(d) {
+      expect(util.getFeaturesFor(d[0]).count()).toEqual(d[1]);
+    });
+  });
+
+  it('should display the correct number of group services', function() {
+    util.openDashboardPage();
+    [
+      ['UnreliableSite', 4],
+      ['Other Issues', 0],
+      ['UnstableSite', 3],
+      ['StableSite', 6],
+      ['Other Products', 0],
+    ].forEach(function(d) {
+      expect(util.getServicesFor(d[0]).count()).toEqual(d[1]);
+    });
+  });
+
+  it('should display the site/server for groups that have it', function() {
+    util.openDashboardPage();
+    [
+      'UnreliableSite',
+      'UnstableSite',
+      'StableSite'
+    ].forEach(function(groupName) {
+      expect(util.getSiteServerFor(groupName).isDisplayed()).toBeTruthy();
+    });
+  });
+
+  it('should not display the site/server for groups that do not have it', function() {
+    util.openDashboardPage();
+    [
+      'Other Issues',
+      'Other Products'
+    ].forEach(function(groupName) {
+      expect(util.getSiteServerFor(groupName).isDisplayed()).toBeFalsy();
+    });
+  });
+
   it('should have flashing backgrounds enabled by default', function() {
     util.openDashboardPage();
     expect(util.getBodyCssClasses()).toMatch('animate-background');

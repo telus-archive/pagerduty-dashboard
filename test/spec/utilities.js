@@ -1,3 +1,11 @@
+function getGroupElement(groupName) {
+  return element.all(by.name(groupName)).filter(function(el) {
+    return el.isDisplayed().then(function(isDisplayed) {
+      return isDisplayed;
+    });
+  }).first();
+}
+
 module.exports = {
   clickOpenDashboardButton: function() {
     element(by.name('open')).click();
@@ -33,13 +41,20 @@ module.exports = {
     browser.get(url);
   },
   getDowntimeClockFor: function(groupName) {
-    return element.all(by.name(groupName)).filter(function(el) {
-      return el.isDisplayed().then(function(isDisplayed) {
-        return isDisplayed;
-      });
-    }).first().element(by.css('.downtime'));
+    return getGroupElement(groupName).element(by.css('.downtime'));
   },
   getBodyCssClasses: function() {
     return element(by.tagName('body')).getAttribute('class');
+  },
+  getServicesFor: function(groupName) {
+    return getGroupElement(groupName)
+      .all(by.repeater('service in group.dependencies'));
+  },
+  getFeaturesFor: function(groupName) {
+    return getGroupElement(groupName)
+      .all(by.repeater('service in group.features'));
+  },
+  getSiteServerFor: function(groupName) {
+    return getGroupElement(groupName).element(by.css('.serversite'));
   }
 };
