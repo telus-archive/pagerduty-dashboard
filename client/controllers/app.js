@@ -24,9 +24,6 @@ app.controller('appController', function($scope, dashboardSettings, dataPackage)
     if (dashboardSettings.getValue('animateWarnings')) {
       classes += ' animate-warnings';
     }
-    if(!dashboardSettings.getValue('multiColumn')) {
-      classes += ' single-column';
-    }
     return classes;
   };
 

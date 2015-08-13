@@ -164,95 +164,14 @@ Features / Services - Small & Up
 
 /*
 ==================================
-Features / Services - Medium & Up
+Features / Services - Small to Sub-large
 ==================================
 Small devices (tablets, 768px and up)
 */
 
-.medium-styles {
-  .serversite {
-    width: 66.666%;
-  }
+@media (min-width: @screen-sm-min) and (max-width: @screen-lg-min) {
   .service {
     width: 33.333%;
-  }
-  .core-group, .group.warning, .group.critical {
-    .features {
-      .status {
-        width: 32px;
-        height: 32px;
-        font-size: 22px;
-        line-height: 26px;
-      }
-
-      h4 {
-        font-size: 14px;
-        line-height: 32px;
-      }
-    }
-  }
-}
-
-@media (min-width: @screen-sm-min) and (max-width: @screen-lg-min) {
-  .medium-styles();
-}
-
-@media (min-width: @screen-sm-min) {
-  .single-column {
-    .medium-styles();
-  }
-}
-
-/*
-==================================
-Features / Services - Large & Up
-==================================
-Medium devices (desktops, 992px and up)
-*/
-
-.large-styles {
-  .serversite {
-    width: 33.333%;
-    float: left;
-  }
-  .dependencies {
-    display: none;
-    margin: 0;
-    .service {
-      width: 50%;
-    }
-  }
-  .dependencies.header {
-    display: block;
-    width: 66.666%;
-    float: left;
-  }
-  .features {
-    clear: both;
-  }
-  .site, .server {
-    width: 65px;
-    margin-right: 50px;
-    text-align: center;
-    .status {
-      width: 60px;
-      height: 60px;
-      border-radius: 100%;
-      margin: 0 auto;
-      float: none;
-      font-size: 30px;
-      line-height: 54px;
-    }
-  }
-}
-
-@media (min-width: @screen-md-min) and (max-width: @screen-lg-min) {
-  .large-styles();
-}
-
-@media (min-width: @screen-md-min) {
-  .single-column {
-    .large-styles();
   }
 }
 
@@ -269,32 +188,6 @@ Large devices (large desktops, 1200px and up)
   }
   .groups {
     display: none;
-  }
-
-  .single-column {
-    .groups-multi-column {
-      display: none;
-    }
-    .groups {
-      display: block;
-    }
-    .service {
-      width: 25%;
-    }
-    .serversite {
-      width: 25%;
-      float: left;
-    }
-    .dependencies.header {
-      display: block;
-      width: 75%;
-      float: left;
-    }
-    .dependencies {
-      .service {
-        width: 33.333%;
-      }
-    }
   }
 }
 
