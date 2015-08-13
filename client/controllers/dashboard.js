@@ -9,49 +9,50 @@ app.controller('dashboardController', function(dashboardSettings, $scope, dataPa
 
 app.filter('multiColumnXof2', function(dashboardSettings) {
 
-  function minimumIndex(list) {
-    var minIndex = 0;
-    var minValue = list[0] | 0;
-    list.forEach(function(value, index) {
-      if (value < minValue) {
-        minValue = value;
-        minIndex = index;
-      }
-    });
-    return minIndex;
-  }
-
   // rough ratios based of css styles
   function getGroupHeight(group) {
-    var height = 2;
+    var height = 42;
     if (group.site || group.server) {
-      height += 5;
+      height += 56;
     }
     if (group.features.length > 0) {
-      height += 3 + 3 * Math.ceil(group.features.length / 2);
+      height += 14 + 23 + 29 * Math.ceil(group.features.length / 2);
       if (group.dependencies.length === 0 && !group.site && !group.server) {
         // "features" heading does not get displayed
-        height -= 3;
+        height -= 28;
       }
     }
     if (group.dependencies.length > 0) {
-      height += 3 + 3 * Math.ceil(group.dependencies.length / 2);
+      height += 14 + 23 + 29 * Math.ceil(group.dependencies.length / 2);
     }
     return height;
   }
 
   return function(groups, columnNumber) {
-    var columnHeights = [0, 0];
-    var groupsInColumn = [];
-    groups.forEach(function(group) {
-      var destinationColumn = minimumIndex(columnHeights);
-      columnHeights[destinationColumn] += getGroupHeight(group);
-
-      if (destinationColumn + 1 === columnNumber) {
-        groupsInColumn.push(group);
+    var columns = {
+      left: {
+        height: 0,
+        groups: []
+      },
+      right: {
+        height: 0,
+        groups: []
       }
+    };
+
+    groups.forEach(function(group, index) {
+      if (index === groups.length - 1) {
+        console.log(columns.left.height + ' left || right ' + columns.right.height);
+      }
+
+      var column = columns[
+        columns.left.height <= columns.right.height + 25 ? 'left' : 'right'
+      ];
+      column.height += getGroupHeight(group);
+      column.groups.push(group);
     });
 
-    return groupsInColumn;
+
+    return columns[columnNumber === 1 ? 'left' : 'right'].groups;
   };
 });
