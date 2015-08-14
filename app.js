@@ -1,6 +1,10 @@
 var config = require('./config.json');
 
-var dataProvider = config.mock ?
+function useMockData() {
+  return config.useMockData || !(config.apiSubdomain && config.apiKey);
+}
+
+var dataProvider = useMockData() ?
   require('./test/mock/mockProvider') :
   require('./server/api')(config.apiSubdomain, config.apiKey);
 
