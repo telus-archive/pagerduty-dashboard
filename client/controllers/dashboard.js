@@ -41,10 +41,6 @@ app.filter('multiColumnXof2', function(dashboardSettings) {
     };
 
     groups.forEach(function(group, index) {
-      if (index === groups.length - 1) {
-        console.log(columns.left.height + ' left || right ' + columns.right.height);
-      }
-
       var column = columns[
         columns.left.height <= columns.right.height + 25 ? 'left' : 'right'
       ];
