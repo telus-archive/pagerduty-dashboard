@@ -2,12 +2,15 @@ var gulp = require('gulp');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
+var fs = require('fs');
+var jeditor = require('gulp-json-editor');
 var nodemon = require('gulp-nodemon');
 var plumber = require('gulp-plumber');
 var insert = require('gulp-insert');
 var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
+var yargs = require('yargs');
 
 var SOURCE_DIR = 'client';
 var JS_SOURCES = SOURCE_DIR + '/**/*.js';
@@ -100,6 +103,27 @@ gulp.task('watch', function() {
   gulp.watch(HTML_SOURCES, ['copy-html']);
   gulp.watch(JS_SOURCES, ['build-js-dashboard-dev']);
   gulp.watch(LESS_SOURCES, ['build-css-dashboard']);
+});
+
+gulp.task('configure', function() {
+  try {
+    fs.statSync('config.json');
+  } catch (e) {
+    gulp.src('./config.sample.json')
+      .pipe(concat('config.json'))
+      .pipe(gulp.dest('.'));
+  }
+  return gulp.src('./config.json')
+    .pipe(jeditor(function(config) {
+      var args = yargs.boolean('useMockData').parse(process.argv.slice(3));
+      Object.keys(config).forEach(function(option) {
+        if (args[option] !== undefined) {
+          config[option] = args[option];
+        }
+      });
+      return config;
+    }))
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('build', [

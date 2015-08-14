@@ -25,10 +25,12 @@
     "gulp-concat": "^2.5.2",
     "gulp-cssmin": "^0.1.7",
     "gulp-insert": "^0.5.0",
+    "gulp-json-editor": "^2.2.1",
     "gulp-less": "^3.0.3",
     "gulp-ng-annotate": "^1.0.0",
     "gulp-nodemon": "^2.0.3",
     "gulp-plumber": "^1.0.1",
-    "gulp-uglify": "^1.2.0"
+    "gulp-uglify": "^1.2.0",
+    "yargs": "^3.19.0"
   }
 }
