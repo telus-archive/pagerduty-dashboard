@@ -12,7 +12,7 @@ For details on the grouping process, refer to the "Conventions" section below.
 ## Setup
 
 1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
-2. Run `gulp configure` to create 'config.json', then enter your API and app information, and change `mock` to `false`.
+2. Run `gulp configure` to create `config.json`, then enter your API and app information, and change `mock` to `false`.
 3. Install dependencies: `npm install`
 4. Build the front-end/client: `gulp`
 5. Start the back-end/server: `node app.js`
