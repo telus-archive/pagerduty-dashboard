@@ -1,0 +1,100 @@
+{
+  "services": [{
+    "status": "active",
+    "name": "StableSite: Server",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server *]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Site",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Login Page",
+    "description": "[dashboard-primary][dashboard-depends|Accounts Database]"
+  }, {
+    "status": "active",
+    "name": "StableSite: User Profile Page",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Public API",
+    "description": "[dashboard-primary][dashboard-depends|Internal API]"
+  }, {
+    "status": "active",
+    "name": "StableSite: Registration",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "warning",
+    "name": "UnstableSite: Site",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Server",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server (A|D)]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Login",
+    "last_incident_timestamp": "2013-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnstableSite: Registration",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary][dashboard-depends|Accounts]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Site",
+    "description": "[dashboard-primary][dashboard-depends|Caching Server (B|C)]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Server",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "warning",
+    "name": "UnreliableSite: Legacy Database",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary][dashboard-depends|Logging]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Products Page",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary][dashboard-depends|Pricing]"
+  }, {
+    "status": "critical",
+    "name": "UnreliableSite: Login Page",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "UnreliableSite: Mobile App",
+    "last_incident_timestamp": "2013-04-02T07:50:24-07:00",
+    "description": "[dashboard-primary]"
+  }, {
+    "status": "active",
+    "name": "Accounts Database"
+  }, {
+    "status": "disabled",
+    "name": "Central Logging"
+  }, {
+    "status": "maintenance",
+    "name": "Internal API"
+  }, {
+    "status": "active",
+    "name": "Caching Server Alpha"
+  }, {
+    "status": "critical",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
+    "name": "Product Pricing"
+  }, {
+    "status": "warning",
+    "last_incident_timestamp": "2014-04-02T07:50:24-07:00",
+    "name": "Caching Server Beta"
+  }, {
+    "status": "critical",
+    "last_incident_timestamp": "2015-04-02T07:50:24-07:00",
+    "name": "Caching Server Charlie"
+  }, {
+    "status": "active",
+    "name": "Caching Server Delta"
+  }]
+}

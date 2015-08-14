@@ -1,0 +1,139 @@
+<div class="customization">
+  <h2>Custom View Configuration</h2>
+
+  <form>
+    <div class="url">
+      <input disabled type="text" class="form-control" ng-value="url()" name="url">
+      <div class="btn-group">
+        <a ng-href="{{url()}}" class="btn btn-success" name="open">Open</a>
+        <button ng-click="resetAll()" type="button" class="btn btn-warning" name="reset">
+          Reset All
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Legend</h3>
+        <div class="legend">
+          <ul class="row">
+            <li class="col-md-4 col-sm-6">
+              <status status="'critical'"></status> Critical
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'warning'"></status> Warning
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'active'"></status> Active
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'maintenance'"></status> Maintenance
+            </li>
+            <li class="col-md-4 col-sm-6">
+              <status status="'disabled'"></status> Disabled
+            </li>
+          </ul>
+        </div>
+
+        <h3>Group Order</h3>
+
+        <p>Groups are always sorted by status first.
+        The numbers below determine the second sort order.
+        Groups with no number are considered to have a value of 0.</p>
+
+        <label class="group-order">
+          Hide groups with an order lower than:
+          <input type="text" name="orderCutoff" ng-model="settings.orderCutoff" />
+        </label>
+
+        <ul class="group-order">
+          <li ng-repeat="group in data.groups">
+            <label>
+              <input type="text" ng-model="settings['order-' + group.id]" name="{{'order-' + group.id}}"/>
+              {{group.name}}
+            </label>
+          </li>
+        </ul>
+        <button ng-click="resetGroupOrder()" type="button" class="btn btn-warning" name="resetGroupOrder">Reset Order</button>
+
+      </div>
+      <div class="col-sm-6">
+        <h3>Visual Settings</h3>
+
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.animateHeadings" name="animateHeadings"/>
+              Animated group headers when &quot;critical&quot;
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.animatePage" name="animatePage"/>
+              Animated background when &quot;critical&quot;
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.animateWarnings" name="animateWarnings"/>
+              Also include the &quot;warning&quot; state in the above options
+            </label>
+          </li>
+        </ul>
+
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.scrollGoToTop" name="scrollGoToTop"/>
+              Scroll-to-top on status change
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.scrollHideBar" name="scrollHideBar"/>
+              Disable and hide the scroll bar
+            </label>
+          </li>
+        </ul>
+
+        <h3>Sounds</h3>
+
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" ng-model="settings.soundsPlay" name="soundsPlay" />
+              Play sounds on status changes
+            </label>
+          </li>
+        </ul>
+
+        <div ng-show="settings.soundsPlay">
+          <h3>Custom Sounds</h3>
+          <p>Insert a URL to an mp3. Leave blank for default sounds.</p>
+          <ul>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsActive" name="soundsActive" />
+                Active
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsWarning" name="soundsWarning"/>
+                Warning
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="text" ng-model="settings.soundsCritical" name="soundsCritical"/>
+                Critical
+              </label>
+            </li>
+
+            <button ng-click="resetSounds()" type="button" class="btn btn-warning" name="resetSounds">Reset Sounds</button>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

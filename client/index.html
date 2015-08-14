@@ -4,17 +4,21 @@
   <meta charset="utf-8">
   <title>PagerDuty Incident Management Dashboard</title>
 
-  <script src="assets/libs.js"></script>
-  <script src="socket.io/socket.io.js"></script>
-  <script src="assets/dashboard.js"></script>
+  <script src="./assets/libs.js"></script>
+  <script src="./socket.io/socket.io.js"></script>
+  <script src="./assets/dashboard.js"></script>
 
-  <link rel="stylesheet" href="assets/libs.css">
-  <link rel="stylesheet" href="assets/dashboard.css">
+  <link rel="stylesheet" href="./assets/libs.css">
+  <link rel="stylesheet" href="./assets/dashboard.css">
 </head>
-<body ng-controller="appController" ng-class="getUiSettings()">
+<body ng-controller="appController" ng-class="getBodyCssClasses()">
   <div class="container">
   	<div ng-hide="loaded" class="loader"></div>
-    <ng-view ng-show="loaded"></ng-view>
+    <ng-view ng-show="loaded">
+      <!--[if lte IE 8]>
+        <p class="outdated">You are using an outdated version of Internet Explorer. Please upgrade to IE 9 or higher to use this dashboard.</p>
+      <![endif]-->
+    </ng-view>
   </div>
 </body>
 </html>

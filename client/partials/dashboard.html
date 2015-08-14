@@ -1,0 +1,18 @@
+<a class="customize-link" href="#/customize"><span class="glyphicon glyphicon-cog"></span></a>
+
+<div class="groups">
+  <group ng-repeat="group in groups" group="group"></group>
+</div>
+
+<div class="row groups-multi-column">
+  <div class="col-lg-6">
+    <group ng-repeat="group in groups | multiColumnXof2:1" group="group"></group>
+  </div>
+  <div class="col-lg-6">
+    <group ng-repeat="group in groups | multiColumnXof2:2" group="group"></group>
+  </div>
+</div>
+
+<div ng-show="groups.length === 0">
+  <p class="no-groups">No groups to show...</p>
+</div>

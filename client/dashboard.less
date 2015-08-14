@@ -6,7 +6,7 @@ Colors / Variables
 
 @import (reference) "variables.less"; /* From Bootstrap */
 
-@background: #505050;
+@background: #333;
 @text-color: #f4f4f4;
 
 @critical: #FF0000;
@@ -15,7 +15,7 @@ Colors / Variables
 @maintenance: #2C878E;
 @disabled: #7f8c8d;
 
-@orb-border: #343434;
+@orb-border: #111;
 
 /*
 ==================================
@@ -37,6 +37,7 @@ Groups
 .group {
   border: 1px dotted @text-color;
   margin: 25px 0;
+  position: relative;
 
   h2 {
     font-size: 20px;
@@ -63,13 +64,27 @@ Groups
     padding: 0;
     list-style: none;
   }
+
+  .downtime {
+    position: absolute;
+    background: @background;
+    padding: 0 5px;
+    font-size: 10px;
+    right: 8px;
+    bottom: -7px;
+  }
 }
 
 .no-groups {
   text-align: center;
   color: lighten(@background, 30%);
   padding-top: 100px;
-  font-size: 2em;
+  font-size: 30px;
+}
+
+.outdated {
+  color: lighten(@background, 30%);
+  text-align: center;
 }
 
 /*
@@ -97,12 +112,13 @@ Features / Services - Small & Up
 
   h3 {
     margin: 3px 0 0 0;
-    line-height: 26px;
   }
 
   .status {
     width: 60px;
     height: 30px;
+    font-size: 20px;
+    line-height: 24px;
     border-radius: 15px;
     margin-left: -5px;
   }
@@ -115,7 +131,6 @@ Features / Services - Small & Up
     display: block;
   }
   a:hover {
-    color: #000;
     text-decoration: none;
     .status {
       border-color: #fff;
@@ -132,86 +147,32 @@ Features / Services - Small & Up
     font-size: 12px;
     margin: 0;
     line-height: 22px;
+    padding-left: 28px;
   }
 
   .status {
     width: 22px;
     height: 22px;
+    line-height: 16px;
+    font-size: 12px;
     margin-right: 5px;
   }
 }
 
-.dependencies .service {
-  margin-bottom: 3px;
+.groups-multi-column {
+  display: none;
 }
 
 /*
 ==================================
-Features / Services - Medium & Up
+Features / Services - Small to Sub-large
 ==================================
 Small devices (tablets, 768px and up)
 */
 
-@media (min-width: @screen-sm-min) {
-  .serversite {
-    width: 66.666%;
-  }
-  .service {
+@media (min-width: @screen-sm-min) and (max-width: @screen-lg-min) {
+  .service, .server, .site {
     width: 33.333%;
-  }
-  .core-group, .group.warning, .group.critical {
-    .features {
-      .status {
-        width: 32px;
-        height: 32px;
-      }
-
-      h4 {
-        font-size: 14px;
-        line-height: 32px;
-      }
-    }
-  }
-}
-
-/*
-==================================
-Features / Services - Large & Up
-==================================
-Medium devices (desktops, 992px and up)
-*/
-
-@media (min-width: @screen-md-min) {
-  .serversite {
-    width: 33.333%;
-    float: left;
-  }
-  .dependencies {
-    display: none;
-    margin: 0;
-    .service {
-      width: 50%;
-    }
-  }
-  .dependencies.header {
-    display: block;
-    width: 66.666%;
-    float: left;
-  }
-  .features {
-    clear: both;
-  }
-  .site, .server {
-    width: 65px;
-    margin-right: 50px;
-    text-align: center;
-    .status {
-      width: 60px;
-      height: 60px;
-      border-radius: 100%;
-      margin: 0 auto;
-      float: none;
-    }
   }
 }
 
@@ -223,22 +184,11 @@ Large devices (large desktops, 1200px and up)
 */
 
 @media (min-width: @screen-lg-min) {
-  .service {
-    width: 25%;
-  }
-  .serversite {
-    width: 25%;
-    float: left;
-  }
-  .dependencies.header {
+  .groups-multi-column {
     display: block;
-    width: 75%;
-    float: left;
   }
-  .dependencies {
-    .service {
-      width: 33.333%;
-    }
+  .groups {
+    display: none;
   }
 }
 
@@ -254,6 +204,23 @@ Status Orbs
   margin: 0 auto;
   float: left;
   background: #343434; /* No data / unknown state */
+  text-align: center;
+  overflow: hidden;
+  font-weight: 700;
+
+  span {
+    display: none;
+  }
+}
+
+.critical, .warning {
+  &.status {
+    span {
+      display: block;
+      color: #000;
+    }
+    border-radius: 0 !important;
+  }
 }
 
 .set-colors(@status) {
@@ -267,31 +234,48 @@ Status Orbs
 .set-colors(maintenance);
 .set-colors(disabled);
 
+.legend {
+  .status {
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
+    line-height: 26px;
+    margin-right: 10px;
+  }
+  li {
+    line-height: 32px;
+    margin-bottom: 5px;
+    padding: 0;
+  }
+}
+
 /*
 ==================================
 Pulsing Background
 ==================================
 */
 
+@animation-length: 3s;
+
 .animate-headings {
   .group.critical {
     h2 span {
-      animation: pulse-critical-frames 2s infinite alternate;
+      animation: pulse-critical-frames @animation-length infinite alternate;
     }
   }
-  .group.warning {
+  &.animate-warnings .group.warning {
     h2 span {
-      animation: pulse-warning-frames 2s infinite alternate;
+      animation: pulse-warning-frames @animation-length infinite alternate;
     }
   }
 }
 
 body.critical.animate-background {
-  animation: pulse-critical-frames 2s infinite alternate;
+  animation: pulse-critical-frames @animation-length infinite alternate;
 }
 
-body.warning.animate-background {
-  animation: pulse-warning-frames 2s infinite alternate;
+body.warning.animate-warnings.animate-background {
+  animation: pulse-warning-frames @animation-length infinite alternate;
 }
 
 @keyframes pulse-critical-frames {
@@ -372,12 +356,18 @@ a.customize-link {
   color: #fff;
   display: block;
   text-decoration: none;
-  background: #333;
+  background: #111;
   padding: 4px 6px;
+  z-index: 1000;
 
-  :hover {
-    color: #888;
+  &:hover {
+    color: #111;
+    background: #fff;
   }
+}
+
+.customization {
+  margin-bottom: 20px;
 }
 
 .customization ul {
@@ -386,9 +376,22 @@ a.customize-link {
   padding: 0;
 }
 
-.group-order input[type="text"] {
-  width: 60px;
+input[type="text"] {
   color: #000;
+  margin-right: 5px;
+}
+
+.group-order {
+  input[type="text"] {
+    width: 60px;
+
+  }
+}
+
+.custom-sounds {
+  input[type="text"] {
+    width: 200px;
+  }
 }
 
 .url {
@@ -397,4 +400,8 @@ a.customize-link {
     margin-bottom: 10px;
     font-weight: 500px;
   }
+}
+
+.hide-scroll-bar {
+  overflow: hidden;
 }

@@ -8,7 +8,7 @@ WORKDIR /opt/pagerduty-dashboard
 RUN npm install \
     && npm install -g gulp \
     && gulp \
-    && cp config.sample.json config.json
+    && gulp configure
 
 EXPOSE 3000
 

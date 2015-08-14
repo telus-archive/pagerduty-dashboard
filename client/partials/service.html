@@ -1,0 +1,7 @@
+<div>
+  <a ng-href="{{service.link}}" ng-attr-title="{{properCase(service.status)}}">
+    <h3 ng-show="service.isSiteOrServer">{{service.properName}}</h3>
+    <status status="service.status"></status>
+    <h4 ng-hide="service.isSiteOrServer">{{service.properName}}</h4>
+  </a>
+</div>

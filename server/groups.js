@@ -4,7 +4,10 @@ var _ = require('underscore');
 Exports and processing workflow
 */
 
-module.exports = function(rawServices) {
+var subdomain;
+
+module.exports = function(rawServices, domain) {
+  subdomain = domain;
   return buildGroups(buildServices(rawServices));
 };
 
@@ -27,7 +30,12 @@ function buildService(rawService) {
   var service = {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
+    lastIncidentTime: Date.parse(rawService.last_incident_timestamp),
+    description: '', // PagerDuty will not always return a description key
+    link: 'https://' + subdomain + '.pagerduty.com' + rawService.service_url
   };
+  service.isSiteOrServer =
+    service.properName === 'Site' || service.properName === 'Server';
   injectStatusProperties(service, rawService.status);
   return _.extend(service, rawService);
 }
@@ -83,10 +91,13 @@ function addServiceToGroup(service, groups) {
   if (!groups[groupName]) {
     groups[groupName] = newGroup(groupName);
   }
-  if (service.properName === 'Site' || service.properName === 'Server') {
+  if (service.isSiteOrServer) {
     groups[groupName][service.properName.toLowerCase()] = service;
   } else {
     groups[groupName].features.push(service);
+  }
+  if (!service.isOnline) {
+    groups[groupName].numberFailures += 1;
   }
 }
 
@@ -97,19 +108,24 @@ function newGroup(groupName) {
     features: [],
     site: false,
     server: false,
+    numberFailures: 0,
     isOtherGroup: groupName === OTHER_PRODUCTS || groupName === OTHER_ISSUES
   };
 }
 
 function processGroup(group) {
   var dependencies = {};
-  var worstService;
   var allServices = group.features
-    .concat(group.site || [])
-    .concat(group.server || []);
+    .concat(group.site || []).concat(group.server || []);
+  var worstService = allServices[0];
+  var lastIncidentTime;
 
-  worstService = allServices[0];
   _.each(allServices, function(service) {
+    if (!service.isOnline) {
+      lastIncidentTime = lastIncidentTime ?
+        Math.min(service.lastIncidentTime, lastIncidentTime) :
+        service.lastIncidentTime;
+    }
     worstService = worseStatusService(worstService, service);
     _.each(service.dependencies, function(dependency) {
       dependencies[dependency.name] = dependency;
@@ -117,8 +133,8 @@ function processGroup(group) {
   });
 
   var worseStatus = worstService ? worstService.status : 'disabled';
-
   injectStatusProperties(group, worseStatus);
+  group.lastIncidentTime = lastIncidentTime || 0;
   group.dependencies = _.toArray(dependencies);
 
   return group;

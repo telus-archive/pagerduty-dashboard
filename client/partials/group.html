@@ -1,0 +1,55 @@
+<div class="group"
+  name='{{group.name}}'
+  ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
+  <h2><span>{{group.name}}</span></h2>
+  <div class="details">
+
+    <div class="serversite" ng-show="group.site || group.server">
+      <service class="server" service="group.server" ng-show="group.server">
+      </service>
+      <service class="site" service="group.site" ng-show="group.site">
+      </service>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="features" ng-hide="group.features.length === 0">
+      <h3 ng-hide="group.dependencies.length === 0 && !group.site && !group.server">
+        Features
+      </h3>
+      <ul>
+        <li ng-repeat="service in group.features | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
+    <div class="dependencies" ng-hide="group.dependencies.length === 0">
+      <h3>Services</h3>
+      <ul>
+        <li ng-repeat="service in group.dependencies | orderBy:'-statusNumber'">
+          <service class="service" service="service"></service>
+        </li>
+      </ul>
+       <div class="clearfix"></div>
+    </div>
+
+    <div class="downtime" ng-hide="group.isOnline">
+      <timer start-time="group.lastIncidentTime" max-time-unit="'hour'">
+        Last okay:
+        <span ng-show="hours" class="hours">
+          {{hours}} hour{{hoursS}},
+        </span>
+        <span ng-show="hours || minutes" class="minutes">
+          {{minutes}} minute{{minutesS}},
+        </span>
+        <span>
+          {{sseconds}} second{{secondsS}}
+        </span>
+        ago
+      </timer>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+</div>
