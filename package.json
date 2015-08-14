@@ -1,6 +1,5 @@
 {
   "name": "pagerduty-dashboard",
-  "version": "1.5.1",
   "description": "PagerDuty Dashboard",
   "license": "MIT",
   "repository": {
