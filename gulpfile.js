@@ -61,6 +61,8 @@ gulp.task('build-js-libs', function() {
       'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/angular-route/angular-route.js',
+      'node_modules/moment/moment.js',
+      'node_modules/humanize-duration/humanize-duration.js',
       'node_modules/angular-timer/dist/angular-timer.js'
     ])
     .pipe(uglify())
