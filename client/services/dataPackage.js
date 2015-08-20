@@ -18,7 +18,6 @@ app.factory('dataPackage', function(socket, buildGroupsToShow, dashboardSettings
 
   dashboardSettings.onUpdate(sendUpdate);
   socket.on('update', function(newData) {
-    //serverNotification.reset();
     if (!data || data.hash !== newData.hash) {
       data = newData;
       sendUpdate();
