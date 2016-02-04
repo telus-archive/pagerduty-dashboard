@@ -15,7 +15,7 @@ app.config(function($routeProvider) {
     });
 });
 
-app.run(function(serverNotifications, audioNotifications){
+app.run(function(serverNotifications, audioNotifications) {
   serverNotifications.initialize();
   audioNotifications.initialize();
 });
