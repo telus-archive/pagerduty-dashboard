@@ -3,6 +3,7 @@ PagerDuty Dashboard
 
 [![Dependency Status](https://david-dm.org/gondek/pagerduty-dashboard.svg)](https://david-dm.org/gondek/pagerduty-dashboard)
 [![devDependency Status](https://david-dm.org/gondek/pagerduty-dashboard/dev-status.svg)](https://david-dm.org/gondek/pagerduty-dashboard#info=devDependencies)
+[![Code Climate](https://codeclimate.com/github/telusdigital/pagerduty-dashboard/badges/gpa.svg)](https://codeclimate.com/github/telusdigital/pagerduty-dashboard)
 
 [![PagerDuty Dashboard screenshot](/doc/screenshot.png?raw=true)](/doc/screenshot-full.png?raw=true)
 
