@@ -13,16 +13,13 @@ For details on the grouping process, refer to the "Conventions" section below.
 
 1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
 2. Install dependencies: `npm install`
-3. Run `gulp configure` to create `config.json`, then enter your API and app information, and change `mock` to `false`.
+3. Copy `config.sample.json` to `config.json`, enter your API information, and change `mock` to `false`.
 4. Build the front-end/client: `gulp`
 5. Start the back-end/server: `node app.js`
 
 You can then access the page at `localhost:<port>/<path>`
 
 During development, running `gulp dev` will restart the server and/or run builds when files change. To use the sample data ([click here](/doc/screenshot-full.png?raw=true) for a preview), set `mock` to `true` in `config.json`.
-
-For ease of deployment, you can pass parameters to the configuration task, which will insert changes into the existing `config.json` (or copy in the sample config if it doesn't exist):
-`gulp configure --apiSubdomain yourCompany --apiKey abcdef --useMockData false`
 
 ## Custom View Configuration
 
@@ -55,18 +52,6 @@ A core group's status is only determined from its services and not its dependenc
 
 If one or more of the remaining services are failing, the "other" group gets broken up into two pieces, one holding the offline/failing services and the other holding the online/okay services.
 
-## Docker Image
-
-Running the [`gondek/pagerduty-dashboard` docker image](https://registry.hub.docker.com/u/gondek/pagerduty-dashboard/) starts the dashboard with the mock data. For deployment, you will have to copy in your API information. You could use a Dockerfile like this (where `config.json` contains the API information):
-
-```
-FROM gondek/pagerduty-dashboard
-ADD ./config.json /opt/pagerduty-dashboard/
-
-# or use this
-RUN gulp configure --apiSubdomain yourCompany --apiKey abcdef --useMockData false
-
-```
 ## Testing
 
 1. Follow the setup steps
