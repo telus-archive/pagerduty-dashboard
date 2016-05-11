@@ -21,16 +21,10 @@
     "humanize-duration": "^3.6.0"
   },
   "devDependencies": {
+    "browserify": "^13.0.1",
     "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-cssmin": "^0.1.7",
-    "gulp-insert": "^0.5.0",
-    "gulp-json-editor": "^2.2.1",
-    "gulp-less": "^3.0.3",
-    "gulp-ng-annotate": "^2.0.0",
     "gulp-nodemon": "^2.0.3",
-    "gulp-plumber": "^1.1.0",
-    "gulp-uglify": "^1.5.3"
+    "semistandard": "^7.0.5",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

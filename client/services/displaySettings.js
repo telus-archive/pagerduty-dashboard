@@ -1,4 +1,4 @@
-app.factory('dashboardSettings', function($routeParams, $location) {
+module.exports = function ($routeParams, $location) {
   var settings = {};
   var listeners = [];
 
@@ -21,37 +21,37 @@ app.factory('dashboardSettings', function($routeParams, $location) {
 
   setDefaultSettings();
 
-  function setDefaultSettings() {
+  function setDefaultSettings () {
     resetGroupOrder();
-    Object.keys(defaults).forEach(function(setting) {
+    Object.keys(defaults).forEach(function (setting) {
       settings[setting] = defaults[setting];
     });
   }
 
-  function resetGroupOrder() {
-    Object.keys(settings).forEach(function(setting) {
+  function resetGroupOrder () {
+    Object.keys(settings).forEach(function (setting) {
       if (setting.indexOf('order-') === 0) {
         settings[setting] = undefined;
       }
     });
   }
 
-  function resetSounds() {
+  function resetSounds () {
     settings.soundsActive = '';
     settings.soundsWarning = '';
     settings.soundsCritical = '';
   }
 
-  function isDefault(setting) {
+  function isDefault (setting) {
     var value = parseValue(settings[setting]);
     return value === defaults[setting] || value === '';
   }
 
-  function toUrl() {
+  function toUrl () {
     var url = $location.absUrl();
     url = url.substring(0, url.indexOf('#')) + '#/?';
 
-    Object.keys(settings).forEach(function(setting) {
+    Object.keys(settings).forEach(function (setting) {
       if (!isDefault(setting)) {
         url += setting + '=' + encodeParam(settings[setting]) + '&';
       }
@@ -60,51 +60,51 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     return url;
   }
 
-  function encodeParam(value) {
+  function encodeParam (value) {
     return encodeURIComponent(value);
   }
 
-  function decodeParam(value) {
+  function decodeParam (value) {
     return parseValue(decodeURIComponent(value));
   }
 
-  function parseValue(value) {
+  function parseValue (value) {
     if (value === 'true') {
       return true;
     }
     if (value === 'false') {
       return false;
     }
-    var numberValue = parseInt(value);
+    var numberValue = parseInt(value, 10);
     if (numberValue || numberValue === 0) {
       return numberValue;
     }
     return value;
   }
 
-  function setSettingsfromRouteParams() {
+  function setSettingsfromRouteParams () {
     setDefaultSettings();
-    Object.keys($routeParams).forEach(function(routeParam) {
+    Object.keys($routeParams).forEach(function (routeParam) {
       settings[routeParam] = decodeParam($routeParams[routeParam]);
     });
     notifySettingChange();
   }
 
-  function getValue(value) {
+  function getValue (value) {
     return settings[value];
   }
 
-  function getGroupOrder(groupId) {
+  function getGroupOrder (groupId) {
     return settings['order-' + groupId] || 0;
   }
 
-  function notifySettingChange() {
-    listeners.forEach(function(listener) {
+  function notifySettingChange () {
+    listeners.forEach(function (listener) {
       listener();
     });
   }
 
-  function onUpdate(listener) {
+  function onUpdate (listener) {
     listeners.push(listener);
     listener();
   }
@@ -120,4 +120,4 @@ app.factory('dashboardSettings', function($routeParams, $location) {
     setSettingsfromRouteParams: setSettingsfromRouteParams,
     onUpdate: onUpdate
   };
-});
+};

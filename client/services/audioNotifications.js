@@ -1,4 +1,4 @@
-app.factory('audioNotifications', function(dashboardSettings) {
+module.exports = function (displaySettings) {
   var AUDIO_INTERVAL_TIME = 1000 * 60 * 30;
   var audioInterval;
 
@@ -14,24 +14,24 @@ app.factory('audioNotifications', function(dashboardSettings) {
     'critical'
   ];
 
-  function getDefaultSound(eventType) {
+  function getDefaultSound (eventType) {
     return 'sounds/' + eventType + '.mp3';
   }
 
-  function setEventSound(eventType, sound) {
+  function setEventSound (eventType, sound) {
     sound = sound || getDefaultSound(eventType);
     if (audioElements[eventType].src !== sound) {
       audioElements[eventType].src = sound;
     }
   }
 
-  function playSound() {
-    if (dashboardSettings.getValue('soundsPlay') && audioElements[currentStatus]) {
+  function playSound () {
+    if (displaySettings.getValue('soundsPlay') && audioElements[currentStatus]) {
       audioElements[currentStatus].play();
     }
   }
 
-  function changeCurrentStatus(status) {
+  function changeCurrentStatus (status) {
     currentStatus = status;
     if (audioInterval) {
       clearInterval(audioInterval);
@@ -40,22 +40,22 @@ app.factory('audioNotifications', function(dashboardSettings) {
     audioInterval = setInterval(playSound, AUDIO_INTERVAL_TIME);
   }
 
-  dashboardSettings.onUpdate(function() {
-    eventTypes.forEach(function(eventType) {
+  displaySettings.onUpdate(function () {
+    eventTypes.forEach(function (eventType) {
       var settingName = 'sounds' + eventType.charAt(0).toUpperCase() + eventType.slice(1);
-      setEventSound(eventType, dashboardSettings.getValue(settingName));
+      setEventSound(eventType, displaySettings.getValue(settingName));
     });
   });
 
-  function handleDataChange(data, groupsToShow) {
+  function handleDataChange (data, groupsToShow) {
     var globalStatus = groupsToShow[0] ? groupsToShow[0].status : '';
     if (currentStatus !== globalStatus) {
       changeCurrentStatus(globalStatus);
     }
   }
 
-  function initialize() {
-    eventTypes.forEach(function(eventType) {
+  function initialize () {
+    eventTypes.forEach(function (eventType) {
       setEventSound(eventType);
     });
   }
@@ -64,4 +64,4 @@ app.factory('audioNotifications', function(dashboardSettings) {
     initialize: initialize,
     handleDataChange: handleDataChange
   };
-});
+};

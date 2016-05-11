@@ -1,4 +1,4 @@
-app.directive('status', function() {
+module.exports = function () {
   return {
     restrict: 'E',
     replace: true,
@@ -7,4 +7,4 @@ app.directive('status', function() {
       status: '='
     }
   };
-});
+};

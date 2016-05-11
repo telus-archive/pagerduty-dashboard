@@ -1,30 +1,29 @@
-app.factory('dataPackage', function(socket, buildGroupsToShow, dashboardSettings, audioNotifications) {
-
+module.exports = function (sockets, getGroupsToShow, displaySettings, audioNotifications) {
   var data;
   var groupsToShow;
   var listeners = [];
 
-  function sendDataToListener(listener) {
+  function sendDataToListener (listener) {
     listener(data, groupsToShow);
   }
 
-  function sendUpdate() {
+  function sendUpdate () {
     if (data) {
-      groupsToShow = buildGroupsToShow(data.groups);
+      groupsToShow = getGroupsToShow(data.groups);
       audioNotifications.handleDataChange(data, groupsToShow);
       listeners.forEach(sendDataToListener);
     }
   }
 
-  dashboardSettings.onUpdate(sendUpdate);
-  socket.on('update', function(newData) {
+  displaySettings.onUpdate(sendUpdate);
+  sockets.on('update', function (newData) {
     if (!data || data.hash !== newData.hash) {
       data = newData;
       sendUpdate();
     }
   });
 
-  function onDataPackageChange(listener) {
+  function onChange (listener) {
     listeners.push(listener);
     if (data) {
       sendDataToListener(listener);
@@ -32,7 +31,7 @@ app.factory('dataPackage', function(socket, buildGroupsToShow, dashboardSettings
   }
 
   return {
-    onChange: onDataPackageChange,
+    onChange: onChange,
     updateGroupsToShow: sendUpdate
   };
-});
+};

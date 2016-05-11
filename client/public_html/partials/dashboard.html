@@ -6,10 +6,10 @@
 
 <div class="row groups-multi-column">
   <div class="col-lg-6">
-    <group ng-repeat="group in groups | multiColumnXof2:1" group="group"></group>
+    <group ng-repeat="group in groups | groupsColumn:1" group="group"></group>
   </div>
   <div class="col-lg-6">
-    <group ng-repeat="group in groups | multiColumnXof2:2" group="group"></group>
+    <group ng-repeat="group in groups | groupsColumn:2" group="group"></group>
   </div>
 </div>
 

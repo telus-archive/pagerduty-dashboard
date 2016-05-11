@@ -3,15 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>PagerDuty Incident Management Dashboard</title>
-
-  <script src="./assets/libs.js"></script>
   <script src="./socket.io/socket.io.js"></script>
-  <script src="./assets/dashboard.js"></script>
-
-  <link rel="stylesheet" href="./assets/libs.css">
+  <script src="./dashboard.js"></script>
   <link rel="stylesheet" href="./assets/dashboard.css">
 </head>
-<body ng-controller="appController" ng-class="getBodyCssClasses()">
+<body ng-controller="globalController" ng-class="getBodyCssClasses()">
   <div class="container">
   	<div ng-hide="loaded" class="loader"></div>
     <ng-view ng-show="loaded">

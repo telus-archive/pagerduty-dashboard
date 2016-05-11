@@ -1,8 +1,7 @@
-app.factory('buildGroupsToShow', function(dashboardSettings) {
-
-  function compareGroups(a, b) {
-    var aCutoff = dashboardSettings.getGroupOrder(a.id);
-    var bCutoff = dashboardSettings.getGroupOrder(b.id);
+module.exports = function (displaySettings) {
+  function compareGroups (a, b) {
+    var aCutoff = displaySettings.getGroupOrder(a.id);
+    var bCutoff = displaySettings.getGroupOrder(b.id);
     if (a.status !== b.status) {
       return a.statusNumber > b.statusNumber ? -1 : 1;
     }
@@ -24,9 +23,9 @@ app.factory('buildGroupsToShow', function(dashboardSettings) {
     return 0;
   }
 
-  function isVisible(group) {
-    var groupOrder = dashboardSettings.getGroupOrder(group.id);
-    var groupCutoff = dashboardSettings.getValue('orderCutoff');
+  function isVisible (group) {
+    var groupOrder = displaySettings.getGroupOrder(group.id);
+    var groupCutoff = displaySettings.getValue('orderCutoff');
     if (groupOrder < groupCutoff) {
       return false;
     }
@@ -36,9 +35,9 @@ app.factory('buildGroupsToShow', function(dashboardSettings) {
     return false;
   }
 
-  function buildGroupsToShow(rawGroups) {
+  function getGroupsToShow (rawGroups) {
     return rawGroups.filter(isVisible).sort(compareGroups);
   }
 
-  return buildGroupsToShow;
-});
+  return getGroupsToShow;
+};

@@ -1,4 +1,4 @@
-app.directive('service', function(dashboardSettings) {
+module.exports = function () {
   return {
     restrict: 'E',
     replace: true,
@@ -6,11 +6,11 @@ app.directive('service', function(dashboardSettings) {
     scope: {
       service: '='
     },
-    link: function(scope) {
-      scope.properCase = function(string) {
+    link: function (scope) {
+      scope.properCase = function (string) {
         string = string || '';
         return string.charAt(0).toUpperCase() + string.slice(1);
       };
     }
   };
-});
+};

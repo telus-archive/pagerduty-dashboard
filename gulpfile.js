@@ -1,98 +1,22 @@
+var browserify = require('browserify');
 var gulp = require('gulp');
-var autoprefixer = require('gulp-autoprefixer');
-var concat = require('gulp-concat');
-var cssmin = require('gulp-cssmin');
-var fs = require('fs');
-var jeditor = require('gulp-json-editor');
 var nodemon = require('gulp-nodemon');
-var plumber = require('gulp-plumber');
-var insert = require('gulp-insert');
-var less = require('gulp-less');
-var ngAnnotate = require('gulp-ng-annotate');
-var uglify = require('gulp-uglify');
+var source = require('vinyl-source-stream');
 
-var SOURCE_DIR = 'client';
-var JS_SOURCES = SOURCE_DIR + '/**/*.js';
-var HTML_SOURCES = SOURCE_DIR + '/**/*.html';
-var LESS_SOURCES = SOURCE_DIR + '/**/*.less';
-var SOUND_SOURCES = SOURCE_DIR + '/**/*.mp3';
-var PUBLIC_DIR = 'public_html';
-var ASSETS_DIR = 'public_html/assets';
+var STATIC_ASSETS = 'client/public_html/**';
+var DESTINATION_ROOT = 'public_html';
 
-gulp.task('copy-fonts', function() {
+gulp.task('copy-fonts', function () {
   return gulp.src('node_modules/bootstrap/fonts/*')
-    .pipe(gulp.dest(PUBLIC_DIR + '/fonts'));
+    .pipe(gulp.dest(DESTINATION_ROOT + '/fonts'));
 });
 
-gulp.task('copy-html', function() {
-  return gulp.src(HTML_SOURCES)
-    .pipe(gulp.dest(PUBLIC_DIR));
+gulp.task('copy-static', function () {
+  return gulp.src(STATIC_ASSETS)
+    .pipe(gulp.dest(DESTINATION_ROOT));
 });
 
-gulp.task('copy-sounds', function() {
-  return gulp.src(SOUND_SOURCES)
-    .pipe(gulp.dest(PUBLIC_DIR));
-});
-
-gulp.task('build-js-dashboard', function() {
-  return gulp.src(JS_SOURCES)
-    .pipe(plumber())
-    .pipe(ngAnnotate())
-    .pipe(concat('dashboard.js'))
-    .pipe(insert.wrap('(function(){', '})();'))
-    .pipe(uglify())
-    .pipe(gulp.dest(ASSETS_DIR));
-});
-
-gulp.task('build-js-dashboard-dev', function() {
-  return gulp.src(JS_SOURCES)
-    .pipe(plumber())
-    .pipe(ngAnnotate())
-    .pipe(concat('dashboard.js'))
-    .pipe(insert.wrap('(function(){', '})();'))
-    .pipe(gulp.dest(ASSETS_DIR));
-});
-
-gulp.task('build-js-libs', function() {
-  return gulp.src([
-      'node_modules/jquery/dist/jquery.js',
-      'node_modules/angular/angular.js',
-      'node_modules/noty/js/noty/packaged/jquery.noty.packaged.js',
-      'node_modules/bootstrap/dist/js/bootstrap.js',
-      'node_modules/angular-route/angular-route.js',
-      'node_modules/moment/moment.js',
-      'node_modules/humanize-duration/humanize-duration.js',
-      'node_modules/angular-timer/dist/angular-timer.js'
-    ])
-    .pipe(uglify())
-    .pipe(concat('libs.js'))
-    .pipe(gulp.dest(ASSETS_DIR));
-});
-
-gulp.task('build-css-libs', function() {
-  return gulp.src([
-      'node_modules/bootstrap/dist/css/bootstrap.css',
-      'node_modules/bootstrap/dist/css/bootstrap-theme.css',
-    ])
-    .pipe(concat('libs.css'))
-    .pipe(cssmin())
-    .pipe(gulp.dest(ASSETS_DIR));
-});
-
-gulp.task('build-css-dashboard', function() {
-  return gulp.src(LESS_SOURCES)
-    .pipe(plumber())
-    .pipe(less({
-      paths: ['node_modules/bootstrap/less']
-    }))
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions']
-    }))
-    .pipe(cssmin())
-    .pipe(gulp.dest(ASSETS_DIR));
-});
-
-gulp.task('dev-server', function() {
+gulp.task('dev-server', function () {
   nodemon({
     script: 'app.js',
     watch: ['server', 'app.js', 'config.json'],
@@ -100,20 +24,22 @@ gulp.task('dev-server', function() {
   });
 });
 
-gulp.task('watch', function() {
-  gulp.watch(HTML_SOURCES, ['copy-html']);
-  gulp.watch(JS_SOURCES, ['build-js-dashboard-dev']);
-  gulp.watch(LESS_SOURCES, ['build-css-dashboard']);
+gulp.task('watch', function () {
+  gulp.watch(STATIC_ASSETS, ['copy-static']);
+  gulp.watch('client/**/*.js', ['js']);
+});
+
+gulp.task('js', function () {
+  return browserify('./client/app.js')
+  .bundle()
+  .pipe(source('dashboard.js'))
+  .pipe(gulp.dest(DESTINATION_ROOT));
 });
 
 gulp.task('build', [
+  'copy-static',
   'copy-fonts',
-  'copy-html',
-  'copy-sounds',
-  'build-js-dashboard',
-  'build-js-libs',
-  'build-css-libs',
-  'build-css-dashboard'
+  'js'
 ]);
 gulp.task('dev', ['build', 'dev-server', 'build-js-dashboard-dev', 'watch']);
 gulp.task('default', ['build']);

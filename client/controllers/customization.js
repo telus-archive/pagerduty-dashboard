@@ -1,7 +1,8 @@
-app.controller('customizationController', function($scope, dashboardSettings) {
-  $scope.settings = dashboardSettings.settings;
-  $scope.resetGroupOrder = dashboardSettings.resetGroupOrder;
-  $scope.resetSounds = dashboardSettings.resetSounds;
-  $scope.resetAll = dashboardSettings.setDefaultSettings;
-  $scope.url = dashboardSettings.toUrl;
-});
+// Controller for the customization page
+module.exports = function ($scope, displaySettings) {
+  $scope.settings = displaySettings.settings;
+  $scope.resetGroupOrder = displaySettings.resetGroupOrder;
+  $scope.resetSounds = displaySettings.resetSounds;
+  $scope.resetAll = displaySettings.setDefaultSettings;
+  $scope.url = displaySettings.toUrl;
+};

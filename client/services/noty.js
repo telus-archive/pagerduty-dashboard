@@ -1,7 +1,10 @@
-app.factory('noty', function() {
+var $ = require('jquery');
+var noty = require('noty');
+
+module.exports = function () {
   var current;
   return {
-    update: function(type, message) {
+    update: function (type, message) {
       if (!current || message !== current.options.text || current.closed) {
         $.noty.closeAll();
         current = noty({
@@ -13,4 +16,4 @@ app.factory('noty', function() {
     },
     clear: $.noty.closeAll
   };
-});
+};

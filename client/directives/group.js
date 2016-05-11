@@ -1,4 +1,4 @@
-app.directive('group', function() {
+module.exports = function () {
   return {
     restrict: 'E',
     replace: true,
@@ -7,4 +7,4 @@ app.directive('group', function() {
       group: '='
     }
   };
-});
+};
