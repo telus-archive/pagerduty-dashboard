@@ -1,0 +1,406 @@
+// ==================================
+// Colors / Variables
+// ==================================
+
+@import 'bootstrap';
+
+$background: #333;
+$text-color: #f4f4f4;
+
+$critical: #f00;
+$warning: #e89b0c;
+$active: #97e827;
+$maintenance: #2c878e;
+$disabled: #7f8c8d;
+
+$orb-border: #111;
+$orb-unknown: #343434;
+$white: #fff;
+$black: #000;
+
+// ==================================
+// General
+// ==================================
+
+body {
+  background: $background;
+  color: $text-color;
+}
+
+// ==================================
+// Groups
+// ==================================
+
+.group {
+  border: 1px dotted $text-color;
+  margin: 25px 0;
+  position: relative;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: -10px 0 0 30px;
+
+    span {
+      background: $background;
+      padding: 5px 10px;
+    }
+  }
+
+  h3 {
+    font-size: 17px;
+    margin: 5px 0;
+    text-transform: uppercase;
+  }
+
+  .details {
+    margin: 15px 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .downtime {
+    background: $background;
+    bottom: -7px;
+    font-size: 10px;
+    padding: 0 5px;
+    position: absolute;
+    right: 8px;
+  }
+}
+
+.no-groups {
+  color: lighten($background, 30%);
+  font-size: 30px;
+  padding-top: 100px;
+  text-align: center;
+}
+
+.outdated {
+  color: lighten($background, 30%);
+  text-align: center;
+}
+
+// ==================================
+// Features / Services - Small & Up
+// ==================================
+
+.features,
+.dependencies {
+  margin-top: 14px;
+}
+
+.dependencies.header {
+  display: none;
+}
+
+.serversite {
+  padding-bottom: 5px;
+}
+
+.site,
+.server {
+  float: left;
+  position: relative;
+  width: 50%;
+
+  h3 {
+    margin: 3px 0 0;
+  }
+
+  .status {
+    border-radius: 15px;
+    font-size: 20px;
+    height: 30px;
+    line-height: 24px;
+    margin-left: -5px;
+    width: 60px;
+  }
+}
+
+.service,
+.server,
+.site {
+  a {
+    color: $text-color;
+    display: block;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: none;
+
+    .status {
+      border-color: $white;
+    }
+  }
+}
+
+.service {
+  float: left;
+  margin-bottom: 7px;
+  width: 50%;
+
+  h4 {
+    font-size: 12px;
+    line-height: 22px;
+    margin: 0;
+    padding-left: 28px;
+  }
+
+  .status {
+    font-size: 12px;
+    height: 22px;
+    line-height: 16px;
+    margin-right: 5px;
+    width: 22px;
+  }
+}
+
+.groups-multi-column {
+  display: none;
+}
+
+// ==================================
+// Features / Services - Small to Sub-large
+// ==================================
+// Small devices (tablets, 768px and up)
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-lg-min) {
+  .service,
+  .server,
+  .site {
+    width: 33.333%;
+  }
+}
+
+// ==================================
+// Features / Services - Max Width
+// ==================================
+// Large devices (large desktops, 1200px and up)
+
+@media (min-width: $screen-lg-min) {
+  .groups-multi-column {
+    display: block;
+  }
+
+  .groups {
+    display: none;
+  }
+}
+
+// ==================================
+// Status Orbs
+// ==================================
+
+.status {
+  background: $orb-unknown; // No data / unknown state
+  border: 3px solid $orb-border;
+  border-radius: 100%;
+  float: left;
+  font-weight: 700;
+  margin: 0 auto;
+  overflow: hidden;
+  text-align: center;
+
+  span {
+    display: none;
+  }
+}
+
+.critical,
+.warning {
+  &.status {
+    border-radius: 0;
+
+    span {
+      color: $black;
+      display: block;
+    }
+  }
+}
+
+$statuses: (
+critical: $critical,
+warning: $warning,
+active: $active,
+maintenance: $maintenance,
+disabled: $disabled
+);
+
+@each $status, $color in $statuses {
+  .#{$status}.status {
+    background: $color;
+  }
+}
+
+.legend {
+  .status {
+    font-size: 22px;
+    height: 32px;
+    line-height: 26px;
+    margin-right: 10px;
+    width: 32px;
+  }
+
+  li {
+    line-height: 32px;
+    margin-bottom: 5px;
+    padding: 0;
+  }
+}
+
+// ==================================
+// Pulsing Background
+// ==================================
+
+$animation-length: 3s;
+
+.animate-headings {
+  .group.critical {
+    .group-name {
+      animation: pulse-critical-frames $animation-length infinite alternate;
+    }
+  }
+
+  &.animate-warnings .group.warning {
+    .group-name {
+      animation: pulse-warning-frames $animation-length infinite alternate;
+    }
+  }
+}
+
+body.critical.animate-background {
+  animation: pulse-critical-frames $animation-length infinite alternate;
+}
+
+body.warning.animate-warnings.animate-background {
+  animation: pulse-warning-frames $animation-length infinite alternate;
+}
+
+@keyframes pulse-critical-frames {
+  0%, 20% {background-color: $background;}
+  100% {background-color: $critical;}
+}
+
+@keyframes pulse-warning-frames {
+  0%, 20% {background-color: $background;}
+  100% {background-color: $warning;}
+}
+
+// ==================================
+// CSS Spinner
+// ==================================
+// Credit to http://projects.lukehaas.me/css-loaders/
+// Copyright (c) 2014 Luke Haas
+// MIT License
+
+.loader,
+.loader:before,
+.loader:after {
+  animation: load1 1s infinite ease-in-out;
+  background: $white;
+  height: 4em;
+  width: 1em;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+
+.loader:before {
+  animation-delay: -.32s;
+  left: -1.5em;
+}
+
+.loader {
+  animation-delay: -.16s;
+  font-size: 11px;
+  margin: 150px auto 8px;
+  position: relative;
+  text-indent: -9999em;
+  transform: translateZ(0);
+}
+
+.loader:after {
+  left: 1.5em;
+}
+
+@keyframes load1 {
+  0%,80%,100% {
+    box-shadow: 0 0 $white;
+    height: 4em;
+  }
+
+  40% {
+    box-shadow: 0 -2em $white;
+    height: 5em;
+  }
+}
+
+// ==================================
+// Customization Page
+// ==================================
+
+.customize-link {
+  background: $background;
+  bottom: 0;
+  color: $white;
+  display: block;
+  left: 20px;
+  padding: 4px 6px;
+  position: fixed;
+  text-decoration: none;
+  z-index: 1000;
+
+  &:hover {
+    background: $white;
+    color: $background;
+  }
+}
+
+.customization {
+  margin-bottom: 20px;
+
+  ul {
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+  }
+}
+
+input[type="text"] {
+  color: $black;
+  margin-right: 5px;
+}
+
+.group-order {
+  input[type="text"] {
+    width: 60px;
+  }
+}
+
+.custom-sounds {
+  input[type="text"] {
+    width: 200px;
+  }
+}
+
+.url {
+  margin: 20px 0 5px;
+
+  input {
+    font-weight: 500px;
+    margin-bottom: 10px;
+  }
+}
+
+.hide-scroll-bar {
+  overflow: hidden;
+}

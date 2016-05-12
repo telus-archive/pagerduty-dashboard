@@ -1,6 +1,7 @@
 var browserify = require('browserify');
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
+var scss = require('gulp-sass');
 var source = require('vinyl-source-stream');
 
 var STATIC_ASSETS = 'client/public_html/**';
@@ -31,9 +32,19 @@ gulp.task('watch', function () {
 
 gulp.task('js', function () {
   return browserify('./client/app.js')
-  .bundle()
-  .pipe(source('dashboard.js'))
-  .pipe(gulp.dest(DESTINATION_ROOT));
+    .bundle()
+    .pipe(source('dashboard.js'))
+    .pipe(gulp.dest(DESTINATION_ROOT));
+});
+
+gulp.task('scss', function () {
+  return gulp.src('client/dashboard.scss')
+   .pipe(scss({
+     includePaths: [
+       'node_modules/bootstrap-sass/assets/stylesheets'
+     ]
+   }).on('error', scss.logError))
+   .pipe(gulp.dest(DESTINATION_ROOT + '/assets'));
 });
 
 gulp.task('build', [

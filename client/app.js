@@ -1,30 +1,31 @@
-var angular = window.angular = require('angular');
+window.angular = require('angular');
 window.humanizeDuration = require('humanize-duration');
 window.moment = require('moment');
 
 require('angular-route');
 require('angular-timer');
-var app = angular.module('pagerdutyDashboard', ['ngRoute', 'timer']);
 
-app.controller('customizationController', require('./controllers/customization'));
-app.controller('dashboardController', require('./controllers/dashboard'));
-app.controller('globalController', require('./controllers/global'));
+window.angular.module('pagerdutyDashboard', ['ngRoute', 'timer'])
 
-app.directive('group', require('./directives/group'));
-app.directive('service', require('./directives/service'));
-app.directive('status', require('./directives/status'));
+.controller('customizationController', require('./controllers/customization'))
+.controller('dashboardController', require('./controllers/dashboard'))
+.controller('globalController', require('./controllers/global'))
 
-app.factory('audioNotifications', require('./services/audioNotifications'));
-app.factory('displaySettings', require('./services/displaySettings'));
-app.factory('getGroupsToShow', require('./services/getGroupsToShow'));
-app.factory('noty', require('./services/noty'));
-app.factory('pagerdutyData', require('./services/pagerdutyData'));
-app.factory('serverStatus', require('./services/serverStatus'));
-app.factory('sockets', require('./services/sockets'));
+.directive('group', require('./directives/group'))
+.directive('service', require('./directives/service'))
+.directive('status', require('./directives/status'))
 
-app.filter('groupsColumn', require('./services/groupColumnFilter'));
+.factory('audioNotifications', require('./services/audioNotifications'))
+.factory('displaySettings', require('./services/displaySettings'))
+.factory('getGroupsToShow', require('./services/getGroupsToShow'))
+.factory('noty', require('./services/noty'))
+.factory('pagerdutyData', require('./services/pagerdutyData'))
+.factory('serverStatus', require('./services/serverStatus'))
+.factory('sockets', require('./services/sockets'))
 
-app.config(function ($routeProvider) {
+.filter('groupsColumn', require('./services/groupColumnFilter'))
+
+.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'partials/dashboard.html',
@@ -37,9 +38,9 @@ app.config(function ($routeProvider) {
     .otherwise({
       redirectTo: '/'
     });
-});
+})
 
-app.run(function (serverStatus, audioNotifications) {
+.run(function (serverStatus, audioNotifications) {
   serverStatus.initialize();
   audioNotifications.initialize();
 });

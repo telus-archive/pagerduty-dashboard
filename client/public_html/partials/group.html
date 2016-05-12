@@ -1,7 +1,7 @@
 <div class="group"
   name='{{group.name}}'
   ng-class="group.status + (group.isOtherGroup? ' other-group' : ' core-group' )">
-  <h2><span>{{group.name}}</span></h2>
+  <h2><span class="group-name">{{group.name}}</span></h2>
   <div class="details">
 
     <div class="serversite" ng-show="group.site || group.server">
