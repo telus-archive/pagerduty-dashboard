@@ -12,15 +12,17 @@ For details on the grouping process, refer to the "Conventions" section below.
 
 ## Setup
 
-1. Install [Node.js](https://nodejs.org/) and [Gulp](http://gulpjs.com/)
+1. Install [Node.js](https://nodejs.org/) (almost any version should work) and [Gulp](http://gulpjs.com/)
 2. Install dependencies: `npm install`
-3. Copy `config.sample.json` to `config.json`, enter your API information, and change `mock` to `false`.
+3. Copy `config.sample.json` to `config.json` in the `server` folder and customize the values
+  - For a demo or testing, leave `useMockData: true`
+  - To enable API access, fill in `apiSubdomain` and `apiKey` and set `useMockData: false`
+  - To set how often the dashboard polls PagerDuty, change `updateInterval` (in seconds)
+  - `serverPort` and `basePath` determine the address to access the dashboard: `<ipAddress>:<serverPort>/<basePath>`
 4. Build the front-end/client: `gulp`
-5. Start the back-end/server: `node app.js`
+5. Start the back-end/server: `node server/main.js`
 
-You can then access the page at `localhost:<port>/<path>`
-
-During development, running `gulp dev` will restart the server and/or run builds when files change. To use the sample data ([click here](/doc/screenshot-full.png?raw=true) for a preview), set `mock` to `true` in `config.json`.
+During development, running `gulp dev` will restart the server and/or run builds when files change.
 
 ## Custom View Configuration
 

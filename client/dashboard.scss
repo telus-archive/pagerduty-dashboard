@@ -273,11 +273,11 @@ $animation-length: 3s;
   }
 }
 
-body.critical.animate-background {
+.critical.animate-background {
   animation: pulse-critical-frames $animation-length infinite alternate;
 }
 
-body.warning.animate-warnings.animate-background {
+.warning.animate-warnings.animate-background {
   animation: pulse-warning-frames $animation-length infinite alternate;
 }
 
@@ -375,19 +375,19 @@ body.warning.animate-warnings.animate-background {
   }
 }
 
-input[type="text"] {
+[type="text"] {
   color: $black;
   margin-right: 5px;
 }
 
 .group-order {
-  input[type="text"] {
+  [type="text"] {
     width: 60px;
   }
 }
 
 .custom-sounds {
-  input[type="text"] {
+  [type="text"] {
     width: 200px;
   }
 }
