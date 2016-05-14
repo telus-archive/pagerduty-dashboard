@@ -7,11 +7,11 @@ function makeResources (resources, template) {
   Object.keys(resources).forEach(function (key, index) {
     var resource = {};
     var rawResource = resources[key];
-    Object.keys(rawResource).forEach(function (key, index) {
-      resource[key] = rawResource[key];
-    });
     Object.keys(template).forEach(function (key, index) {
       resource[key] = template[key];
+    });
+    Object.keys(rawResource).forEach(function (key, index) {
+      resource[key] = rawResource[key];
     });
     resourcesArray.push(resource);
   });
