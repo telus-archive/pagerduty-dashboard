@@ -1,8 +1,6 @@
 language: node_js
 node_js:
 - node
-- '5'
-- '0.12'
 before_install:
 - npm install -g semistandard gulp protractor jasmine
 - cp server/config.sample.json server/config.json
