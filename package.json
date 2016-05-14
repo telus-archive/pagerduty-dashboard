@@ -28,9 +28,6 @@
     "semistandard": "^7.0.5",
     "vinyl-source-stream": "^1.1.0"
   },
-  "scripts": {
-    "test": "semistandard"
-  },
   "semistandard": {
     "globals": [
       "describe",

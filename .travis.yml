@@ -1,9 +1,19 @@
 language: node_js
 node_js:
-  - "node"
-  - "4"
-  - "5"
-  - "0.12"
-  - "0.10"
+- node
+- '5'
+- '0.12'
 before_install:
-  - npm install -g jasmine semistandard
+- npm install -g semistandard gulp protractor
+- cp server/config.sample.json server/config.json
+script:
+- gulp build
+- semistandard
+- node server/main.js 2>&1 &
+- protractor test/protractor.js
+addons:
+  sauce_connect: true
+env:
+  global:
+  - secure: YZtLMg0lUGtH9bn8t+f07GhdcJDdWJ0HH9IFDfihB2+H3WAJqSpKTn7O7HL01vh0pWUK74oYW5X+a7uXAxHozy76Kkj4OQL3PNArSSZqrgUbJLOxgdM/Pd3XT2BjsADandadZbWxHtm9nc3/CN6wmIERiEbB4ui0lNXOHSTj20+Z+3gp5YCkIrSKm8npgkFpzN52VYG3u06JcT7I+d+xmr5N6RAuC3zDPIGuAI+LSq+WFXRpwMX2FG5cdFgVRifQ9XRIy2s/bzU+2FVmq6UoRHINSuUTh40D8T47hKrzZvccQmNcZcHPQm2HO8gHz0QPaTmdXt8R5ai4O0zmgUWn1tju8y45kAjAEdCuxfM2r0i/JYeesZBFZNGR0OKoWgaD9dgVl/YEYgGTjAJTY/Vmc5rCQq5FWAYjTzN8iU/OCAaF92HV9fztUKvkON2dxzY40N/XCms9K/Rkby+QyPeaOmUS43CzL9E22glTYHOfzJaWWU9BaHxsUaap2py5Q0FQpCacENjwLhyGEfImkXvwdSfhJ8tr1oNOnk0X+pPK+kSfSf3oUKOTUPJa1dw9qnl+t5KH1ItXeGVPWtv2XTVCOZpONovvkkt1isI2nErKROLnE4rV8ijS6UC6hfiIfIcOMmrkbUgp9s3rhbRwraUpQkqnwEX9F/LxjvRhHFgEaZM=
+  - secure: UtTTPi80OGr9fye7qwjT3WJtNFlf1kbgOZ4GhwORY/FffEj6AWB5dMmdcuisoNKIRzmJxdTNS3qmH2xeLBgK30TpseHUJXcpu6eV4CJTqfNEJGKiMwLCbHyLQ0uwhKRM2FKjtmR87WyCUM/Mr5IyRwx/xStl3HaHbJkjU3V47zzi8OJsG6Rmv6Ez0+dDrSa05v22qwqLdt2Mtp9D+S2nnXyFRb4DqlKltRxqGirxouFx5tyihBuCbYDt05E+WjAyvWrImvbLHwatCvEDRB4bDEXq4tth0NGs5cF+3gCuguQDxG3YzoRD4FVHv8FKotKj3jLFO5YJgW3aJvM9je/vAp5KbuxwASVxXMMI+WkLJExH+aOq+xrtDZzID2YSs2f7kuyYNpE9WHXvBLkJQ+lBbj98W9Eyo5kOioJYAa01DhOOgVnj7Gd+LuL2qmDFb4Juyy1lxgSrg95TZYHBsoBPKcaFICG0hxRk18oQhlH2Q6QdG5NlelnORFCoq1IoWr/7+3FWGv7HwlPW6ovbMTxRYPbupjOUtE/t5l9swEV9BNrRah1Kb1irIbkjt7+js7yZYFUpIfyGwqvjUfj+5AygL0fQC6Mdvs18B7Dg/Q58MakyzRdYSoJqpZ6Vhig1AskxevAXVfkRLCBAZj/KmExkoKjPxssnAe6Tn1sk8QLovbw=
