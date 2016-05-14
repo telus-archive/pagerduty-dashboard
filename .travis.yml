@@ -4,13 +4,15 @@ node_js:
 - '5'
 - '0.12'
 before_install:
-- npm install -g semistandard gulp protractor
+- npm install -g semistandard gulp protractor jasmine
 - cp server/config.sample.json server/config.json
 script:
 - gulp build
 - semistandard
-- node server/main.js 2>&1 &
+- node server/main.js &>output.txt
 - protractor test/protractor.js
+after_script:
+- cat output.txt
 addons:
   sauce_connect: true
 env:
