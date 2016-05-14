@@ -58,9 +58,13 @@ If one or more of the remaining services are failing, the "other" group gets bro
 
 ## Testing
 
-1. Follow the setup steps
-2. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
-3. Install/update Selenium: `webdriver-manager update`
-4. Run Selenium: `webdriver-manager start`
-5. Run the server with the port, path and mock settings from `config.sample.json`
-6. Run `protractor test/protractor.js`
+- Protractor tests:
+  1. Follow the setup steps
+  2. Run `npm install -g protractor` to install [`protractor`](https://angular.github.io/protractor/) and `webdriver-manager`
+  3. Install/update Selenium: `webdriver-manager update`
+  4. Run Selenium: `webdriver-manager start`
+  5. Run the server with the port, path and mock settings from `config.sample.json`
+  6. Run `protractor test/protractor.js`
+- Jasmine tests:
+  1. Run `npm install -g jasmine`
+  2. Run `jasmine JASMINE_CONFIG_PATH=test/jasmine.json`

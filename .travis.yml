@@ -9,8 +9,9 @@ before_install:
 script:
 - gulp build
 - semistandard
-- node server/main.js &>output.txt
+- node server/main.js &>output.txt &
 - protractor test/protractor.js
+- jasmine JASMINE_CONFIG_PATH=test/jasmine.json
 after_script:
 - cat output.txt
 addons:

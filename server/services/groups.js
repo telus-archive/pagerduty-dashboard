@@ -5,7 +5,7 @@ Exports and processing workflow
 var subdomain;
 
 module.exports = function (rawServices, domain) {
-  subdomain = domain;
+  subdomain = domain || '';
   return buildGroups(buildServices(rawServices));
 };
 
@@ -60,9 +60,9 @@ function addDependencyToService (dependencyName, service, services) {
   } else {
     try {
       var pattern = new RegExp(dependencyName, 'i');
-      forEachKey(services, function (service, name) {
-        if (pattern.exec(name)) {
-          service.dependencies[name] = service;
+      forEachKey(services, function (otherService, name) {
+        if (pattern.exec(otherService.name)) {
+          service.dependencies[otherService.name] = otherService;
         }
       });
     } catch (error) {}
