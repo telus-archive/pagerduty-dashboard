@@ -1,3 +1,4 @@
+var autoprefixer = require('gulp-autoprefixer');
 var browserify = require('browserify');
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
@@ -35,6 +36,9 @@ gulp.task('scss', function () {
        'node_modules/bootstrap-sass/assets/stylesheets'
      ]
    }).on('error', scss.logError))
+   .pipe(autoprefixer({
+     browsers: ['last 2 versions']
+   }))
    .pipe(gulp.dest(DESTINATION_ROOT + '/assets'));
 });
 

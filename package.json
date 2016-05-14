@@ -22,6 +22,7 @@
   "devDependencies": {
     "browserify": "^13.0.1",
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
     "gulp-nodemon": "^2.0.7",
     "gulp-sass": "^2.3.1",
     "semistandard": "^7.0.5",
@@ -31,6 +32,14 @@
     "test": "semistandard"
   },
   "semistandard": {
-    "globals": ["describe", "it", "beforeEach", "element", "by", "expect", "browser"]
+    "globals": [
+      "describe",
+      "it",
+      "beforeEach",
+      "element",
+      "by",
+      "expect",
+      "browser"
+    ]
   }
 }
