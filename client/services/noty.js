@@ -1,6 +1,4 @@
-var $ = require('jquery');
-var noty = require('noty');
-
+/* global noty, $ */
 module.exports = function () {
   var current;
   return {

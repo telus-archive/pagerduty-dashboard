@@ -1,12 +1,10 @@
-var _ = require('underscore');
-
 /*
 Exports and processing workflow
 */
 
 var subdomain;
 
-module.exports = function(rawServices, domain) {
+module.exports = function (rawServices, domain) {
   subdomain = domain;
   return buildGroups(buildServices(rawServices));
 };
@@ -15,18 +13,18 @@ module.exports = function(rawServices, domain) {
 Service Processing
 */
 
-function buildServices(rawServices) {
+function buildServices (rawServices) {
   var services = {};
-  rawServices.forEach(function(rawService) {
+  rawServices.forEach(function (rawService) {
     services[rawService.name] = buildService(rawService);
   });
-  _.each(services, function(service) {
+  forEachKey(services, function (service, name) {
     parseServiceDependencies(service, services);
   });
   return services;
 }
 
-function buildService(rawService) {
+function buildService (rawService) {
   var service = {
     properName: getServiceName(rawService),
     groupName: getServiceGroupName(rawService),
@@ -37,32 +35,34 @@ function buildService(rawService) {
   service.isSiteOrServer =
     service.properName === 'Site' || service.properName === 'Server';
   injectStatusProperties(service, rawService.status);
-  return _.extend(service, rawService);
+  forEachKey(rawService, function (value, key) {
+    service[key] = value;
+  });
+  return service;
 }
 
-function parseServiceDependencies(service, services) {
+function parseServiceDependencies (service, services) {
   service.dependencies = {};
 
   var dependencyNames = /\[dashboard-depends\|(.*)]/.exec(service.description);
   if (dependencyNames) {
-    _.each(dependencyNames[1].split(','), function(dependencyName) {
-      dependencyName = dependencyName.trim();
-      addDependencyToService(dependencyName, service, services);
+    dependencyNames[1].split(',').forEach(function (dependencyName) {
+      addDependencyToService(dependencyName.trim(), service, services);
     });
   }
 
-  service.dependencies = _.toArray(service.dependencies);
+  service.dependencies = toArray(service.dependencies);
 }
 
-function addDependencyToService(dependencyName, service, services) {
+function addDependencyToService (dependencyName, service, services) {
   if (services[dependencyName]) {
     service.dependencies[dependencyName] = services[dependencyName];
   } else {
     try {
       var pattern = new RegExp(dependencyName, 'i');
-      _.each(services, function(s) {
-        if (pattern.exec(s.name)) {
-          service.dependencies[s.name] = s;
+      forEachKey(services, function (service, name) {
+        if (pattern.exec(name)) {
+          service.dependencies[name] = service;
         }
       });
     } catch (error) {}
@@ -76,17 +76,17 @@ Group Processing
 var OTHER_PRODUCTS = 'Other Products';
 var OTHER_ISSUES = 'Other Issues';
 
-function buildGroups(services) {
+function buildGroups (services) {
   var groups = {};
   groups[OTHER_PRODUCTS] = newGroup(OTHER_PRODUCTS);
   groups[OTHER_ISSUES] = newGroup(OTHER_ISSUES);
-  _.each(services, function(service) {
+  forEachKey(services, function (service, name) {
     addServiceToGroup(service, groups);
   });
-  return _.map(groups, processGroup);
+  return toArray(groups).map(processGroup);
 }
 
-function addServiceToGroup(service, groups) {
+function addServiceToGroup (service, groups) {
   var groupName = service.groupName;
   if (!groups[groupName]) {
     groups[groupName] = newGroup(groupName);
@@ -101,7 +101,7 @@ function addServiceToGroup(service, groups) {
   }
 }
 
-function newGroup(groupName) {
+function newGroup (groupName) {
   return {
     name: groupName,
     id: groupName.toLowerCase().replace(/\s/g, '-'),
@@ -113,21 +113,21 @@ function newGroup(groupName) {
   };
 }
 
-function processGroup(group) {
+function processGroup (group) {
   var dependencies = {};
   var allServices = group.features
     .concat(group.site || []).concat(group.server || []);
   var worstService = allServices[0];
   var lastIncidentTime;
 
-  _.each(allServices, function(service) {
+  allServices.forEach(function (service) {
     if (!service.isOnline) {
-      lastIncidentTime = lastIncidentTime ?
-        Math.min(service.lastIncidentTime, lastIncidentTime) :
-        service.lastIncidentTime;
+      lastIncidentTime = lastIncidentTime
+        ? Math.min(service.lastIncidentTime, lastIncidentTime)
+        : service.lastIncidentTime;
     }
     worstService = worseStatusService(worstService, service);
-    _.each(service.dependencies, function(dependency) {
+    service.dependencies.forEach(function (dependency) {
       dependencies[dependency.name] = dependency;
     });
   });
@@ -135,7 +135,7 @@ function processGroup(group) {
   var worseStatus = worstService ? worstService.status : 'disabled';
   injectStatusProperties(group, worseStatus);
   group.lastIncidentTime = lastIncidentTime || 0;
-  group.dependencies = _.toArray(dependencies);
+  group.dependencies = toArray(dependencies);
 
   return group;
 }
@@ -144,31 +144,31 @@ function processGroup(group) {
 Utility Functions
 */
 
-function isPrimaryService(service) {
+function isPrimaryService (service) {
   return service.description.indexOf('[dashboard-primary]') !== -1;
 }
 
-function groupRegexComponent(value, index) {
+function groupRegexComponent (value, index) {
   // Current format: <groupName>: <serviceName>
   var match = /([^:]*):(.*)/.exec(value);
   return (match ? match[index] : value).trim();
 }
 
-function getServiceGroupName(service) {
+function getServiceGroupName (service) {
   if (isPrimaryService(service)) {
     return groupRegexComponent(service.name, 1);
   }
   return isOnline(service) ? OTHER_PRODUCTS : OTHER_ISSUES;
 }
 
-function getServiceName(service) {
+function getServiceName (service) {
   if (isPrimaryService(service)) {
     return groupRegexComponent(service.name, 2);
   }
   return service.name;
 }
 
-function statusToNumber(status) {
+function statusToNumber (status) {
   var statuses = {
     critical: 4,
     warning: 3,
@@ -179,18 +179,31 @@ function statusToNumber(status) {
   return statuses[status] || -1;
 }
 
-function isOnline(object) {
+function isOnline (object) {
   return statusToNumber(object.status) < 3;
 }
 
-function worseStatusService(firstService, secondService) {
-  return firstService.statusNumber > secondService.statusNumber ?
-    firstService :
-    secondService;
+function worseStatusService (firstService, secondService) {
+  return firstService.statusNumber > secondService.statusNumber
+    ? firstService : secondService;
 }
 
-function injectStatusProperties(object, status) {
+function injectStatusProperties (object, status) {
   object.status = status;
   object.statusNumber = statusToNumber(status);
   object.isOnline = isOnline(object);
+}
+
+function forEachKey (dataObject, operation) {
+  Object.keys(dataObject).forEach(function (key, index) {
+    operation(dataObject[key], key);
+  });
+}
+
+function toArray (dataObject) {
+  var dataArray = [];
+  Object.keys(dataObject).forEach(function (key, index) {
+    dataArray.push(dataObject[key]);
+  });
+  return dataArray;
 }

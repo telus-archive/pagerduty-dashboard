@@ -2,6 +2,8 @@
 window.angular = require('angular');
 window.humanizeDuration = require('humanize-duration');
 window.moment = require('moment');
+window.$ = require('jquery');
+window.noty = require('noty');
 require('angular-route');
 require('angular-timer');
 

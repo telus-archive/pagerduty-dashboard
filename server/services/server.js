@@ -21,7 +21,7 @@ module.exports = function (provider, domain, port, base) {
   sockets.attach(server);
 
   server.listen(port, function () {
-    console.log('Server listening at port %d', port);
+    console.log('Server available at localhost:%d%s', port, base);
   });
 
   sockets.on('connection', function (socket) {
@@ -38,7 +38,7 @@ module.exports = function (provider, domain, port, base) {
 function updateStatus () {
   get('services', function (services) {
     dataPackageCache = makeUpdatePackage(services);
-    console.log(new Date() + ': Sending update.');
+    console.log('%s: Sending update.', new Date());
     sendUpdate(dataPackageCache);
   });
 }
@@ -65,6 +65,6 @@ function sendUpdate (updatePackage) {
 }
 
 function sendError (error) {
-  console.log(new Date() + ': ' + error.message);
+  console.log('%s: %s', new Date(), error.message);
   sockets.emit('error', error.message);
 }

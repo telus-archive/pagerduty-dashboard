@@ -4,6 +4,7 @@ PagerDuty Dashboard
 [![Dependency Status](https://david-dm.org/gondek/pagerduty-dashboard.svg)](https://david-dm.org/gondek/pagerduty-dashboard)
 [![devDependency Status](https://david-dm.org/gondek/pagerduty-dashboard/dev-status.svg)](https://david-dm.org/gondek/pagerduty-dashboard#info=devDependencies)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
+[![Build Status](https://travis-ci.org/gondek/pagerduty-dashboard.svg?branch=master)](https://travis-ci.org/gondek/pagerduty-dashboard)
 
 [![PagerDuty Dashboard screenshot](/doc/screenshot.png?raw=true)](/doc/screenshot-full.png?raw=true)
 

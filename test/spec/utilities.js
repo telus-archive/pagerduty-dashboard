@@ -1,19 +1,19 @@
-function getGroupElement(groupName) {
-  return element.all(by.name(groupName)).filter(function(el) {
-    return el.isDisplayed().then(function(isDisplayed) {
+function getGroupElement (groupName) {
+  return element.all(by.name(groupName)).filter(function (el) {
+    return el.isDisplayed().then(function (isDisplayed) {
       return isDisplayed;
     });
   }).first();
 }
 
 module.exports = {
-  clickOpenDashboardButton: function() {
+  clickOpenDashboardButton: function () {
     element(by.name('open')).click();
   },
-  openCustomizePage: function() {
+  openCustomizePage: function () {
     browser.get('http://localhost:3000/dashboards/pagerduty/#/customize');
   },
-  getAllGroups: function() {
+  getAllGroups: function () {
     return element.all(by.repeater('group in data.groups'));
   },
   sortOrderInputBoxNames: [
@@ -23,38 +23,38 @@ module.exports = {
     'order-unstablesite',
     'order-unreliablesite'
   ],
-  expectVisibleGroupsToEqual: function(expectedGroups) {
+  expectVisibleGroupsToEqual: function (expectedGroups) {
     element.all(by.css('.groups .group')).getAttribute('name')
-      .then(function(groups) {
+      .then(function (groups) {
         expect(groups).toEqual(expectedGroups);
       });
   },
-  clickSettingsGearButton: function() {
+  clickSettingsGearButton: function () {
     element(by.css('.customize-link')).click();
   },
-  openDashboardPage: function(params) {
+  openDashboardPage: function (params) {
     params = params || [];
-    url = 'http://localhost:3000/dashboards/pagerduty/#/?';
-    params.forEach(function(param) {
+    var url = 'http://localhost:3000/dashboards/pagerduty/#/?';
+    params.forEach(function (param) {
       url += param[0] + '=' + param[1] + '&';
     });
     browser.get(url);
   },
-  getDowntimeClockFor: function(groupName) {
+  getDowntimeClockFor: function (groupName) {
     return getGroupElement(groupName).element(by.css('.downtime'));
   },
-  getBodyCssClasses: function() {
+  getBodyCssClasses: function () {
     return element(by.tagName('body')).getAttribute('class');
   },
-  getServicesFor: function(groupName) {
+  getServicesFor: function (groupName) {
     return getGroupElement(groupName)
       .all(by.repeater('service in group.dependencies'));
   },
-  getFeaturesFor: function(groupName) {
+  getFeaturesFor: function (groupName) {
     return getGroupElement(groupName)
       .all(by.repeater('service in group.features'));
   },
-  getSiteServerFor: function(groupName) {
+  getSiteServerFor: function (groupName) {
     return getGroupElement(groupName).element(by.css('.serversite'));
   }
 };

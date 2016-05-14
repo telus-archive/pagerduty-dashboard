@@ -1,12 +1,19 @@
 var services = require('./mockServices.json');
-var _ = require('underscore');
 
 var resources = [];
 
-function makeResources(resources, template) {
+function makeResources (resources, template) {
   var resourcesArray = [];
-  _.each(resources, function(resource) {
-    resourcesArray.push(_.extend({}, template, resource));
+  Object.keys(resources).forEach(function (key, index) {
+    var resource = {};
+    var rawResource = resources[key];
+    Object.keys(rawResource).forEach(function (key, index) {
+      resource[key] = rawResource[key];
+    });
+    Object.keys(template).forEach(function (key, index) {
+      resource[key] = template[key];
+    });
+    resourcesArray.push(resource);
   });
 
   return resourcesArray;
@@ -39,7 +46,7 @@ resources.services = makeResources(services.services, {
   }
 });
 
-function getAll(resource, callback, params) {
+function getAll (resource, callback, params) {
   try {
     // use JSON parse and stringify to avoid modifying the cache
     callback(null, JSON.parse(JSON.stringify(resources[resource])));

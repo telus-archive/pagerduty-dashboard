@@ -1,20 +1,19 @@
-util = require('./utilities');
+var util = require('./utilities');
 
-describe('The dashboard settings service', function() {
-
-  beforeEach(function() {
+describe('The dashboard settings service', function () {
+  beforeEach(function () {
     util.openCustomizePage();
   });
 
-  it('should apply the group cutoff', function() {
+  it('should apply the group cutoff', function () {
     element(by.name('orderCutoff')).sendKeys('1');
     util.clickOpenDashboardButton();
     util.expectVisibleGroupsToEqual([]);
   });
 
-  it('should apply a variable sort order', function() {
+  it('should apply a variable sort order', function () {
     var customOrder = 5;
-    util.sortOrderInputBoxNames.forEach(function(name) {
+    util.sortOrderInputBoxNames.forEach(function (name) {
       element(by.name(name)).sendKeys(customOrder);
       customOrder -= 1;
     });
@@ -29,8 +28,8 @@ describe('The dashboard settings service', function() {
     ]);
   });
 
-  it('should apply a constant sort order', function() {
-    util.sortOrderInputBoxNames.forEach(function(name) {
+  it('should apply a constant sort order', function () {
+    util.sortOrderInputBoxNames.forEach(function (name) {
       element(by.name(name)).sendKeys('1');
     });
     util.clickOpenDashboardButton();
@@ -44,11 +43,11 @@ describe('The dashboard settings service', function() {
     ]);
   });
 
-  it('should apply the group cutoff with a sort order', function() {
+  it('should apply the group cutoff with a sort order', function () {
     var sortOrder = [3, 1, 3, 4, 4];
 
     element(by.name('orderCutoff')).sendKeys('3');
-    util.sortOrderInputBoxNames.forEach(function(name, index) {
+    util.sortOrderInputBoxNames.forEach(function (name, index) {
       element(by.name(name)).sendKeys(sortOrder[index] || 2);
     });
     util.clickOpenDashboardButton();
@@ -61,21 +60,21 @@ describe('The dashboard settings service', function() {
     ]);
   });
 
-  it('should apply a plain background if flashing is disabled', function() {
+  it('should apply a plain background if flashing is disabled', function () {
     element(by.name('animatePage')).click();
 
     util.clickOpenDashboardButton();
     expect(util.getBodyCssClasses()).not.toMatch('animate-background');
   });
 
-  it('should apply flashing headers if enabled', function() {
+  it('should apply flashing headers if enabled', function () {
     element(by.name('animateHeadings')).click();
 
     util.clickOpenDashboardButton();
     expect(util.getBodyCssClasses()).toMatch('animate-headings');
   });
 
-  it('should allow flashing headers on and flashing background off at the same time', function() {
+  it('should allow flashing headers on and flashing background off at the same time', function () {
     element(by.name('animateHeadings')).click();
     element(by.name('animatePage')).click();
 
@@ -84,11 +83,10 @@ describe('The dashboard settings service', function() {
     expect(util.getBodyCssClasses()).not.toMatch('animate-background');
   });
 
-  it('should apply the scrolling settings', function() {
+  it('should apply the scrolling settings', function () {
     element(by.name('scrollHideBar')).click();
 
     util.clickOpenDashboardButton();
     expect(util.getBodyCssClasses()).toMatch('hide-scroll-bar');
   });
-
 });
