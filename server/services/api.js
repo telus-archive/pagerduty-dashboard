@@ -11,21 +11,21 @@ module.exports = function (domain, key) {
   };
 };
 
-/*
-The API limits the returned resources to 100, so multiple requests may be needed
-getAllResources's inner functions are mutually recursive
-*/
-
+// get all the items at the 'resource' endpoint
+// note: the API limits the returned resources to 100, so multiple requests
+//       may be needed which is why the inner functions are mutually recursive
 function getAllResources (resource, callback, params) {
   var resources = [];
   params = params || {};
 
+  // send off the API request with the proper parameters
   function getResources (offset, limit) {
     params.offset = offset;
     params.limit = limit;
     apiRequest(resource, processResources, params);
   }
 
+  // handle the API response, either noting an error or saving the data
   function processResources (error, response, data) {
     if (error || !response) {
       callback(error, {});
@@ -40,6 +40,9 @@ function getAllResources (resource, callback, params) {
     }
   }
 
+  // save the data for return and either:
+  // 1: send futher requests for the remaining data (because of the limit)
+  // 2: send the data to the callback of the requester
   function accumulateResources (data) {
     resources = resources.concat(data[resource]);
     if (data.total > resources.length) {
@@ -49,9 +52,11 @@ function getAllResources (resource, callback, params) {
     }
   }
 
+  // kick off the requests with a 0 offset and the maximum limit
   getResources(0, 100);
 }
 
+// send an API request with the proper headers
 function apiRequest (resource, callback, params) {
   request({
     uri: 'https://' + subdomain + '.pagerduty.com/api/v1/' + resource,

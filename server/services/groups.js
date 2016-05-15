@@ -23,7 +23,7 @@ function decorateServices (rawServices) {
   return services;
 }
 
-// Given an API service object, add fields for display and sorting purposes
+// given an API service object, add fields for display and sorting purposes
 function decorateService (rawService) {
   var service = {
     properName: getServiceName(rawService),
@@ -126,6 +126,7 @@ function addServiceToGroup (service, groups) {
   }
 }
 
+// template for a new group
 function newGroup (groupName) {
   return {
     name: groupName,
@@ -175,7 +176,8 @@ function isPrimaryService (service) {
   return service.description.indexOf('[dashboard-primary]') !== -1;
 }
 
-// index=0 -> <groupName>,   index=1 -> <serviceName>
+// index=0 -> <groupName>
+// index=1 -> <serviceName>
 function groupRegexComponent (value, index) {
   // Current format: <groupName>: <serviceName>
   var match = /([^:]*):(.*)/.exec(value);
