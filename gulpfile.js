@@ -1,3 +1,4 @@
+// gulp build configuration
 var autoprefixer = require('gulp-autoprefixer');
 var browserify = require('browserify');
 var gulp = require('gulp');

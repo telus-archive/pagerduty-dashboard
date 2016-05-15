@@ -1,3 +1,5 @@
+// protractor testing utilities
+
 function getGroupElement (groupName) {
   return element.all(by.name(groupName)).filter(function (el) {
     return el.isDisplayed().then(function (isDisplayed) {

@@ -65,6 +65,7 @@ If one or more of the remaining services are failing, the "other" group gets bro
   4. Run Selenium: `webdriver-manager start`
   5. Run the server with the port, path and mock settings from `config.sample.json`
   6. Run `protractor test/protractor.js`
+  - Note: Protractor tests are non-deterministic on older versions of node.
 - Jasmine tests:
   1. Run `npm install -g jasmine`
   2. Run `jasmine JASMINE_CONFIG_PATH=test/jasmine.json`

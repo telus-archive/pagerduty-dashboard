@@ -5,11 +5,13 @@ var resources = [];
 function makeResources (resources, template) {
   var resourcesArray = [];
   Object.keys(resources).forEach(function (key, index) {
-    var resource = {};
-    var rawResource = resources[key];
+    var resource = {}; // create a fresh blank value
+    // first copy all of the template values to the resource
     Object.keys(template).forEach(function (key, index) {
       resource[key] = template[key];
     });
+    // next, copy all the values provided by the input
+    var rawResource = resources[key];
     Object.keys(rawResource).forEach(function (key, index) {
       resource[key] = rawResource[key];
     });
@@ -19,6 +21,7 @@ function makeResources (resources, template) {
   return resourcesArray;
 }
 
+// generate the sample services using the following as a template
 resources.services = makeResources(services.services, {
   'id': 'ABCDEFG',
   'name': 'Template',
@@ -46,6 +49,7 @@ resources.services = makeResources(services.services, {
   }
 });
 
+// dummy implementation of getAll (see real API getAll function)
 function getAll (resource, callback, params) {
   try {
     // use JSON parse and stringify to avoid modifying the cache
