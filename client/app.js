@@ -1,4 +1,4 @@
-// Globals and requires
+// globals and requires
 window.angular = require('angular');
 window.humanizeDuration = require('humanize-duration');
 window.moment = require('moment');
@@ -7,10 +7,10 @@ window.noty = require('noty');
 require('angular-route');
 require('angular-timer');
 
-// Main module definition
+// main module definition
 window.angular.module('pagerdutyDashboard', ['ngRoute', 'timer'])
 
-// Module components
+// module components
 .controller('customizationController', require('./controllers/customization'))
 .controller('dashboardController', require('./controllers/dashboard'))
 .controller('globalController', require('./controllers/global'))
@@ -26,7 +26,7 @@ window.angular.module('pagerdutyDashboard', ['ngRoute', 'timer'])
 .factory('sockets', require('./services/sockets'))
 .filter('groupsColumn', require('./services/groupColumnFilter'))
 
-// Module configuration and initialization
+// module configuration and initialization
 .config(function ($routeProvider) {
   $routeProvider
     .when('/', {

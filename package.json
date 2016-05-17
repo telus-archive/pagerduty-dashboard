@@ -30,6 +30,9 @@
   },
   "semistandard": {
     "globals": [
+      "$",
+      "io",
+      "noty",
       "describe",
       "it",
       "beforeEach",

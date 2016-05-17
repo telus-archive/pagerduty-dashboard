@@ -1,5 +1,4 @@
-var $ = require('jquery');
-
+// master/parent controller (both the dashboard and settings view)
 module.exports = function ($scope, displaySettings, pagerdutyData) {
   var globalStatus; // the worst status of the shown groups
   $scope.loaded = false;
@@ -12,6 +11,7 @@ module.exports = function ($scope, displaySettings, pagerdutyData) {
     }
   }
 
+  // convert animation settings in the corresponding CSS classes
   $scope.getBodyCssClasses = function () {
     var classes = globalStatus || '';
     if (displaySettings.getValue('animatePage')) {

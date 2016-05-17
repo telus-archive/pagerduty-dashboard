@@ -1,4 +1,4 @@
-/* global noty, $ */
+// wrapper around the noty library
 module.exports = function () {
   var current;
   return {

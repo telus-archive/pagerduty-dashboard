@@ -1,4 +1,4 @@
-// Controller for the customization page
+// controller for the customization view
 module.exports = function ($scope, displaySettings) {
   $scope.settings = displaySettings.settings;
   $scope.resetGroupOrder = displaySettings.resetGroupOrder;
