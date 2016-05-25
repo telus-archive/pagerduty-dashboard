@@ -66,7 +66,7 @@ function parseServiceDependencies (service, services) {
 // given a dependencyName, look for it in services and add the data to service
 function addDependencyToService (dependencyName, service, services) {
   if (services[dependencyName]) {
-    // found the depdendency by exact name
+    // found the dependency by exact name
     service.dependencies[dependencyName] = services[dependencyName];
   } else {
     try {
@@ -74,7 +74,7 @@ function addDependencyToService (dependencyName, service, services) {
       var pattern = new RegExp(dependencyName, 'i');
       objectForEach(services, function (keyName, otherService) {
         if (pattern.exec(otherService.name)) {
-          // found one depdendency by matching against the regex
+          // found one dependency by matching against the regex
           service.dependencies[otherService.name] = otherService;
         }
       });
@@ -99,7 +99,7 @@ function buildGroups (services) {
     addServiceToGroup(service, groups);
   });
 
-  // then dervice each groups properties and return as an array
+  // then dervice each group's properties and return as an array
   return toArray(groups).map(processGroup);
 }
 
@@ -139,7 +139,7 @@ function newGroup (groupName) {
   };
 }
 
-// build a groups depdendency list from its services and add additional properties
+// build a groups dependency list from its services and add additional properties
 function processGroup (group) {
   var dependencies = {};
   var allServices = group.features.concat(group.site || [], group.server || []);
@@ -216,7 +216,7 @@ function statusToNumber (status) {
   return statuses[status] || -1;
 }
 
-// is the service not failing ?
+// return true if the service is not failing (active / maintenance / disabled)
 function isOnline (object) {
   return statusToNumber(object.status) < 3;
 }
@@ -234,7 +234,7 @@ function injectStatusProperties (object, status) {
   object.isOnline = isOnline(object);
 }
 
-// iterate of the keys of an object with each key's value
+// iterate over the keys of an object with each key's value
 function objectForEach (dataObject, operation) {
   Object.keys(dataObject).forEach(function (key, index) {
     operation(key, dataObject[key]);

@@ -2,8 +2,8 @@
 module.exports = function (displaySettings) {
   // determine the relative ordering of two groups
   // return -1 if 'a' comes before 'b'
-  // return 0  if they are effectively equal
-  // return 1  if 'b' comes before 'a'
+  // return  0 if they are effectively equal
+  // return  1 if 'b' comes before 'a'
   function compareGroups (a, b) {
     var aOrder = displaySettings.getGroupOrder(a.id);
     var bOrder = displaySettings.getGroupOrder(b.id);
@@ -39,7 +39,7 @@ module.exports = function (displaySettings) {
     return 0;
   }
 
-  // should a group be shown?
+  // returns true if a group should be shown
   function isVisible (group) {
     var groupOrder = displaySettings.getGroupOrder(group.id);
     var groupCutoff = displaySettings.getValue('orderCutoff');
@@ -47,7 +47,7 @@ module.exports = function (displaySettings) {
     if (groupOrder < groupCutoff) {
       return false;
     }
-    // if the group has core features or a site/server, show it
+    // if the group is non-empty, show it
     if (group.features.length || group.site || group.server) {
       return true;
     }

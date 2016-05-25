@@ -1,6 +1,7 @@
 {
   "name": "pagerduty-dashboard",
   "description": "PagerDuty Dashboard",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",

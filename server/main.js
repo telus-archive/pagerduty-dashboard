@@ -1,6 +1,6 @@
 var config = require('./config.json');
 
-// should we use the mock data provider or try using the API?
+// return true if the mock data provider should be used instead of the API
 function useMockData () {
   return config.useMockData || !(config.apiSubdomain && config.apiKey);
 }

@@ -46,7 +46,7 @@ module.exports = function ($routeParams, $location) {
     settings.soundsCritical = '';
   }
 
-  // is a particular setting using the default value
+  // returns true if a particular setting using the default value
   function isDefault (setting) {
     var value = parseValue(settings[setting]);
     return value === defaults[setting] || value === '';
