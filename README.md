@@ -13,17 +13,20 @@ For details on the grouping process, refer to the "Conventions" section below.
 
 ## Setup
 
-1. Install [Node.js](https://nodejs.org/) (almost any version should work) and [Gulp](http://gulpjs.com/)
-2. Install dependencies: `npm install`
-3. Copy `config.sample.json` to `config.json` in the `server` folder and customize the values
+1. Install [Node.js](https://nodejs.org/)** and [Gulp](http://gulpjs.com/)
+2. Checkout/download this repository. The `master` branch is always in a stable/ready-to-go state.
+3. Install dependencies: `npm install`
+4. Copy `config.sample.json` to `config.json` in the `server` folder and customize the values
   - For a demo or testing, leave `useMockData: true`
   - To enable API access, fill in `apiSubdomain` and `apiKey` and set `useMockData: false`
   - To set how often the dashboard polls PagerDuty, change `updateInterval` (in seconds)
   - `serverPort` and `basePath` determine the address to access the dashboard: `<ipAddress>:<serverPort>/<basePath>`
-4. Build the front-end/client: `gulp`
-5. Start the back-end/server: `node server/main.js`
+5. Build the front-end/client: `gulp`
+6. Start the back-end/server: `node server/main.js`
 
 During development, running `gulp dev` will restart the server and/or run builds when files change.
+
+** Development and testing is done against the latest version of Node. The actual app should easily work on older versions of Node (eg. 0.12), so the only thing that determines the version needed are the dependencies in `package.json`.
 
 ## Custom View Configuration
 
